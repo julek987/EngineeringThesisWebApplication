@@ -1,0 +1,66 @@
+body{
+  margin: 0;
+}
+.header{
+  display: flex;
+  justify-content: space-between;
+  background-color: #93bbe6;
+  padding: 10px;
+}
+button{
+  background-color: #c9e3ff;
+  border-color: #93bbe6;
+}
+.bestsellery{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+.scrollable {
+  height: 200px; /* Adjust the maximum height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 10px;
+}
+.product-placeholder{
+  display: flex;
+  justify-content: space-between;
+  border: 3px solid #93bbe6;
+}
+
+.dodawanie_bestsellerów{
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin-top: 25px;
+  margin-left: 75px;
+  margin-right: 75px;
+  border: 3px solid #35424a;
+  background-color: #93bbe6;
+  accent-color: #79ffac;
+}
+.dodawanie_bestsellerów button{
+  background-color: #79ffac;
+  border-color: #60fda1;
+  border-radius: 5px;
+}
+
+.usuwanie_bestsellerów{
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin-top: 25px;
+  margin-left: 75px;
+  margin-right: 75px;
+  border: 3px solid #35424a;
+  background-color: #93bbe6;
+  accent-color: #ff7979
+}
+
+.usuwanie_bestsellerów button{
+  background-color: #ff7979;
+  border-color: #ff6565;
+  border-radius: 5px;
+}
