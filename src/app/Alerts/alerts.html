@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="alerts.css">
+</head>
+<body>
+<div class="header">
+  <div class="header_buttons">
+    <button>Analiza</button>
+    <button>Best-sellery</button>
+    <button>Alerty</button>
+  </div>
+  <div>
+    <button>Ustawienia</button>
+  </div>
+</div>
+
+<div class="alerty">
+  <div class ="lista_alertów">
+    <input type="text" placeholder="Szukaj..">
+    <div id="alert-container" class="scrollable">
+      <div class="alert">
+        <input type="checkbox" id="alert-1" name="alert" value="1">
+        <label for="alert-1">Alert 1</label>
+      </div>
+      <div class="alert">
+        <input type="checkbox" id="alert-2" name="alert" value="2">
+        <label for="alert-2">Alert 2</label>
+      </div>
+      <div class="alert">
+        <input type="checkbox" id="alert-3" name="alert" value="3">
+        <label for="alert-3">Alert 3</label>
+      </div>
+    </div>
+    <button class="delete_button">Usuń zaznaczone</button>
+    <button class="add_button">Stwórz nowy alert</button>
+  </div>
+  <div class="alert_modification">
+    <div class="alert_input">
+      <p>Nazwa alertu:</p>
+      <input type="text" placeholder="CzapeczkiKubuś30DNI">
+    </div>
+    <div class="alert_input">
+      <p>Znak produktu:</p>
+      <input type="text" placeholder="ABN-3431/MOT">
+    </div>
+    <div class="alert_input">
+      <p>Ilość graniczna:</p>
+      <input type="text" placeholder="100">
+    </div>
+    <div class="alert_input">
+      <p>Dni przed wyczerpaniem:</p>
+      <input type="text" placeholder="45">
+    </div>
+    <div class="alert_input">
+      <p>Czas do analizy:</p>
+      <input type="text" placeholder="6">
+      <p>miesięcy</p>
+    </div>
+
+
+</div>
+</div>
+</body>

@@ -11,10 +11,9 @@ button{
   background-color: #c9e3ff;
   border-color: #93bbe6;
 }
-.bestsellery{
+.alerty{
   display: flex;
   justify-content: center;
-  align-items: center;
   margin: 10px;
 }
 .scrollable {
@@ -22,52 +21,46 @@ button{
   overflow-y: auto; /* Enable vertical scrolling */
   padding: 10px;
 }
-.product-placeholder{
-  display: flex;
-  justify-content: space-between;
-  border: 3px solid #93bbe6;
-}
-
-.dodawanie_bestsellerów{
+.lista_alertów{
   display: grid;
   justify-content: center;
   align-items: center;
+  height: 300px;
   padding: 10px;
   margin-top: 25px;
-  margin-left: 75px;
-  margin-right: 75px;
-  border: 3px solid #35424a;
-  background-color: #93bbe6;
-  accent-color: #79ffac;
-}
-.dodawanie_bestsellerów button{
-  background-color: #79ffac;
-  border-color: #60fda1;
-  border-radius: 5px;
-}
-
-.usuwanie_bestsellerów{
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  margin-top: 25px;
-  margin-left: 75px;
-  margin-right: 75px;
   border: 3px solid #35424a;
   background-color: #93bbe6;
   accent-color: #ff7979
 }
-
-.usuwanie_bestsellerów button{
+.add_button {
+  background-color: #79ffac;
+  border-color: #60fda1;
+  border-radius: 5px;
+}
+.delete_button{
   background-color: #ff7979;
   border-color: #ff6565;
   border-radius: 5px;
 }
 
-#product-container, #product-container2{
+.alert_modification{
   border: 3px solid #35424a;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  background-color: #93bbe6;
+  height: 300px;
+  padding: 10px;
+  margin-top: 25px;
+  display: grid;
+  justify-content: space-between;
+}
+.alert_input{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.alert_input input{
+  height: 18px;
 }
 
+#alert-container{
+  border: 3px solid #35424a;
+}
