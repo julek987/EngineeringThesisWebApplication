@@ -20,6 +20,20 @@
   <div class ="lista_produktów">
     <p>Produkty:</p>
     <input type="text" placeholder="Szukaj..">
+    <div id="product-container" class="scrollable">
+      <div class="product">
+        <input type="checkbox" id="product-1" name="product" value="1">
+        <label for="product-1">Product 1</label>
+      </div>
+      <div class="product">
+        <input type="checkbox" id="product-2" name="product" value="2">
+        <label for="product-2">Product 2</label>
+      </div>
+      <div class="product">
+        <input type="checkbox" id="product-3" name="product" value="3">
+        <label for="product-3">Product 3</label>
+      </div>
+    </div>
   </div>
   <div class="analiza_datownik">
     <div class="datownik">
@@ -34,17 +48,43 @@
       <button>Zatwierdź</button>
     </div>
     <div class="analiza_panel">
+      <div class="analiza_wzór">
       <p style="border: 2px solid #891818">ZNAK</p>
       <p style="border: 2px solid #891818">NAZWA</p>
       <p style="border: 2px solid #891818">STAN MAGAZYNOWY</p>
       <p style="border: 2px solid #891818">SPRZEDANYCH</p>
       <p style="border: 2px solid #891818">ZYSK</p>
       <p style="border: 2px solid #891818">WSPÓŁCZYNNIK SPRZEDAŻY</p>
+      </div>
+      <div id="analysis-container" class="scrollable">
+        <div class="product-placeholder">
+          <p>ABN/001</p>
+          <p>"Kubuś"</p>
+          <p>10</p>
+          <p>150</p>
+          <p>4500.00</p>
+          <p>1.5</p>
+        </div>
+      </div>
     </div>
   </div>
   <div class="lista_kontrahentów">
     <p>Kontrahenci:</p>
     <input type="text" placeholder="Szukaj..">
+    <div id="client-container" class="scrollable">
+      <div class="product">
+        <input type="checkbox" id="klient-1" name="klient" value="1">
+        <label for="klient-1">Kontrahent 1</label>
+      </div>
+      <div class="product">
+        <input type="checkbox" id="klient-2" name="klient" value="2">
+        <label for="klient-2">Kontrahent 2</label>
+      </div>
+      <div class="product">
+        <input type="checkbox" id="klient-3" name="klient" value="3">
+        <label for="klient-3">Kontrahent 3</label>
+      </div>
   </div>
+</div>
 </div>
 </body>
