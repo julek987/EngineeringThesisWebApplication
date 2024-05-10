@@ -21,17 +21,9 @@
     <p>Produkty:</p>
     <input type="text" placeholder="Szukaj..">
     <div id="product-container" class="scrollable">
-      <div class="product">
-        <input type="checkbox" id="product-1" name="product" value="1">
-        <label for="product-1">Product 1</label>
-      </div>
-      <div class="product">
-        <input type="checkbox" id="product-2" name="product" value="2">
-        <label for="product-2">Product 2</label>
-      </div>
-      <div class="product">
-        <input type="checkbox" id="product-3" name="product" value="3">
-        <label for="product-3">Product 3</label>
+        <div class="product" *ngFor="let product of products">
+          <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code">
+          <label [for]="'product-' + product.code">{{ product.code }}</label>
       </div>
     </div>
   </div>

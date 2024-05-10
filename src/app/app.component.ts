@@ -7,14 +7,15 @@ import {WarehouseService} from "./services/warehouse.service";
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
+  products: any[] = [];
 
   constructor(private warehouseService: WarehouseService) { }
 
-
-  ngOnInit(){
-    this.warehouseService.getQuantity('http://localhost:5001/warehouse?product=ABN-3431/MOT/056&date=2023-02-12')
-      .subscribe((products) => {
-      console.log(products);
-    });
+  ngOnInit(): void {
+    this.warehouseService.getAllProducts('http://localhost:5001/products')
+      .subscribe((response) => {
+        this.products = response.value;
+        console.log(response.value);
+      });
   }
 }

@@ -31,7 +31,7 @@ button{
   display: flex;
 }
 .scrollable {
-  max-height: 20px; /* Adjust the maximum height as needed */
+  max-height: 500px; /* Adjust the maximum height as needed */
   overflow-y: auto; /* Enable vertical scrolling */
   padding: 10px;
 }

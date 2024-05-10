@@ -1,7 +1,12 @@
-export interface ProductQuantity {
-  quantity: number;
+export interface Product {
+  code: string;
+  description: string | null;
 }
 
-export interface ProductsQuantities {
-  items: ProductQuantity[];
+export interface AllProductsResponse{
+  value: Product[];
+  formatters: [] | null;
+  contentTypes: [] | null;
+  declaredType: string | null;
+  statusCode: number | null;
 }
