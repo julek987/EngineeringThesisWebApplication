@@ -19,11 +19,11 @@
 <div class="analiza">
   <div class ="lista_produktów">
     <p>Produkty:</p>
-    <input type="text" placeholder="Szukaj..">
+    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterProducts()">
     <div id="product-container" class="scrollable">
-        <div class="product" *ngFor="let product of products">
-          <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code">
-          <label [for]="'product-' + product.code">{{ product.code }}</label>
+      <div class="product" *ngFor="let product of filteredProducts">
+        <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code">
+        <label [for]="'product-' + product.code">{{ product.code }}</label>
       </div>
     </div>
   </div>
