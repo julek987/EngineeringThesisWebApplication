@@ -10,3 +10,16 @@ export interface AllProductsResponse{
   declaredType: string | null;
   statusCode: number | null;
 }
+
+export interface Client{
+  id: number;
+  name: string;
+}
+
+export interface AllClientsResponse {
+  value: Client[];
+  formatters: [] | null;
+  contentTypes: [] | null;
+  declaredType: string | null;
+  statusCode: number | null;
+}

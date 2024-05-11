@@ -19,7 +19,7 @@
 <div class="analiza">
   <div class ="lista_produktów">
     <p>Produkty:</p>
-    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterProducts()">
+    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
     <div id="product-container" class="scrollable">
       <div class="product" *ngFor="let product of filteredProducts">
         <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code">
@@ -62,21 +62,13 @@
   </div>
   <div class="lista_kontrahentów">
     <p>Kontrahenci:</p>
-    <input type="text" placeholder="Szukaj..">
+    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextClients" (input)="filterClients()">
     <div id="client-container" class="scrollable">
-      <div class="product">
-        <input type="checkbox" id="klient-1" name="klient" value="1">
-        <label for="klient-1">Kontrahent 1</label>
+      <div class="client" *ngFor="let client of filteredClients">
+        <input type="checkbox" [id]="'client-' + client.id" name="client" [value]="client.name">
+        <label [for]="'product-' + client.id">{{ client.name }}</label>
       </div>
-      <div class="product">
-        <input type="checkbox" id="klient-2" name="klient" value="2">
-        <label for="klient-2">Kontrahent 2</label>
-      </div>
-      <div class="product">
-        <input type="checkbox" id="klient-3" name="klient" value="3">
-        <label for="klient-3">Kontrahent 3</label>
-      </div>
-  </div>
+    </div>
 </div>
 </div>
 </body>

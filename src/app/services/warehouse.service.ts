@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {ApiService} from "./api.service";
 import {Observable} from "rxjs";
-import {AllProductsResponse} from "../../types";
+import {AllClientsResponse, AllProductsResponse} from "../../types";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +12,10 @@ export class WarehouseService {
   }
 
   getAllProducts = (url: string): Observable<AllProductsResponse> => {
+    return this.apiService.get(url);
+  }
+
+  getAllClients = (url: string): Observable<AllClientsResponse> => {
     return this.apiService.get(url);
   }
 }
