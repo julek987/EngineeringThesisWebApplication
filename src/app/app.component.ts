@@ -20,7 +20,7 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.warehouseService.getAllProducts('http://localhost:5001/products')
       .subscribe((response: { value: Product[] }) => {
-        this.products = response.value;
+        this.products = this.groupProductsByPrefix(response.value);
         this.filteredProducts = this.products;
       });
 
@@ -41,5 +41,21 @@ export class AppComponent implements OnInit{
     this.filteredClients = this.clients.filter(product =>
       product.name.toLowerCase().includes(this.searchTextClients.toLowerCase())
     );
+  }
+
+  groupProductsByPrefix(products: Product[]): Product[] {
+    const groupedProducts: { [key: string]: Product } = {};
+    products.forEach(product => {
+      const parts = product.code.split('/');
+      const prefix = parts.slice(0, -1).join('/'); // Extract prefix without size
+      if (!groupedProducts[prefix]) {
+        // If prefix not found, add it
+        groupedProducts[prefix] = {
+          ...product,
+          code: prefix // Update code to remove size information
+        };
+      }
+    });
+    return Object.values(groupedProducts);
   }
 }
