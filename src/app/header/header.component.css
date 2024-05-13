@@ -1,0 +1,13 @@
+body{
+  margin: 0;
+}
+button{
+  background-color: #c9e3ff;
+  border-color: #93bbe6;
+}
+.header{
+  display: flex;
+  justify-content: space-between;
+  background-color: #93bbe6;
+  padding: 10px;
+}
