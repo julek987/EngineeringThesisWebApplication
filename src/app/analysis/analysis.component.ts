@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {Client, Product} from "../../types";
-import {WarehouseService} from "../services/warehouse.service";
+import { Component, OnInit } from '@angular/core';
+import { Client, Product } from "../../types";
+import { WarehouseService } from "../services/warehouse.service";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-analysis',
   templateUrl: './analysis.component.html',
-  styleUrl: './analysis.component.css'
+  styleUrls: ['./analysis.component.css']
 })
-export class AnalysisComponent implements OnInit{
+export class AnalysisComponent implements OnInit {
   products: Product[] = [];
   clients: Client[] = [];
   searchTextProducts: string = '';
@@ -15,15 +16,27 @@ export class AnalysisComponent implements OnInit{
   filteredProducts: Product[] = [];
   filteredClients: Client[] = [];
 
-  constructor(private warehouseService: WarehouseService) { }
+  constructor(
+    private warehouseService: WarehouseService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.loadProducts();
+      this.loadClients();
+    });
+  }
+
+  loadProducts() {
     this.warehouseService.getAllProducts('http://localhost:5001/products')
       .subscribe((response: { value: Product[] }) => {
         this.products = this.groupProductsByPrefix(response.value);
         this.filteredProducts = this.products;
       });
+  }
 
+  loadClients() {
     this.warehouseService.getAllClients('http://localhost:5001/clients')
       .subscribe((response: { value: Client[] }) => {
         this.clients = response.value;
@@ -38,8 +51,8 @@ export class AnalysisComponent implements OnInit{
   }
 
   filterClients(): void {
-    this.filteredClients = this.clients.filter(product =>
-      product.name.toLowerCase().includes(this.searchTextClients.toLowerCase())
+    this.filteredClients = this.clients.filter(client =>
+      client.name.toLowerCase().includes(this.searchTextClients.toLowerCase())
     );
   }
 
