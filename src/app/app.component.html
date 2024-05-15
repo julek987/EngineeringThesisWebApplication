@@ -6,60 +6,11 @@
   <link rel="stylesheet" href="app.component.css">
 </head>
 <body>
-<app-header></app-header>
-<div class="analiza">
-  <div class ="lista_produktów">
-    <p>Produkty:</p>
-    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
-    <div id="product-container" class="scrollable">
-      <div class="product" *ngFor="let product of filteredProducts">
-        <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code">
-        <label [for]="'product-' + product.code">{{ product.code }}</label>
-      </div>
-    </div>
-  </div>
-  <div class="analiza_datownik">
-    <div class="datownik">
-      <div class="data_początkowa">
-        <p style="border: 2px solid #891818">Data początkowa:</p>
-        <input type="date"/>
-      </div>
-        <div class="data_końcowa">
-      <p style="border: 2px solid #891818">Data końcowa:</p>
-      <input type="date"/>
-        </div>
-      <button>Zatwierdź</button>
-    </div>
-    <div class="analiza_panel">
-      <div class="analiza_wzór">
-      <p style="border: 2px solid #891818">ZNAK</p>
-      <p style="border: 2px solid #891818">NAZWA</p>
-      <p style="border: 2px solid #891818">STAN MAGAZYNOWY</p>
-      <p style="border: 2px solid #891818">SPRZEDANYCH</p>
-      <p style="border: 2px solid #891818">ZYSK</p>
-      <p style="border: 2px solid #891818">WSPÓŁCZYNNIK SPRZEDAŻY</p>
-      </div>
-      <div id="analysis-container" class="scrollable">
-        <div class="product-placeholder">
-          <p>ABN/001</p>
-          <p>"Kubuś"</p>
-          <p>10</p>
-          <p>150</p>
-          <p>4500.00</p>
-          <p>1.5</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="lista_kontrahentów">
-    <p>Kontrahenci:</p>
-    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextClients" (input)="filterClients()">
-    <div id="client-container" class="scrollable">
-      <div class="client" *ngFor="let client of filteredClients">
-        <input type="checkbox" [id]="'client-' + client.id" name="client" [value]="client.name">
-        <label [for]="'product-' + client.id">{{ client.name }}</label>
-      </div>
-    </div>
-</div>
-</div>
+<app-header (componentSelected)="switchComponent($event)"></app-header>
+
+<ng-container [ngSwitch]="selectedComponent">
+  <app-analysis *ngSwitchCase="'A'"></app-analysis>
+  <app-bestsellers *ngSwitchCase="'B'"></app-bestsellers>
+  <app-alerts *ngSwitchCase="'C'"></app-alerts>
+</ng-container>
 </body>

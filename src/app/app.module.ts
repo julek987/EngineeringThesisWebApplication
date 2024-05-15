@@ -7,12 +7,16 @@ import {provideHttpClient} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import { AlertsComponent } from './alerts/alerts.component';
 import { HeaderComponent } from './header/header.component';
+import { AnalysisComponent } from './analysis/analysis.component';
+import { BestsellersComponent } from './bestsellers/bestsellers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AlertsComponent,
-    HeaderComponent
+    HeaderComponent,
+    AnalysisComponent,
+    BestsellersComponent
   ],
     imports: [
         BrowserModule,
