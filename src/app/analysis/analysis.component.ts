@@ -15,6 +15,13 @@ export class AnalysisComponent implements OnInit {
   searchTextClients: string = '';
   filteredProducts: Product[] = [];
   filteredClients: Client[] = [];
+  startDate: string = '';
+  endDate: string = '';
+  selectedStartDate: string = '';
+  selectedEndDate: string = '';
+  selectedProducts: string[] = [];
+  selectedClients: string[] = [];
+  fullModels: string[] = [];
 
   constructor(
     private warehouseService: WarehouseService,
@@ -31,8 +38,8 @@ export class AnalysisComponent implements OnInit {
   loadProducts() {
     this.warehouseService.getAllProducts('http://localhost:5001/products')
       .subscribe((response: { value: Product[] }) => {
-        this.products = this.groupProductsByPrefix(response.value);
-        this.filteredProducts = this.products;
+        this.products = response.value;
+        this.filteredProducts = this.groupProductsByPrefix(this.products);
       });
   }
 
@@ -45,7 +52,7 @@ export class AnalysisComponent implements OnInit {
   }
 
   filterProducts(): void {
-    this.filteredProducts = this.products.filter(product =>
+    this.filteredProducts = this.filteredProducts.filter(product =>
       product.code.toLowerCase().includes(this.searchTextProducts.toLowerCase())
     );
   }
@@ -70,5 +77,27 @@ export class AnalysisComponent implements OnInit {
       }
     });
     return Object.values(groupedProducts);
+  }
+
+  onProductSelect(product: Product): void {
+    const prefix = product.code;
+    this.fullModels = this.filteredProducts.filter(p => p.code.startsWith(prefix)).map(p => p.code);
+  }
+
+  onSubmit(): void {
+    this.selectedStartDate = this.startDate;
+    this.selectedEndDate = this.endDate;
+
+    const productElements = Array.from(document.querySelectorAll('input[name="product"]:checked')) as HTMLInputElement[];
+    this.selectedProducts = productElements.map(input => input.value);
+
+    const clientElements = Array.from(document.querySelectorAll('input[name="client"]:checked')) as HTMLInputElement[];
+    this.selectedClients = clientElements.map(input => input.value);
+
+    this.fullModels = [];
+    this.selectedProducts.forEach(prefix => {
+      const matchingProducts = this.products.filter(p => p.code.startsWith(prefix)).map(p => p.code);
+      this.fullModels.push(...matchingProducts);
+    });
   }
 }

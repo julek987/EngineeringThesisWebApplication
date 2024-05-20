@@ -12,7 +12,7 @@
     <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
     <div id="product-container" class="scrollable">
       <div class="product" *ngFor="let product of filteredProducts">
-        <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code">
+        <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code" (change)="onProductSelect(product)">
         <label [for]="'product-' + product.code">{{ product.code }}</label>
       </div>
     </div>
@@ -21,18 +21,17 @@
     <div class="datownik">
       <div class="data_początkowa">
         <p style="border: 2px solid #891818">Data początkowa:</p>
-        <input type="date"/>
+        <input type="date" [(ngModel)]="startDate"/>
       </div>
       <div class="data_końcowa">
         <p style="border: 2px solid #891818">Data końcowa:</p>
-        <input type="date"/>
+        <input type="date" [(ngModel)]="endDate"/>
       </div>
-      <button>Zatwierdź</button>
+      <button (click)="onSubmit()">Zatwierdź</button>
     </div>
     <div class="analiza_panel">
       <div class="analiza_wzór">
         <p style="border: 2px solid #891818">ZNAK</p>
-        <p style="border: 2px solid #891818">NAZWA</p>
         <p style="border: 2px solid #891818">STAN MAGAZYNOWY</p>
         <p style="border: 2px solid #891818">SPRZEDANYCH</p>
         <p style="border: 2px solid #891818">ZYSK</p>
@@ -48,6 +47,16 @@
           <p>1.5</p>
         </div>
       </div>
+      <div id="Results">
+        <p>Start date: {{selectedStartDate}}</p>
+        <p>End date: {{selectedEndDate}}</p>
+        <p>Selected Products: {{selectedProducts.join(', ')}}</p>
+        <p>Selected Clients: {{selectedClients.join(', ')}}</p>
+        <p>Full Models:</p>
+        <ul>
+          <li *ngFor="let model of fullModels">{{ model }}</li>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="lista_kontrahentów">
@@ -56,9 +65,10 @@
     <div id="client-container" class="scrollable">
       <div class="client" *ngFor="let client of filteredClients">
         <input type="checkbox" [id]="'client-' + client.id" name="client" [value]="client.name">
-        <label [for]="'product-' + client.id">{{ client.name }}</label>
+        <label [for]="'client-' + client.id">{{ client.name }}</label>
       </div>
     </div>
   </div>
 </div>
 </body>
+</html>
