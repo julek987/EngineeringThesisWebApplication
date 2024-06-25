@@ -24,6 +24,7 @@ export class AnalysisComponent implements OnInit {
   selectedClientIds: number[] = [];
   fullModels: string[] = [];
   today: string = '';
+  analysedModels: { code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: string }[] = [];
 
   constructor(
     private warehouseService: WarehouseService,
@@ -93,7 +94,14 @@ export class AnalysisComponent implements OnInit {
 
   onProductSelect(product: Product): void {
     const prefix = product.code;
-    this.fullModels = this.filteredProducts.filter(p => p.code.startsWith(prefix)).map(p => p.code);
+  }
+
+  private getSoldUnits(code: string): number {
+    return 1;
+  }
+
+  private getAnalysisMark(code: string): string {
+    return "1";
   }
 
   onSubmit(): void {
@@ -110,10 +118,25 @@ export class AnalysisComponent implements OnInit {
       .filter(client => this.selectedClientIds.includes(client.id))
       .map(client => client.name);
 
-    this.fullModels = [];
+    this.analysedModels = [];
+
     this.selectedProducts.forEach(prefix => {
-      const matchingProducts = this.products.filter(p => p.code.startsWith(prefix)).map(p => p.code);
-      this.fullModels.push(...matchingProducts);
+      const matchingProducts = this.products.filter(p => p.code.startsWith(prefix));
+
+      matchingProducts.forEach(product => {
+        this.warehouseService.getWarehouseQuantity("http://localhost:5001/warehouse?product=" + product.code + "&date=" + this.today).subscribe(response => {
+          const warehouseQuantity = response.value.quantity;
+        const soldUnits = this.getSoldUnits(product.code);
+        const analysisFactor = this.getAnalysisMark(product.code);
+
+        this.analysedModels.push({
+          code: product.code,
+          warehouseQuantity: warehouseQuantity,
+          soldUnits: soldUnits,
+          analysisFactor: analysisFactor
+        });
+      });
     });
+  });
   }
-}
+  }

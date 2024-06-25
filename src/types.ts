@@ -23,3 +23,13 @@ export interface AllClientsResponse {
   declaredType: string | null;
   statusCode: number | null;
 }
+
+export interface WarehouseQuantityResponse {
+  contentType: any;
+  serializerSettings: any;
+  statusCode: any;
+  value: {
+    quantity: number;
+  };
+}
+

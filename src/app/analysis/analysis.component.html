@@ -30,33 +30,13 @@
       <button (click)="onSubmit()">Zatwierdź</button>
     </div>
     <div class="analiza_panel">
-      <div class="analiza_wzór">
-        <p style="border: 2px solid #891818">ZNAK</p>
-        <p style="border: 2px solid #891818">STAN MAGAZYNOWY</p>
-        <p style="border: 2px solid #891818">SPRZEDANYCH</p>
-        <p style="border: 2px solid #891818">ZYSK</p>
-        <p style="border: 2px solid #891818">WSPÓŁCZYNNIK SPRZEDAŻY</p>
-      </div>
       <div id="analysis-container" class="scrollable">
-        <div class="product-placeholder">
-          <p>ABN/001</p>
-          <p>"Kubuś"</p>
-          <p>10</p>
-          <p>150</p>
-          <p>4500.00</p>
-          <p>1.5</p>
+        <div class="analysed-product" *ngFor="let analysedModel of analysedModels">
+          <p>Kod: {{ analysedModel.code }}</p>
+          <p>Stan magazynowy: {{ analysedModel.warehouseQuantity }}</p>
+          <p>Sprzedanych: {{ analysedModel.soldUnits }}</p>
+          <p>Ocena analizy: {{ analysedModel.analysisFactor }}</p>
         </div>
-      </div>
-      <div id="Results">
-        <p>Start date: {{selectedStartDate}}</p>
-        <p>End date: {{selectedEndDate}}</p>
-        <p>Selected Products: {{selectedProducts.join(', ')}}</p>
-        <p>Selected Clients: {{selectedClients.join(', ')}}</p>
-        <p>Selected Client IDs: {{selectedClientIds.join(', ')}}</p>
-        <p>Full Models:</p>
-        <ul>
-          <li *ngFor="let model of fullModels">{{ model }}</li>
-        </ul>
       </div>
     </div>
   </div>
