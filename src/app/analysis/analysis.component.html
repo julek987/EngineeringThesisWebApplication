@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="analiza">
-  <div class ="lista_produktów">
+  <div class="lista_produktów">
     <p>Produkty:</p>
     <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
     <div id="product-container" class="scrollable">
@@ -21,7 +21,7 @@
     <div class="datownik">
       <div class="data_początkowa">
         <p style="border: 2px solid #891818">Data początkowa:</p>
-        <input type="date" [(ngModel)]="startDate"/>
+        <input type="date" [(ngModel)]="startDate">
       </div>
       <div class="data_końcowa">
         <p style="border: 2px solid #891818">Data końcowa:</p>
@@ -52,6 +52,7 @@
         <p>End date: {{selectedEndDate}}</p>
         <p>Selected Products: {{selectedProducts.join(', ')}}</p>
         <p>Selected Clients: {{selectedClients.join(', ')}}</p>
+        <p>Selected Client IDs: {{selectedClientIds.join(', ')}}</p>
         <p>Full Models:</p>
         <ul>
           <li *ngFor="let model of fullModels">{{ model }}</li>
@@ -64,7 +65,7 @@
     <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextClients" (input)="filterClients()">
     <div id="client-container" class="scrollable">
       <div class="client" *ngFor="let client of filteredClients">
-        <input type="checkbox" [id]="'client-' + client.id" name="client" [value]="client.name">
+        <input type="checkbox" [id]="'client-' + client.id" name="client" [value]="client.id">
         <label [for]="'client-' + client.id">{{ client.name }}</label>
       </div>
     </div>

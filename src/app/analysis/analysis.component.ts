@@ -21,6 +21,7 @@ export class AnalysisComponent implements OnInit {
   selectedEndDate: string = '';
   selectedProducts: string[] = [];
   selectedClients: string[] = [];
+  selectedClientIds: number[] = [];
   fullModels: string[] = [];
   today: string = '';
 
@@ -103,7 +104,11 @@ export class AnalysisComponent implements OnInit {
     this.selectedProducts = productElements.map(input => input.value);
 
     const clientElements = Array.from(document.querySelectorAll('input[name="client"]:checked')) as HTMLInputElement[];
-    this.selectedClients = clientElements.map(input => input.value);
+    this.selectedClientIds = clientElements.map(input => Number(input.value));
+
+    this.selectedClients = this.clients
+      .filter(client => this.selectedClientIds.includes(client.id))
+      .map(client => client.name);
 
     this.fullModels = [];
     this.selectedProducts.forEach(prefix => {
