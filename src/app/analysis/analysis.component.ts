@@ -52,10 +52,15 @@ export class AnalysisComponent implements OnInit {
   }
 
   filterProducts(): void {
-    this.filteredProducts = this.filteredProducts.filter(product =>
-      product.code.toLowerCase().includes(this.searchTextProducts.toLowerCase())
-    );
+    if (this.searchTextProducts.trim() === '') {
+      this.filteredProducts = this.groupProductsByPrefix(this.products);
+    } else {
+      this.filteredProducts = this.groupProductsByPrefix(this.products).filter(product =>
+        product.code.toLowerCase().includes(this.searchTextProducts.toLowerCase())
+      );
+    }
   }
+
 
   filterClients(): void {
     this.filteredClients = this.clients.filter(client =>
