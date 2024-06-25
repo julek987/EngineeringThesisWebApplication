@@ -25,7 +25,7 @@
       </div>
       <div class="data_końcowa">
         <p style="border: 2px solid #891818">Data końcowa:</p>
-        <input type="date" [(ngModel)]="endDate"/>
+        <input type="date" id="endDate" [(ngModel)]="endDate" [max]="today">
       </div>
       <button (click)="onSubmit()">Zatwierdź</button>
     </div>

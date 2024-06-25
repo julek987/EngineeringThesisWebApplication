@@ -22,6 +22,7 @@ export class AnalysisComponent implements OnInit {
   selectedProducts: string[] = [];
   selectedClients: string[] = [];
   fullModels: string[] = [];
+  today: string = '';
 
   constructor(
     private warehouseService: WarehouseService,
@@ -33,6 +34,12 @@ export class AnalysisComponent implements OnInit {
       this.loadProducts();
       this.loadClients();
     });
+    this.setTodayDate();
+  }
+
+  setTodayDate() {
+    const today = new Date();
+    this.today = today.toISOString().split('T')[0];
   }
 
   loadProducts() {
@@ -60,7 +67,6 @@ export class AnalysisComponent implements OnInit {
       );
     }
   }
-
 
   filterClients(): void {
     this.filteredClients = this.clients.filter(client =>
