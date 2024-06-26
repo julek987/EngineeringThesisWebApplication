@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Client, Product } from "../../types";
 import { WarehouseService } from "../services/warehouse.service";
 import { ActivatedRoute } from '@angular/router';
+import { SalesService } from "../services/sales.service";
 
 @Component({
   selector: 'app-analysis',
@@ -28,6 +29,7 @@ export class AnalysisComponent implements OnInit {
 
   constructor(
     private warehouseService: WarehouseService,
+    private salesService: SalesService,
     private route: ActivatedRoute
   ) { }
 
@@ -96,15 +98,9 @@ export class AnalysisComponent implements OnInit {
     const prefix = product.code;
   }
 
-  private getSoldUnits(code: string): number {
-    return 1;
-  }
-
-  private getAnalysisMark(code: string): string {
-    return "1";
-  }
-
   onSubmit(): void {
+    console.log('Submit button clicked'); // Debug statement
+
     this.selectedStartDate = this.startDate;
     this.selectedEndDate = this.endDate;
 
@@ -124,19 +120,41 @@ export class AnalysisComponent implements OnInit {
       const matchingProducts = this.products.filter(p => p.code.startsWith(prefix));
 
       matchingProducts.forEach(product => {
-        this.warehouseService.getWarehouseQuantity("http://localhost:5001/warehouse?product=" + product.code + "&date=" + this.today).subscribe(response => {
-          const warehouseQuantity = response.value.quantity;
-        const soldUnits = this.getSoldUnits(product.code);
-        const analysisFactor = this.getAnalysisMark(product.code);
+        const body = {
+          clients: this.selectedClientIds.map(id => ({ id }))
+        };
+        console.log(body);
 
-        this.analysedModels.push({
-          code: product.code,
-          warehouseQuantity: warehouseQuantity,
-          soldUnits: soldUnits,
-          analysisFactor: analysisFactor
+        this.warehouseService.getWarehouseQuantity("http://localhost:5001/warehouse?product=" + product.code + "&date=" + this.today).subscribe(response => {
+          console.log('Warehouse response received'); // Debug statement
+          const warehouseQuantity = response.value.quantity;
+
+          this.salesService.getSalesHistory("http://localhost:5001/sales/history?product=" + product.code + "&from=" + this.startDate + "&to=" + this.endDate, body).subscribe(response => {
+            console.log('Sales history response received'); // Debug statement
+            const soldUnits = response.value;
+            const soldUnitsSum = Object.values(soldUnits).reduce((sum, value) => sum + value, 0);
+
+            const analysisFactor = this.getAnalysisMark(product.code);
+
+            this.analysedModels.push({
+              code: product.code,
+              warehouseQuantity: warehouseQuantity,
+              soldUnits: soldUnitsSum,
+              analysisFactor: analysisFactor
+            });
+
+            console.log('Analysed models updated', this.analysedModels); // Debug statement
+          }, error => {
+            console.error('Error fetching sales history', error); // Error handling
+          });
+        }, error => {
+          console.error('Error fetching warehouse quantity', error); // Error handling
         });
       });
     });
-  });
   }
+
+  private getAnalysisMark(code: string): string {
+    return "1";
   }
+}

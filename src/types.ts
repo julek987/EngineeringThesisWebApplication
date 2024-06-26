@@ -33,3 +33,11 @@ export interface WarehouseQuantityResponse {
   };
 }
 
+export interface SalesHistoryResponse {
+  contentType: string | null;
+  serializerSettings: string | null;
+  statusCode: number | null;
+  value: Record<string, number>;
+}
+
+
