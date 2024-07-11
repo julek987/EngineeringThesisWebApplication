@@ -3,6 +3,7 @@ import { Client, Product } from "../../types";
 import { WarehouseService } from "../services/warehouse.service";
 import { ActivatedRoute } from '@angular/router';
 import { SalesService } from "../services/sales.service";
+import {HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-analysis',
@@ -97,9 +98,8 @@ export class AnalysisComponent implements OnInit {
   onProductSelect(product: Product): void {
     const prefix = product.code;
   }
-
   onSubmit(): void {
-    console.log('Submit button clicked'); // Debug statement
+    console.log('Submit button clicked');
 
     this.selectedStartDate = this.startDate;
     this.selectedEndDate = this.endDate;
@@ -119,40 +119,58 @@ export class AnalysisComponent implements OnInit {
     this.selectedProducts.forEach(prefix => {
       const matchingProducts = this.products.filter(p => p.code.startsWith(prefix));
 
+      const body = {
+        clients: this.selectedClientIds.map(id => ({ id }))
+      };
+      console.log(body);
+
+      let hardcodedBody = {
+        clients: [
+          { id: 3302 },
+          { id: 3312 }
+        ]
+      };
+
       matchingProducts.forEach(product => {
-        const body = {
-          clients: this.selectedClientIds.map(id => ({ id }))
-        };
-        console.log(body);
+        this.warehouseService.getWarehouseQuantity(`http://localhost:5001/warehouse?product=${product.code}&date=${this.today}`).subscribe({
+          next: (response) => {
+            console.log('Warehouse response received');
+            const warehouseQuantity = response.value.quantity;
 
-        this.warehouseService.getWarehouseQuantity("http://localhost:5001/warehouse?product=" + product.code + "&date=" + this.today).subscribe(response => {
-          console.log('Warehouse response received'); // Debug statement
-          const warehouseQuantity = response.value.quantity;
+            this.salesService.getSalesHistory(`http://localhost:5001/sales/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`, hardcodedBody).subscribe({
+              next: (response) => {
+                console.log('Sales history response received');
+                const soldUnits = response.value;
+                const soldUnitsSum = Object.values(soldUnits).reduce((sum, value) => sum + value, 0);
 
-          this.salesService.getSalesHistory("http://localhost:5001/sales/history?product=" + product.code + "&from=" + this.startDate + "&to=" + this.endDate, body).subscribe(response => {
-            console.log('Sales history response received'); // Debug statement
-            const soldUnits = response.value;
-            const soldUnitsSum = Object.values(soldUnits).reduce((sum, value) => sum + value, 0);
+                const analysisFactor = this.getAnalysisMark(product.code);
 
-            const analysisFactor = this.getAnalysisMark(product.code);
-
-            this.analysedModels.push({
-              code: product.code,
-              warehouseQuantity: warehouseQuantity,
-              soldUnits: soldUnitsSum,
-              analysisFactor: analysisFactor
+                this.analysedModels.push({
+                  code: product.code,
+                  warehouseQuantity: warehouseQuantity,
+                  soldUnits: soldUnitsSum,
+                  analysisFactor: analysisFactor
+                });
+              },
+              error: (err) => {
+                console.error('Error in sales history response', err);
+              },
+              complete: () => {
+                console.log('Sales history request completed');
+              }
             });
-
-            console.log('Analysed models updated', this.analysedModels); // Debug statement
-          }, error => {
-            console.error('Error fetching sales history', error); // Error handling
-          });
-        }, error => {
-          console.error('Error fetching warehouse quantity', error); // Error handling
+          },
+          error: (err) => {
+            console.error('Error in warehouse quantity response', err);
+          },
+          complete: () => {
+            console.log('Warehouse quantity request completed');
+          }
         });
       });
     });
   }
+
 
   private getAnalysisMark(code: string): string {
     return "1";

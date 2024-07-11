@@ -40,4 +40,21 @@ export interface SalesHistoryResponse {
   value: Record<string, number>;
 }
 
+export interface Alert {
+  name: string;
+  products: Product[];
+  clients: Client[];
+  analysisPeriod: string;
+  leadTime: string;
+  criticalQuantity: number;
+}
+
+export interface AllAlertsResponse {
+  value: Alert[];
+  formatters: [] | null;
+  contentTypes: [] | null;
+  declaredType: string | null;
+  statusCode: number | null;
+}
+
 
