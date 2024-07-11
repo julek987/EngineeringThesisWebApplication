@@ -7,23 +7,15 @@
 </head>
 <body>
 <div class="alerty">
-  <div class ="lista_alertów">
-    <input type="text" placeholder="Szukaj..">
+  <div class="lista_alertów">
+    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterAlerts()">
     <div id="alert-container" class="scrollable">
-      <div class="alert">
-        <input type="checkbox" id="alert-1" name="alert" value="1">
-        <label for="alert-1">Alert 1</label>
-      </div>
-      <div class="alert">
-        <input type="checkbox" id="alert-2" name="alert" value="2">
-        <label for="alert-2">Alert 2</label>
-      </div>
-      <div class="alert">
-        <input type="checkbox" id="alert-3" name="alert" value="3">
-        <label for="alert-3">Alert 3</label>
+      <div class="alert" *ngFor="let alert of filteredAlerts">
+        <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected">
+        <label for="alert-{{alert.name}}">{{alert.name}}</label>
       </div>
     </div>
-    <button class="delete_button">Usuń zaznaczone</button>
+    <button class="delete_button" (click)="deleteSelectedAlerts()">Usuń zaznaczone</button>
     <button class="add_button">Stwórz nowy alert</button>
   </div>
   <div class="alert_modification">

@@ -15,4 +15,8 @@ export class AlertsService {
   getAllAlerts = (url: string): Observable<AllAlertsResponse> => {
     return this.apiService.get(url);
   }
+
+  deleteAlert = (url: string): Observable<AllAlertsResponse> => {
+    return this.apiService.delete(url);
+  }
 }

@@ -47,7 +47,9 @@ export interface Alert {
   analysisPeriod: string;
   leadTime: string;
   criticalQuantity: number;
+  selected?: boolean;
 }
+
 
 export interface AllAlertsResponse {
   value: Alert[];
