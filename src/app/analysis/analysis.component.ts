@@ -3,7 +3,6 @@ import { Client, Product } from "../../types";
 import { WarehouseService } from "../services/warehouse.service";
 import { ActivatedRoute } from '@angular/router';
 import { SalesService } from "../services/sales.service";
-import {HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-analysis',
@@ -130,7 +129,7 @@ export class AnalysisComponent implements OnInit {
             console.log('Warehouse response received');
             const warehouseQuantity = response.value.quantity;
 
-            this.salesService.getSalesHistory(`http://localhost:5001/sales/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`,body).subscribe({
+            this.salesService.getSalesHistory(`http://localhost:5001/sales/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`, body).subscribe({
               next: (response) => {
                 console.log('Sales history response received');
                 const soldUnits = response.value;
@@ -163,7 +162,6 @@ export class AnalysisComponent implements OnInit {
       });
     });
   }
-
 
   private getAnalysisMark(code: string): string {
     return "1";
