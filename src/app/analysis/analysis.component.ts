@@ -4,7 +4,6 @@ import { WarehouseService } from "../services/warehouse.service";
 import { ActivatedRoute } from '@angular/router';
 import { SalesService } from "../services/sales.service";
 import {AnalyticalService} from "../services/analytical.service";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-analysis',
@@ -20,12 +19,8 @@ export class AnalysisComponent implements OnInit {
   filteredClients: Client[] = [];
   startDate: string = '';
   endDate: string = '';
-  selectedStartDate: string = '';
-  selectedEndDate: string = '';
   selectedProducts: string[] = [];
-  selectedClients: string[] = [];
   selectedClientIds: number[] = [];
-  fullModels: string[] = [];
   today: string = '';
   analysedModels: { code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: number }[] = [];
 
@@ -128,12 +123,6 @@ export class AnalysisComponent implements OnInit {
       for (const product of matchingProducts) {
         const clientsIdsBody = { clients: this.selectedClientIds.map(id => ({ id })) };
 
-        // Create body with current product code
-        const productBody = { products: [{ code: product.code }] };
-
-        // Combine clients and product body
-        const SalesDynamicBody = Object.assign({}, clientsIdsBody, productBody);
-
         // Perform API requests
         this.warehouseService.getWarehouseQuantity(`http://localhost:5001/warehouse?product=${product.code}&date=${this.today}`).subscribe({
           next: (warehouseResponse) => {
@@ -143,6 +132,12 @@ export class AnalysisComponent implements OnInit {
               next: (salesResponse) => {
                 const soldUnits = salesResponse.value;
                 const soldUnitsSum = Object.values(soldUnits).reduce((sum, value) => sum + value, 0);
+
+                // Create body with current product code
+                const productBody = { products: [{ code: product.code }] };
+
+                // Combine clients and product body
+                const SalesDynamicBody = Object.assign({}, clientsIdsBody, productBody);
 
                 this.analyticalService.getAnalyticSalesDynamic(`http://localhost:5001/analytic?analytic=SalesDynamic&from=${this.startDate}&to=${this.endDate}`, SalesDynamicBody).subscribe({
                   next: (analysisResponse) => {
@@ -154,18 +149,39 @@ export class AnalysisComponent implements OnInit {
                       analysisFactor: analysisFactor
                     });
                   },
-                  error: (err) => {
-                    console.error('Error in analytical service response', err);
+                  error: (analysisErr) => {
+                    console.error('Error in analytical service response', analysisErr);
+                    // If there's an error in analytical service response, push model with analysisFactor 0
+                    this.analysedModels.push({
+                      code: product.code,
+                      warehouseQuantity: warehouseQuantity,
+                      soldUnits: soldUnitsSum,
+                      analysisFactor: 0 // Set analysisFactor to 0
+                    });
                   }
                 });
               },
-              error: (err) => {
-                console.error('Error in sales history response', err);
+              error: (salesErr) => {
+                console.error('Error in sales history response', salesErr);
+                // If there's an error in sales history response, push model with soldUnits 0 and keep the rest normal
+                this.analysedModels.push({
+                  code: product.code,
+                  warehouseQuantity: warehouseQuantity,
+                  soldUnits: 0, // Set soldUnits to 0
+                  analysisFactor: 0 // Set analysisFactor to 0
+                });
               }
             });
           },
-          error: (err) => {
-            console.error('Error in warehouse quantity response', err);
+          error: (warehouseErr) => {
+            console.error('Error in warehouse quantity response', warehouseErr);
+            // If there's an error in warehouse quantity response, push model with warehouseQuantity 0 and keep the rest normal
+            this.analysedModels.push({
+              code: product.code,
+              warehouseQuantity: 0, // Set warehouseQuantity to 0
+              soldUnits: 0, // Set soldUnits to 0
+              analysisFactor: 0 // Set analysisFactor to 0
+            });
           }
         });
       }
