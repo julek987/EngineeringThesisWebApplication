@@ -50,13 +50,22 @@ export interface Alert {
   selected?: boolean;
 }
 
-
 export interface AllAlertsResponse {
   value: Alert[];
   formatters: [] | null;
   contentTypes: [] | null;
   declaredType: string | null;
   statusCode: number | null;
+}
+
+export interface SalesDynamicResponse {
+  contentType: string | null;
+  serializerSettings: string | null;
+  statusCode: number | null;
+  value: {
+    value: number;
+    name: string;
+  };
 }
 
 

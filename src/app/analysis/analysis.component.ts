@@ -3,6 +3,8 @@ import { Client, Product } from "../../types";
 import { WarehouseService } from "../services/warehouse.service";
 import { ActivatedRoute } from '@angular/router';
 import { SalesService } from "../services/sales.service";
+import {AnalyticalService} from "../services/analytical.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-analysis',
@@ -25,13 +27,15 @@ export class AnalysisComponent implements OnInit {
   selectedClientIds: number[] = [];
   fullModels: string[] = [];
   today: string = '';
-  analysedModels: { code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: string }[] = [];
+  analysedModels: { code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: number }[] = [];
 
   constructor(
     private warehouseService: WarehouseService,
     private salesService: SalesService,
+    private analyticalService: AnalyticalService,
     private route: ActivatedRoute
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -115,38 +119,57 @@ export class AnalysisComponent implements OnInit {
 
     this.analysedModels = [];
 
-    this.selectedProducts.forEach(prefix => {
+    // Iterate over each selected product prefix
+    for (const prefix of this.selectedProducts) {
+      // Filter products that start with the current prefix
       const matchingProducts = this.products.filter(p => p.code.startsWith(prefix));
-      const body = { clients: this.selectedClientIds.map(id => ({ id })) };
 
-      matchingProducts.forEach(product => {
+      // Iterate over each matching product (size)
+      for (const product of matchingProducts) {
+        const clientsIdsBody = { clients: this.selectedClientIds.map(id => ({ id })) };
+
+        // Create body with current product code
+        const productBody = { products: [{ code: product.code }] };
+
+        // Combine clients and product body
+        const SalesDynamicBody = Object.assign({}, clientsIdsBody, productBody);
+
+        // Perform API requests
         this.warehouseService.getWarehouseQuantity(`http://localhost:5001/warehouse?product=${product.code}&date=${this.today}`).subscribe({
-          next: (response) => {
-            const warehouseQuantity = response.value.quantity;
+          next: (warehouseResponse) => {
+            const warehouseQuantity = warehouseResponse.value.quantity;
 
-            this.salesService.getSalesHistory(`http://localhost:5001/sales/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`, body).subscribe({
-              next: (response) => {
-                const soldUnits = response.value;
+            this.salesService.getSalesHistory(`http://localhost:5001/sales/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`, clientsIdsBody).subscribe({
+              next: (salesResponse) => {
+                const soldUnits = salesResponse.value;
                 const soldUnitsSum = Object.values(soldUnits).reduce((sum, value) => sum + value, 0);
-                const analysisFactor = this.getAnalysisMark(product.code);
 
-                this.analysedModels.push({
-                  code: product.code,
-                  warehouseQuantity: warehouseQuantity,
-                  soldUnits: soldUnitsSum,
-                  analysisFactor: analysisFactor
+                this.analyticalService.getAnalyticSalesDynamic(`http://localhost:5001/analytic?analytic=SalesDynamic&from=${this.startDate}&to=${this.endDate}`, SalesDynamicBody).subscribe({
+                  next: (analysisResponse) => {
+                    const analysisFactor = analysisResponse.value.value;
+                    this.analysedModels.push({
+                      code: product.code,
+                      warehouseQuantity: warehouseQuantity,
+                      soldUnits: soldUnitsSum,
+                      analysisFactor: analysisFactor
+                    });
+                  },
+                  error: (err) => {
+                    console.error('Error in analytical service response', err);
+                  }
                 });
               },
-              error: (err) => console.error('Error in sales history response', err)
+              error: (err) => {
+                console.error('Error in sales history response', err);
+              }
             });
           },
-          error: (err) => console.error('Error in warehouse quantity response', err)
+          error: (err) => {
+            console.error('Error in warehouse quantity response', err);
+          }
         });
-      });
-    });
+      }
+    }
   }
 
-  private getAnalysisMark(code: string): string {
-    return "1";
-  }
 }
