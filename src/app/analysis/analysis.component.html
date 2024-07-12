@@ -11,9 +11,9 @@
     <p>Produkty:</p>
     <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
     <div id="product-container" class="scrollable">
-      <div class="product" *ngFor="let product of filteredProducts">
-        <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code" (change)="onProductSelect(product)">
-        <label [for]="'product-' + product.code">{{ product.code }}</label>
+      <div *ngFor="let product of filteredProducts">
+        <input type="checkbox" [value]="product.code" [checked]="selectedProducts.includes(product.code)" (change)="onProductSelect(product.code, $event)">
+        {{ product.code }}
       </div>
     </div>
   </div>
@@ -44,9 +44,9 @@
     <p>Kontrahenci:</p>
     <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextClients" (input)="filterClients()">
     <div id="client-container" class="scrollable">
-      <div class="client" *ngFor="let client of filteredClients">
-        <input type="checkbox" [id]="'client-' + client.id" name="client" [value]="client.id">
-        <label [for]="'client-' + client.id">{{ client.name }}</label>
+      <div *ngFor="let client of filteredClients">
+        <input type="checkbox" [value]="client.id" [checked]="selectedClientIds.includes(client.id)" (change)="onClientSelect(client.id, $event)">
+        {{ client.name }}
       </div>
     </div>
   </div>

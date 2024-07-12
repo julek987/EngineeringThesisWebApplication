@@ -94,47 +94,40 @@ export class AnalysisComponent implements OnInit {
     return Object.values(groupedProducts);
   }
 
-  onProductSelect(product: Product): void {
-    const prefix = product.code;
+  onProductSelect(product: string, event: any): void {
+    if (event.target.checked) {
+      this.selectedProducts.push(product);
+    } else {
+      this.selectedProducts = this.selectedProducts.filter(p => p !== product);
+    }
   }
+
+  onClientSelect(clientId: number, event: any): void {
+    if (event.target.checked) {
+      this.selectedClientIds.push(clientId);
+    } else {
+      this.selectedClientIds = this.selectedClientIds.filter(id => id !== clientId);
+    }
+  }
+
   onSubmit(): void {
     console.log('Submit button clicked');
-
-    this.selectedStartDate = this.startDate;
-    this.selectedEndDate = this.endDate;
-
-    const productElements = Array.from(document.querySelectorAll('input[name="product"]:checked')) as HTMLInputElement[];
-    this.selectedProducts = productElements.map(input => input.value);
-
-    const clientElements = Array.from(document.querySelectorAll('input[name="client"]:checked')) as HTMLInputElement[];
-    this.selectedClientIds = clientElements.map(input => Number(input.value));
-
-    this.selectedClients = this.clients
-      .filter(client => this.selectedClientIds.includes(client.id))
-      .map(client => client.name);
 
     this.analysedModels = [];
 
     this.selectedProducts.forEach(prefix => {
       const matchingProducts = this.products.filter(p => p.code.startsWith(prefix));
-
-      const body = {
-        clients: this.selectedClientIds.map(id => ({ id }))
-      };
-      console.log(body);
+      const body = { clients: this.selectedClientIds.map(id => ({ id })) };
 
       matchingProducts.forEach(product => {
         this.warehouseService.getWarehouseQuantity(`http://localhost:5001/warehouse?product=${product.code}&date=${this.today}`).subscribe({
           next: (response) => {
-            console.log('Warehouse response received');
             const warehouseQuantity = response.value.quantity;
 
             this.salesService.getSalesHistory(`http://localhost:5001/sales/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`, body).subscribe({
               next: (response) => {
-                console.log('Sales history response received');
                 const soldUnits = response.value;
                 const soldUnitsSum = Object.values(soldUnits).reduce((sum, value) => sum + value, 0);
-
                 const analysisFactor = this.getAnalysisMark(product.code);
 
                 this.analysedModels.push({
@@ -144,20 +137,10 @@ export class AnalysisComponent implements OnInit {
                   analysisFactor: analysisFactor
                 });
               },
-              error: (err) => {
-                console.error('Error in sales history response', err);
-              },
-              complete: () => {
-                console.log('Sales history request completed');
-              }
+              error: (err) => console.error('Error in sales history response', err)
             });
           },
-          error: (err) => {
-            console.error('Error in warehouse quantity response', err);
-          },
-          complete: () => {
-            console.log('Warehouse quantity request completed');
-          }
+          error: (err) => console.error('Error in warehouse quantity response', err)
         });
       });
     });
