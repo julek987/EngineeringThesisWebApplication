@@ -124,20 +124,13 @@ export class AnalysisComponent implements OnInit {
       };
       console.log(body);
 
-      let hardcodedBody = {
-        clients: [
-          { id: 3302 },
-          { id: 3312 }
-        ]
-      };
-
       matchingProducts.forEach(product => {
         this.warehouseService.getWarehouseQuantity(`http://localhost:5001/warehouse?product=${product.code}&date=${this.today}`).subscribe({
           next: (response) => {
             console.log('Warehouse response received');
             const warehouseQuantity = response.value.quantity;
 
-            this.salesService.getSalesHistory(`http://localhost:5001/sales/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`, hardcodedBody).subscribe({
+            this.salesService.getSalesHistory(`http://localhost:5001/sales/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`,body).subscribe({
               next: (response) => {
                 console.log('Sales history response received');
                 const soldUnits = response.value;
