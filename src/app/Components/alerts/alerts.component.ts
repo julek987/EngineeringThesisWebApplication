@@ -119,4 +119,22 @@ export class AlertsComponent implements OnInit {
         }
       });
   }
+
+
+  updateAlertClicked(): void {
+    const selectedAlerts = this.filteredAlerts.filter(alert => alert.selected);
+
+    if (selectedAlerts.length === 0) {
+      console.warn('No alerts selected for update.');
+      return;
+    }
+
+    if (selectedAlerts.length > 1) {
+      console.warn('Please select only one alert for update.');
+      return;
+    }
+
+    let selectedAlertForUpdate = selectedAlerts[0];
+    console.log(selectedAlertForUpdate);
+  }
 }

@@ -16,9 +16,6 @@ button{
   padding: 10px;
 }
 .lista_alertów{
-  display: grid;
-  justify-content: center;
-  align-items: center;
   height: 300px;
   padding: 10px;
   margin-top: 25px;

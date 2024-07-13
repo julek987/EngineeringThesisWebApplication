@@ -17,35 +17,37 @@
     </div>
     <button class="delete_button" (click)="deleteSelectedAlertsClicked()">Usuń zaznaczone</button>
     <div>
+      <button class="update_button" (click)="updateAlertClicked()">Modyfikuj alert</button>
+    </div>
+  </div>
+  <div class="alert_modification">
+    <div class="alert_input">
+      <p>Nazwa alertu:</p>
+      <input type="text" placeholder="CzapeczkiKubuś30DNI" #alertNameInput>
+    </div>
+    <div class="alert_input">
+      <p>Znak produktu:</p>
+      <input type="text" placeholder="ABN-3431/MOT" #productCodeInput>
+    </div>
+    <div class="alert_input">
+      <p>Ilość graniczna:</p>
+      <input type="text" placeholder="100" #criticalQuantity>
+    </div>
+    <div class="alert_input">
+      <p>Dni przed wyczerpaniem:</p>
+      <input type="text" placeholder="45" #leadTimeInDays>
+    </div>
+    <div class="alert_input">
+      <p>Czas do analizy:</p>
+      <input type="text" placeholder="120" #analysisPeriodInDays>
+      <p>dni</p>
+    </div>
+    <div>
       <button class="add_button" (click)="addNewAlertClicked()">Stwórz nowy alert</button>
     </div>
-    <div class="alert_modification">
-      <div class="alert_input">
-        <p>Nazwa alertu:</p>
-        <input type="text" placeholder="CzapeczkiKubuś30DNI" #alertNameInput>
-      </div>
-      <div class="alert_input">
-        <p>Znak produktu:</p>
-        <input type="text" placeholder="ABN-3431/MOT" #productCodeInput>
-      </div>
-      <div class="alert_input">
-        <p>Ilość graniczna:</p>
-        <input type="text" placeholder="100" #criticalQuantity>
-      </div>
-      <div class="alert_input">
-        <p>Dni przed wyczerpaniem:</p>
-        <input type="text" placeholder="45" #leadTimeInDays>
-      </div>
-      <div class="alert_input">
-        <p>Czas do analizy:</p>
-        <input type="text" placeholder="120" #analysisPeriodInDays>
-        <p>dni</p>
-      </div>
-    </div>
-    <div class="lista_kontrahentów">
-      <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
-    </div>
-
+  </div>
+  <div class="lista_kontrahentów">
+    <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
   </div>
 </div>
 </body>

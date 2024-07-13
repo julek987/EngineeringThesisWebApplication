@@ -24,4 +24,8 @@ export class AlertsService {
   addNewAlert = (url: string, body: any, headers?: HttpHeaders): Observable<AnyCatcher> => {
     return this.apiService.post(url, body, headers);
   }
+
+  updateAlert = (url: string, body: any, headers?: HttpHeaders): Observable<AnyCatcher> => {
+    return this.apiService.post(url, body, headers);
+  }
 }
