@@ -19,8 +19,7 @@ export class AnalysisComponent implements OnInit {
   selectedProducts: string[] = [];
   today: string = '';
   analysedModels: { code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: number }[] = [];
-
-  selectedClientIds: number[] = []; // Move client-related properties to ClientListComponent
+  selectedClientIds: number[] = [];
 
   constructor(
     private warehouseService: WarehouseService,
@@ -81,6 +80,10 @@ export class AnalysisComponent implements OnInit {
     } else {
       this.selectedProducts = this.selectedProducts.filter(p => p !== product);
     }
+  }
+
+  onSelectedClientsChange(selectedClientIds: number[]): void {
+    this.selectedClientIds = selectedClientIds;
   }
 
   onSubmit(): void {

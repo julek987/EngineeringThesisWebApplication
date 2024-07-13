@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Client } from '../../types';
 import { WarehouseService } from '../services/warehouse.service';
 
@@ -12,6 +12,8 @@ export class ClientListComponent implements OnInit {
   filteredClients: Client[] = [];
   searchTextClients: string = '';
   selectedClientIds: number[] = [];
+
+  @Output() selectedClientsChange = new EventEmitter<number[]>();
 
   constructor(private warehouseService: WarehouseService) {}
 
@@ -39,5 +41,8 @@ export class ClientListComponent implements OnInit {
     } else {
       this.selectedClientIds = this.selectedClientIds.filter(id => id !== clientId);
     }
+
+    // Emit selected client IDs to parent component
+    this.selectedClientsChange.emit(this.selectedClientIds);
   }
 }

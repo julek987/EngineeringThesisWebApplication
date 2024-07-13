@@ -41,7 +41,7 @@
     </div>
   </div>
   <div class="lista_kontrahentów">
-    <app-client-list></app-client-list>
+    <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
   </div>
 </div>
 </body>
