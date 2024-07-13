@@ -3,6 +3,7 @@ import {ApiService} from "./api.service";
 import {HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {AllAlertsResponse, AllProductsResponse, SalesHistoryResponse} from "../../types";
+import {AnyCatcher} from "rxjs/internal/AnyCatcher";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,9 @@ export class AlertsService {
     return this.apiService.get(url);
   }
 
-  deleteAlert = (url: string): Observable<AllAlertsResponse> => {
+  deleteAlert = (url: string): Observable<AnyCatcher> => {
     return this.apiService.delete(url);
   }
+
+
 }

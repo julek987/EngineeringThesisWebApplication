@@ -9,6 +9,7 @@ import { AlertsComponent } from './alerts/alerts.component';
 import { HeaderComponent } from './header/header.component';
 import { AnalysisComponent } from './analysis/analysis.component';
 import { BestsellersComponent } from './bestsellers/bestsellers.component';
+import { ClientListComponent } from './client-list/client-list.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { BestsellersComponent } from './bestsellers/bestsellers.component';
     AlertsComponent,
     HeaderComponent,
     AnalysisComponent,
-    BestsellersComponent
+    BestsellersComponent,
+    ClientListComponent
   ],
     imports: [
         BrowserModule,

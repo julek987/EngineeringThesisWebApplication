@@ -3,7 +3,7 @@ import { Client, Product } from "../../types";
 import { WarehouseService } from "../services/warehouse.service";
 import { ActivatedRoute } from '@angular/router';
 import { SalesService } from "../services/sales.service";
-import {AnalyticalService} from "../services/analytical.service";
+import { AnalyticalService } from "../services/analytical.service";
 
 @Component({
   selector: 'app-analysis',
@@ -12,30 +12,26 @@ import {AnalyticalService} from "../services/analytical.service";
 })
 export class AnalysisComponent implements OnInit {
   products: Product[] = [];
-  clients: Client[] = [];
-  searchTextProducts: string = '';
-  searchTextClients: string = '';
   filteredProducts: Product[] = [];
-  filteredClients: Client[] = [];
+  searchTextProducts: string = '';
   startDate: string = '';
   endDate: string = '';
   selectedProducts: string[] = [];
-  selectedClientIds: number[] = [];
   today: string = '';
   analysedModels: { code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: number }[] = [];
+
+  selectedClientIds: number[] = []; // Move client-related properties to ClientListComponent
 
   constructor(
     private warehouseService: WarehouseService,
     private salesService: SalesService,
     private analyticalService: AnalyticalService,
     private route: ActivatedRoute
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.loadProducts();
-      this.loadClients();
     });
     this.setTodayDate();
   }
@@ -53,14 +49,6 @@ export class AnalysisComponent implements OnInit {
       });
   }
 
-  loadClients() {
-    this.warehouseService.getAllClients('http://localhost:5001/clients')
-      .subscribe((response: { value: Client[] }) => {
-        this.clients = response.value;
-        this.filteredClients = this.clients;
-      });
-  }
-
   filterProducts(): void {
     if (this.searchTextProducts.trim() === '') {
       this.filteredProducts = this.groupProductsByPrefix(this.products);
@@ -69,12 +57,6 @@ export class AnalysisComponent implements OnInit {
         product.code.toLowerCase().includes(this.searchTextProducts.toLowerCase())
       );
     }
-  }
-
-  filterClients(): void {
-    this.filteredClients = this.clients.filter(client =>
-      client.name.toLowerCase().includes(this.searchTextClients.toLowerCase())
-    );
   }
 
   groupProductsByPrefix(products: Product[]): Product[] {
@@ -98,14 +80,6 @@ export class AnalysisComponent implements OnInit {
       this.selectedProducts.push(product);
     } else {
       this.selectedProducts = this.selectedProducts.filter(p => p !== product);
-    }
-  }
-
-  onClientSelect(clientId: number, event: any): void {
-    if (event.target.checked) {
-      this.selectedClientIds.push(clientId);
-    } else {
-      this.selectedClientIds = this.selectedClientIds.filter(id => id !== clientId);
     }
   }
 
@@ -225,5 +199,4 @@ export class AnalysisComponent implements OnInit {
     // Start processing the first prefix
     processProductsSequentially(0);
   }
-
 }
