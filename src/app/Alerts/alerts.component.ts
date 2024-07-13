@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AlertsService } from '../services/alerts.service';
+import {WarehouseService} from "../services/warehouse.service";
 import { ActivatedRoute } from '@angular/router';
-import { Alert } from '../../types';
+import {Alert, Product} from '../../types';
 
 @Component({
   selector: 'app-alerts',
@@ -19,16 +20,26 @@ export class AlertsComponent implements OnInit {
   searchText: string = '';
   filteredAlerts: Alert[] = [];
   selectedClientIds: number[] = [];
+  products: Product[] = [];
 
   constructor(
     private alertsService: AlertsService,
+    private warehouseService: WarehouseService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.loadAlerts();
+      this.loadProducts();
     });
+  }
+
+  loadProducts(): void{
+    this.warehouseService.getAllProducts('http://localhost:5001/products')
+      .subscribe((response: { value: Product[] }) => {
+        this.products = response.value;
+  });
   }
 
   loadAlerts(): void {
@@ -80,7 +91,7 @@ export class AlertsComponent implements OnInit {
 
   addNewAlertClicked(): void {
     const alertName = this.alertNameInput.nativeElement.value;
-    const productSign = this.productCodeInput.nativeElement.value;
+    const productCode = this.productCodeInput.nativeElement.value;
     const thresholdQuantity = this.criticalQuantity.nativeElement.value;
     const daysBeforeExhaustion = this.leadTimeInDays.nativeElement.value;
     const analysisTime = this.analysisPeriodInDays.nativeElement.value;
@@ -88,11 +99,34 @@ export class AlertsComponent implements OnInit {
 
     console.log('New alert data:', {
       alertName,
-      productSign,
+      productCode,
       thresholdQuantity,
       daysBeforeExhaustion,
       analysisTime,
       selectedClientsIds
     });
+
+    const matchingProducts = this.products.filter(p => p.code.startsWith(productCode))
+      .map(p => ({ code: p.code }));
+
+    const clientsIdsBody = { clients: this.selectedClientIds.map(id => ({ id })) };
+
+    const newAlertBody = {
+      clients: clientsIdsBody.clients,
+      products: matchingProducts
+    };
+
+    this.alertsService.addNewAlert("http://localhost:5001/createalert?name=" + alertName +
+      "&analysisPeriodInDays=" + analysisTime + "&leadTimeInDays=" + daysBeforeExhaustion +
+      "&criticalQuantity=" + thresholdQuantity, newAlertBody)
+      .subscribe({
+        next: (response: any) => {
+          console.log('New alert added successfully:', response);
+          this.loadAlerts();
+        },
+        error: (error) => {
+          console.error('Error adding new alert:', error);
+        }
+      });
   }
 }

@@ -21,5 +21,7 @@ export class AlertsService {
     return this.apiService.delete(url);
   }
 
-
+  addNewAlert = (url: string, body: any, headers?: HttpHeaders): Observable<AnyCatcher> => {
+    return this.apiService.post(url, body, headers);
+  }
 }
