@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AlertsService } from '../services/alerts.service';
-import {WarehouseService} from "../services/warehouse.service";
+import { AlertsService } from '../../services/Alerts/alerts.service';
+import {WarehouseService} from "../../services/Warehouse/warehouse.service";
 import { ActivatedRoute } from '@angular/router';
-import {Alert, Product} from '../../types';
+import {Alert, Product} from '../../../types';
 
 @Component({
   selector: 'app-alerts',

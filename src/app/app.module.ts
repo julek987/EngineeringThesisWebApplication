@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import {provideHttpClient} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import { AlertsComponent } from './alerts/alerts.component';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './Components/header/header.component';
 import { AnalysisComponent } from './analysis/analysis.component';
 import { BestsellersComponent } from './bestsellers/bestsellers.component';
 import { ClientListComponent } from './client-list/client-list.component';

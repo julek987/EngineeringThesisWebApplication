@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {ApiService} from "./api.service";
+import {ApiService} from "../api.service";
 import {HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {AllAlertsResponse, AllProductsResponse, SalesHistoryResponse} from "../../types";
+import {AllAlertsResponse, AllProductsResponse, SalesHistoryResponse} from "../../../types";
 import {AnyCatcher} from "rxjs/internal/AnyCatcher";
 
 @Injectable({

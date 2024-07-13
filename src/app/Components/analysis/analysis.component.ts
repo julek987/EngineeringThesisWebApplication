@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Client, Product } from "../../types";
-import { WarehouseService } from "../services/warehouse.service";
+import { Product } from "../../../types";
+import { WarehouseService } from "../../services/Warehouse/warehouse.service";
 import { ActivatedRoute } from '@angular/router';
-import { SalesService } from "../services/sales.service";
-import { AnalyticalService } from "../services/analytical.service";
+import { SalesService } from "../../services/Sales/sales.service";
+import { AnalyticalService } from "../../services/Analytics/analytical.service";
 
 @Component({
   selector: 'app-analysis',

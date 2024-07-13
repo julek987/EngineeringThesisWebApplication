@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {ApiService} from "./api.service";
+import {ApiService} from "../api.service";
 import {Observable} from "rxjs";
-import {AllProductsResponse, SalesHistoryResponse} from "../../types";
+import {AllProductsResponse, SalesHistoryResponse} from "../../../types";
 import {HttpHeaders} from "@angular/common/http";
 
 @Injectable({
