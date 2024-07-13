@@ -18,6 +18,7 @@ export class AlertsComponent implements OnInit {
   alerts: Alert[] = [];
   searchText: string = '';
   filteredAlerts: Alert[] = [];
+  selectedClientIds: number[] = [];
 
   constructor(
     private alertsService: AlertsService,
@@ -54,6 +55,10 @@ export class AlertsComponent implements OnInit {
     );
   }
 
+  onSelectedClientsChange(selectedClientIds: number[]): void {
+    this.selectedClientIds = selectedClientIds;
+  }
+
   deleteSelectedAlertsClicked(): void {
     const selectedAlerts = this.filteredAlerts.filter(alert => alert.selected);
 
@@ -79,13 +84,15 @@ export class AlertsComponent implements OnInit {
     const thresholdQuantity = this.criticalQuantity.nativeElement.value;
     const daysBeforeExhaustion = this.leadTimeInDays.nativeElement.value;
     const analysisTime = this.analysisPeriodInDays.nativeElement.value;
+    const selectedClientsIds = this.selectedClientIds;
 
     console.log('New alert data:', {
       alertName,
       productSign,
       thresholdQuantity,
       daysBeforeExhaustion,
-      analysisTime
+      analysisTime,
+      selectedClientsIds
     });
   }
 }

@@ -1,3 +1,5 @@
+
+<div class="lista_kontrahentów">
 <p>Kontrahenci:</p>
 <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextClients" (input)="filterClients()">
 <div id="client-container" class="scrollable">
@@ -5,4 +7,5 @@
     <input type="checkbox" [value]="client.id" [checked]="selectedClientIds.includes(client.id)" (change)="onClientSelect(client.id, $event)">
     {{ client.name }}
   </div>
+</div>
 </div>

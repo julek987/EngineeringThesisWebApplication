@@ -42,16 +42,9 @@
         <p>dni</p>
       </div>
     </div>
-<!--    <div class="lista_kontrahentów">-->
-<!--      <p>Kontrahenci:</p>-->
-<!--      <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextClients" (input)="filterClients()">-->
-<!--      <div id="client-container" class="scrollable">-->
-<!--        <div *ngFor="let client of filteredClients">-->
-<!--          <input type="checkbox" [value]="client.id" [checked]="selectedClientIds.includes(client.id)" (change)="onClientSelect(client.id, $event)">-->
-<!--          {{ client.name }}-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <div class="lista_kontrahentów">
+      <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
+    </div>
 
   </div>
 </div>
