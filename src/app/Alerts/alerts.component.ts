@@ -95,16 +95,6 @@ export class AlertsComponent implements OnInit {
     const thresholdQuantity = this.criticalQuantity.nativeElement.value;
     const daysBeforeExhaustion = this.leadTimeInDays.nativeElement.value;
     const analysisTime = this.analysisPeriodInDays.nativeElement.value;
-    const selectedClientsIds = this.selectedClientIds;
-
-    console.log('New alert data:', {
-      alertName,
-      productCode,
-      thresholdQuantity,
-      daysBeforeExhaustion,
-      analysisTime,
-      selectedClientsIds
-    });
 
     const matchingProducts = this.products.filter(p => p.code.startsWith(productCode))
       .map(p => ({ code: p.code }));
