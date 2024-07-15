@@ -11,14 +11,11 @@
     <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterAlerts()">
     <div id="alert-container" class="scrollable">
       <div class="alert" *ngFor="let alert of filteredAlerts">
-        <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected" (change)="updateAlertClicked()">
+        <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected" (change)="alertBoxChecked()">
         <label for="alert-{{alert.name}}">{{alert.name}}</label>
       </div>
     </div>
     <button class="delete_button" (click)="deleteSelectedAlertsClicked()">Usuń zaznaczone</button>
-    <div>
-      <button class="update_button" (click)="updateAlertClicked()">Modyfikuj alert</button>
-    </div>
   </div>
   <div class="alert_modification">
     <div class="alert_info">
@@ -35,16 +32,18 @@
     </div>
     <div class="alert_info">
       <p>Ilość graniczna:</p>
-      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.criticalQuantity">
+      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.criticalQuantity" #criticalQuantityForUpdate>
     </div>
     <div class="alert_info">
       <p>Dni przed wyczerpaniem:</p>
-      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.leadTime">
+      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.leadTime" #leadTimeInDaysForUpdate>
     </div>
     <div class="alert_info">
-      <p>Czas do analizy:</p>
-      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.analysisPeriod">
-      <p>dni</p>
+      <p>Dni do analizy:</p>
+      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.analysisPeriod" #analysisPeriodInDaysForUpdate>
+    </div>
+    <div class="updateAlertButton">
+      <button (click)="updateAlertClicked()">Modyfikuj alert</button>
     </div>
   </div>
   <div class="alert_adding">

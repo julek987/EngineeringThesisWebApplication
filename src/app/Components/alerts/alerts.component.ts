@@ -15,6 +15,9 @@ export class AlertsComponent implements OnInit {
   @ViewChild('criticalQuantity') criticalQuantity!: ElementRef;
   @ViewChild('leadTimeInDays') leadTimeInDays!: ElementRef;
   @ViewChild('analysisPeriodInDays') analysisPeriodInDays!: ElementRef;
+  @ViewChild('criticalQuantityForUpdate') criticalQuantityForUpdate!: ElementRef;
+  @ViewChild('leadTimeInDaysForUpdate') leadTimeInDaysForUpdate!: ElementRef;
+  @ViewChild('analysisPeriodInDaysForUpdate') analysisPeriodInDaysForUpdate!: ElementRef;
 
   alerts: Alert[] = [];
   searchText: string = '';
@@ -121,13 +124,13 @@ export class AlertsComponent implements OnInit {
       });
   }
 
-  updateAlertClicked(): void {
+  alertBoxChecked(): void {
     const selectedAlerts = this.filteredAlerts.filter(alert => alert.selected);
 
-    if (selectedAlerts.length === 0) {
-      console.warn('No alerts selected for update.');
-      return;
-    }
+    // if (selectedAlerts.length === 0) {
+    //   console.warn('No alerts selected for update.');
+    //   return;
+    // }
 
     if (selectedAlerts.length > 1) {
       console.warn('Please select only one alert for update.');
@@ -138,8 +141,30 @@ export class AlertsComponent implements OnInit {
     console.log('Selected alert for update:', this.selectedAlertForUpdate);
   }
 
+  updateAlertClicked(): void {
+    const updatedAlertBody = {
+      clients: this.selectedAlertForUpdate?.clients,
+      products: this.selectedAlertForUpdate?.products
+    };
+    const thresholdQuantity = this.criticalQuantityForUpdate.nativeElement.value;
+    const daysBeforeExhaustion = this.leadTimeInDaysForUpdate.nativeElement.value;
+    const analysisTime = this.analysisPeriodInDaysForUpdate.nativeElement.value;
+    this.alertsService.updateAlert("http://localhost:5001/updatealert?name=" + this.selectedAlertForUpdate?.name +
+      "&analysisPeriodInDays=" + analysisTime + "&leadTimeInDays=" + daysBeforeExhaustion +
+      "&criticalQuantity=" + thresholdQuantity, updatedAlertBody).subscribe({
+      next: (response: any) => {
+        console.log('Alert updated successfully:', response);
+        this.loadAlerts();
+      },
+      error: (error) => {
+        console.error('Error updating alert:', error);
+      }
+    });
+
+
+  }
+
   getProductCodes(alert: Alert): string {
-    // Extract and display only the base part of the product code
     const baseCodes = new Set(alert.products.map(product => product.code.split('/').slice(0, 2).join('/')));
     return Array.from(baseCodes).join(', ');
   }
