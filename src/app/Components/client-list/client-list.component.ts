@@ -11,9 +11,9 @@ export class ClientListComponent implements OnInit {
   clients: Client[] = [];
   filteredClients: Client[] = [];
   searchTextClients: string = '';
-  selectedClientIds: number[] = [];
+  selectedClients: { id: number, name: string }[] = [];
 
-  @Output() selectedClientsChange = new EventEmitter<number[]>();
+  @Output() selectedClientsChange = new EventEmitter<{ id: number, name: string }[]>();
 
   constructor(private warehouseService: WarehouseService) {}
 
@@ -35,14 +35,18 @@ export class ClientListComponent implements OnInit {
     );
   }
 
-  onClientSelect(clientId: number, event: any): void {
+  onClientSelect(client: Client, event: any): void {
     if (event.target.checked) {
-      this.selectedClientIds.push(clientId);
+      this.selectedClients.push({ id: client.id, name: client.name });
     } else {
-      this.selectedClientIds = this.selectedClientIds.filter(id => id !== clientId);
+      this.selectedClients = this.selectedClients.filter(c => c.id !== client.id);
     }
 
-    // Emit selected client IDs to parent component
-    this.selectedClientsChange.emit(this.selectedClientIds);
+    // Emit selected clients to parent component
+    this.selectedClientsChange.emit(this.selectedClients);
+  }
+
+  isSelected(clientId: number): boolean {
+    return this.selectedClients.some(client => client.id === clientId);
   }
 }

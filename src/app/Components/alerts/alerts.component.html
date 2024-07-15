@@ -11,7 +11,7 @@
     <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterAlerts()">
     <div id="alert-container" class="scrollable">
       <div class="alert" *ngFor="let alert of filteredAlerts">
-        <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected">
+        <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected" (change)="updateAlertClicked()">
         <label for="alert-{{alert.name}}">{{alert.name}}</label>
       </div>
     </div>
@@ -21,6 +21,33 @@
     </div>
   </div>
   <div class="alert_modification">
+    <div class="alert_info">
+      <p>Nazwa alertu:</p>
+      <span *ngIf="selectedAlertForUpdate">{{ selectedAlertForUpdate.name }}</span>
+    </div>
+    <div class="alert_info">
+      <p>Znak produktu:</p>
+      <span *ngIf="selectedAlertForUpdate">{{ getProductCodes(selectedAlertForUpdate) }}</span>
+    </div>
+    <div class="alert_info">
+      <p>Kontrahenci:</p>
+      <span *ngIf="selectedAlertForUpdate">{{ getClientNames(selectedAlertForUpdate) }}</span>
+    </div>
+    <div class="alert_info">
+      <p>Ilość graniczna:</p>
+      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.criticalQuantity">
+    </div>
+    <div class="alert_info">
+      <p>Dni przed wyczerpaniem:</p>
+      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.leadTime">
+    </div>
+    <div class="alert_info">
+      <p>Czas do analizy:</p>
+      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.analysisPeriod">
+      <p>dni</p>
+    </div>
+  </div>
+  <div class="alert_adding">
     <div class="alert_input">
       <p>Nazwa alertu:</p>
       <input type="text" placeholder="CzapeczkiKubuś30DNI" #alertNameInput>
@@ -51,3 +78,4 @@
   </div>
 </div>
 </body>
+</html>

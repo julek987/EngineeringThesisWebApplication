@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AlertsService } from '../../services/Alerts/alerts.service';
-import {WarehouseService} from "../../services/Warehouse/warehouse.service";
+import { WarehouseService } from '../../services/Warehouse/warehouse.service';
 import { ActivatedRoute } from '@angular/router';
-import {Alert, Product} from '../../../types';
+import { Alert, Product, Client } from '../../../types';
 
 @Component({
   selector: 'app-alerts',
@@ -19,8 +19,9 @@ export class AlertsComponent implements OnInit {
   alerts: Alert[] = [];
   searchText: string = '';
   filteredAlerts: Alert[] = [];
-  selectedClientIds: number[] = [];
+  selectedClients: { id: number, name: string }[] = [];
   products: Product[] = [];
+  selectedAlertForUpdate?: Alert;
 
   constructor(
     private alertsService: AlertsService,
@@ -35,11 +36,11 @@ export class AlertsComponent implements OnInit {
     });
   }
 
-  loadProducts(): void{
+  loadProducts(): void {
     this.warehouseService.getAllProducts('http://localhost:5001/products')
       .subscribe((response: { value: Product[] }) => {
         this.products = response.value;
-  });
+      });
   }
 
   loadAlerts(): void {
@@ -66,8 +67,8 @@ export class AlertsComponent implements OnInit {
     );
   }
 
-  onSelectedClientsChange(selectedClientIds: number[]): void {
-    this.selectedClientIds = selectedClientIds;
+  onSelectedClientsChange(selectedClients: { id: number, name: string }[]): void {
+    this.selectedClients = selectedClients;
   }
 
   deleteSelectedAlertsClicked(): void {
@@ -99,7 +100,7 @@ export class AlertsComponent implements OnInit {
     const matchingProducts = this.products.filter(p => p.code.startsWith(productCode))
       .map(p => ({ code: p.code }));
 
-    const clientsIdsBody = { clients: this.selectedClientIds.map(id => ({ id })) };
+    const clientsIdsBody = { clients: this.selectedClients.map(client => ({ id: client.id, name: client.name })) };
 
     const newAlertBody = {
       clients: clientsIdsBody.clients,
@@ -120,7 +121,6 @@ export class AlertsComponent implements OnInit {
       });
   }
 
-
   updateAlertClicked(): void {
     const selectedAlerts = this.filteredAlerts.filter(alert => alert.selected);
 
@@ -134,7 +134,17 @@ export class AlertsComponent implements OnInit {
       return;
     }
 
-    let selectedAlertForUpdate = selectedAlerts[0];
-    console.log(selectedAlertForUpdate);
+    this.selectedAlertForUpdate = selectedAlerts[0];
+    console.log('Selected alert for update:', this.selectedAlertForUpdate);
+  }
+
+  getProductCodes(alert: Alert): string {
+    // Extract and display only the base part of the product code
+    const baseCodes = new Set(alert.products.map(product => product.code.split('/').slice(0, 2).join('/')));
+    return Array.from(baseCodes).join(', ');
+  }
+
+  getClientNames(alert: Alert): string {
+    return alert.clients.map(client => client.name).join(', ');
   }
 }

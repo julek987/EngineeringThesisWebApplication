@@ -19,7 +19,7 @@ export class AnalysisComponent implements OnInit {
   selectedProducts: string[] = [];
   today: string = '';
   analysedModels: { code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: number }[] = [];
-  selectedClientIds: number[] = [];
+  selectedClients: { id: number, name: string }[] = [];
 
   constructor(
     private warehouseService: WarehouseService,
@@ -82,8 +82,8 @@ export class AnalysisComponent implements OnInit {
     }
   }
 
-  onSelectedClientsChange(selectedClientIds: number[]): void {
-    this.selectedClientIds = selectedClientIds;
+  onSelectedClientsChange(selectedClientIds: { id: number; name: string }[]): void {
+    this.selectedClients = selectedClientIds;
   }
 
   onSubmit(): void {
@@ -129,7 +129,7 @@ export class AnalysisComponent implements OnInit {
         }
 
         const product = matchingProducts[productIndex];
-        const clientsIdsBody = { clients: this.selectedClientIds.map(id => ({ id })) };
+        const clientsIdsBody = { clients: this.selectedClients.map(id => ({ id })) };
 
         // Perform API requests sequentially
         this.warehouseService.getWarehouseQuantity(`http://localhost:5001/warehouse?product=${product.code}&date=${this.today}`).subscribe({
