@@ -15,7 +15,7 @@
         <label [for]="'product-' + product.code">{{ product.code }}</label>
       </div>
     </div>
-    <button class="add_delete_button">Dodaj zaznaczone</button>
+    <button class="add_delete_button" (click)="addButtonClicked()">Dodaj zaznaczone</button>
   </div>
 
 

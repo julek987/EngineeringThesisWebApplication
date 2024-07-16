@@ -74,4 +74,23 @@ export class BestsellersComponent implements OnInit{
     });
     return Object.values(groupedProducts);
   }
+
+  addButtonClicked(): void {
+    const selectedProductCodes = this.filteredProducts
+      .filter(product => (document.getElementById('product-' + product.code) as HTMLInputElement).checked)
+      .map(product => product.code);
+
+    selectedProductCodes.forEach(code => {
+      this.bestsellerService.addNewBestseller(`http://localhost:5001/createbestseller?code=${encodeURIComponent(code)}`)
+        .subscribe({
+          next: response => {
+            console.log(`Bestseller ${code} added successfully.`);
+            this.loadBestsellers();
+          },
+          error: error => {
+            console.error(`Error adding bestseller ${code}:`, error);
+          }
+        });
+    });
+  }
 }
