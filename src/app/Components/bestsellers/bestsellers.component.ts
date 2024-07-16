@@ -1,22 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {Bestseller, Product} from "../../../types";
-import {WarehouseService} from "../../services/Warehouse/warehouse.service";
-import {ActivatedRoute} from "@angular/router";
-import {BestsellersService} from "../../services/Bestsellers/bestsellers.service";
+import { Component, OnInit } from '@angular/core';
+import { Bestseller, Product } from '../../../types';
+import { WarehouseService } from '../../services/Warehouse/warehouse.service';
+import { ActivatedRoute } from '@angular/router';
+import { BestsellersService } from '../../services/Bestsellers/bestsellers.service';
 
 @Component({
   selector: 'app-bestsellers',
   templateUrl: './bestsellers.component.html',
-  styleUrl: './bestsellers.component.css'
+  styleUrls: ['./bestsellers.component.css']
 })
-export class BestsellersComponent implements OnInit{
+export class BestsellersComponent implements OnInit {
   products: Product[] = [];
   searchTextProducts: string = '';
   filteredProducts: Product[] = [];
   bestsellers: Bestseller[] = [];
   searchTextBestsellers: string = '';
   filteredBestsellers: Bestseller[] = [];
-
 
   constructor(
     private warehouseService: WarehouseService,
@@ -33,10 +32,11 @@ export class BestsellersComponent implements OnInit{
 
   loadBestsellers(): void {
     this.bestsellerService.getAllBestsellers('http://localhost:5001/getbestsellers')
-      .subscribe((response: {value: Bestseller[]}) => {
+      .subscribe((response: { value: Bestseller[] }) => {
         this.bestsellers = response.value;
         this.filteredBestsellers = this.bestsellers;
-      })
+        this.loadProducts(); // Ensure products are loaded after bestsellers
+      });
   }
 
   filterBestsellers(): void {
@@ -45,10 +45,11 @@ export class BestsellersComponent implements OnInit{
     );
   }
 
-  loadProducts() {
+  loadProducts(): void {
     this.warehouseService.getAllProducts('http://localhost:5001/products')
       .subscribe((response: { value: Product[] }) => {
-        this.products = this.groupProductsByPrefix(response.value);
+        const allProducts = response.value;
+        this.products = this.groupProductsByPrefix(allProducts).filter(product => !this.isBestseller(product.code));
         this.filteredProducts = this.products;
       });
   }
@@ -75,6 +76,10 @@ export class BestsellersComponent implements OnInit{
     return Object.values(groupedProducts);
   }
 
+  isBestseller(productCode: string): boolean {
+    return this.bestsellers.some(bestseller => bestseller.code === productCode);
+  }
+
   addButtonClicked(): void {
     const selectedProductCodes = this.filteredProducts
       .filter(product => (document.getElementById('product-' + product.code) as HTMLInputElement).checked)
@@ -85,7 +90,7 @@ export class BestsellersComponent implements OnInit{
         .subscribe({
           next: response => {
             console.log(`Bestseller ${code} added successfully.`);
-            this.loadBestsellers();
+            this.loadBestsellers(); // Optionally reload bestsellers list
           },
           error: error => {
             console.error(`Error adding bestseller ${code}:`, error);
