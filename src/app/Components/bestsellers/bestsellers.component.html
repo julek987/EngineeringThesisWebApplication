@@ -9,7 +9,7 @@
 <div class="bestsellery">
   <div class ="dodawanie_bestsellerów">
     <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
-    <div id="product-container" class="scrollable">
+    <div class="product-container" class="scrollable">
       <div class="product" *ngFor="let product of filteredProducts">
         <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code">
         <label [for]="'product-' + product.code">{{ product.code }}</label>
@@ -20,9 +20,16 @@
 
 
   <div class="usuwanie_bestsellerów">
-    <input type="text" placeholder="Szukaj..">
+    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextBestsellers" (input)="filterBestsellers()">
+    <div class="product-container" class="scrollable">
+      <div class="bestseller" *ngFor="let bestseller of filteredBestsellers">
+        <input type="checkbox" [id]="'bestseller-' + bestseller.code" name="bestseller" [value]="bestseller.code">
+        <label [for]="'bestseller-' + bestseller.code">{{ bestseller.code }}</label>
+      </div>
+        <div>
     <button class="add_delete_button">Usuń zaznaczone</button>
   </div>
 </div>
-
+  </div>
+</div>
 </body>

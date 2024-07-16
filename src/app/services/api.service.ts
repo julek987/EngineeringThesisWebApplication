@@ -16,7 +16,7 @@ export class ApiService {
     return this.httpClient.get<T>(url, { headers }) as Observable<T>;
   }
 
-  post<T>(url: string, body: any, headers?: HttpHeaders): Observable<T> {
+  post<T>(url: string, body?: any, headers?: HttpHeaders): Observable<T> {
     if (!headers) {
       headers = new HttpHeaders({
         'Content-Type': 'application/json'

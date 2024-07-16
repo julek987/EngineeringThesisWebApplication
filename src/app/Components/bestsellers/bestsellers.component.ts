@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Product} from "../../../types";
+import {Bestseller, Product} from "../../../types";
 import {WarehouseService} from "../../services/Warehouse/warehouse.service";
 import {ActivatedRoute} from "@angular/router";
+import {BestsellersService} from "../../services/Bestsellers/bestsellers.service";
 
 @Component({
   selector: 'app-bestsellers',
@@ -12,17 +13,36 @@ export class BestsellersComponent implements OnInit{
   products: Product[] = [];
   searchTextProducts: string = '';
   filteredProducts: Product[] = [];
+  bestsellers: Bestseller[] = [];
+  searchTextBestsellers: string = '';
+  filteredBestsellers: Bestseller[] = [];
 
 
   constructor(
     private warehouseService: WarehouseService,
+    private bestsellerService: BestsellersService,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.loadProducts();
+      this.loadBestsellers();
     });
+  }
+
+  loadBestsellers(): void {
+    this.bestsellerService.getAllBestsellers('http://localhost:5001/getbestsellers')
+      .subscribe((response: {value: Bestseller[]}) => {
+        this.bestsellers = response.value;
+        this.filteredBestsellers = this.bestsellers;
+      })
+  }
+
+  filterBestsellers(): void {
+    this.filteredBestsellers = this.bestsellers.filter(bestseller =>
+      bestseller.code.toLowerCase().includes(this.searchTextBestsellers.toLowerCase())
+    );
   }
 
   loadProducts() {
