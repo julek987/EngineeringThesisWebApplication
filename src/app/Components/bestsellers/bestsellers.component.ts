@@ -98,4 +98,24 @@ export class BestsellersComponent implements OnInit {
         });
     });
   }
+
+
+  deleteButtonClicked(): void {
+    const selectedBestsellerCodes = this.filteredBestsellers
+      .filter(bestseller => (document.getElementById('bestseller-' + bestseller.code) as HTMLInputElement).checked)
+      .map(bestseller => bestseller.code);
+
+    selectedBestsellerCodes.forEach(code => {
+      this.bestsellerService.deleteBestseller(`http://localhost:5001/deletebestseller?code=${encodeURIComponent(code)}`)
+        .subscribe({
+          next: response => {
+            console.log(`Bestseller ${code} deleted successfully.`);
+            this.loadBestsellers();
+          },
+          error: error => {
+            console.error(`Error deleting bestseller ${code}:`, error);
+          }
+        });
+    });
+  }
 }
