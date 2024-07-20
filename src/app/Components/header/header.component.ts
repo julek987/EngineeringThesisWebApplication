@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {setThrowInvalidWriteToSignalError} from "@angular/core/primitives/signals";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -9,9 +10,17 @@ import {setThrowInvalidWriteToSignalError} from "@angular/core/primitives/signal
 export class HeaderComponent {
   @Output() componentSelected = new EventEmitter<string>();
 
+  constructor(private router: Router) {
+
+  }
+
   switchComponent(component: string) {
     this.componentSelected.emit(component);
   }
 
-    protected readonly setThrowInvalidWriteToSignalError = setThrowInvalidWriteToSignalError;
+  logOutButtonClicked(){
+    sessionStorage.clear();
+    this.router.navigate(['']);
+  }
+  protected readonly setThrowInvalidWriteToSignalError = setThrowInvalidWriteToSignalError;
 }
