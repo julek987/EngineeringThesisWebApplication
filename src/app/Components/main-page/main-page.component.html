@@ -1,0 +1,8 @@
+<app-header (componentSelected)="switchComponent($event)"></app-header>
+
+<ng-container [ngSwitch]="selectedComponent">
+  <app-analysis *ngSwitchCase="'analysis'"></app-analysis>
+  <app-bestsellers *ngSwitchCase="'bestsellers'"></app-bestsellers>
+  <app-alerts *ngSwitchCase="'alerts'"></app-alerts>
+  <app-admin-panel *ngSwitchCase="'admin-panel'"></app-admin-panel>
+</ng-container>

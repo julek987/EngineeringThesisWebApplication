@@ -17,20 +17,10 @@ export class ApiService {
   }
 
   post<T>(url: string, body?: any, headers?: HttpHeaders): Observable<T> {
-    if (!headers) {
-      headers = new HttpHeaders({
-        'Content-Type': 'application/json'
-      });
-    }
     return this.httpClient.post<T>(url, body, { headers });
   }
 
   put<T>(url: string, body: any, headers?: HttpHeaders): Observable<T> {
-    if (!headers) {
-      headers = new HttpHeaders({
-        'Content-Type': 'application/json'
-      });
-    }
     return this.httpClient.put<T>(url, body, { headers });
   }
 

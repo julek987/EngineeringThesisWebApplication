@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="admin-panel.component.css">
+</head>
+<body>
+<div class="lista_pracowników">
+  <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterEmployees()">
+  <div id="alert-container" class="scrollable">
+    <div class="alert" *ngFor="let employee of filteredEmployees">
+      <input type="checkbox" id="employee-{{employee.username}}" name="employee" [(ngModel)]="employee.selected" (change)="employeeBoxChecked()">
+      <label for="employee-{{employee.username}}">{{employee.username}}</label>
+    </div>
+  </div>
+  <button class="delete_button">Usuń zaznaczone</button>
+</div>
+</body>

@@ -80,4 +80,18 @@ export interface SalesDynamicResponse {
   };
 }
 
+export interface LoginResponse {
+    token: string
+}
 
+export interface Employee{
+  id: number;
+  username: string;
+  password: string;
+  role: string;
+  selected?: boolean;
+}
+
+export interface EmployeesResponse{
+  Employees: Employee[];
+}

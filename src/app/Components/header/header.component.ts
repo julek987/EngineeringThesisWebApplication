@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
+import {setThrowInvalidWriteToSignalError} from "@angular/core/primitives/signals";
 
 @Component({
   selector: 'app-header',
@@ -11,4 +12,6 @@ export class HeaderComponent {
   switchComponent(component: string) {
     this.componentSelected.emit(component);
   }
+
+    protected readonly setThrowInvalidWriteToSignalError = setThrowInvalidWriteToSignalError;
 }
