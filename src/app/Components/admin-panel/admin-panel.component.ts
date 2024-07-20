@@ -62,4 +62,23 @@ export class AdminPanelComponent implements OnInit {
     this.selectedEmployee = selectedEmployees[0];
     console.log('Selected employee:', this.selectedEmployee);
   }
+
+  deleteSelectedEmployeesClicked(): void {
+    const selectedEmployees = this.filteredEmployees.filter(employee => employee.selected);
+
+    selectedEmployees.forEach(employee => {
+      this.employeesService.deleteEmployee(`http://localhost:5282/api/User/delete/${encodeURIComponent(employee.id)}`)
+        .subscribe({
+          next: () => {
+            // Remove the deleted employee from both arrays
+            this.employees = this.employees.filter(a => a.username !== employee.username);
+            this.applyFilter(); // Update filtered employees after deletion
+          },
+          error: (error) => {
+            console.error(`Error deleting employee ${employee.username}:`, error);
+            // Handle error as per application requirements
+          }
+        });
+    });
+  }
 }
