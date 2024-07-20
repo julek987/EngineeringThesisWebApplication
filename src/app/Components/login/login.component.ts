@@ -27,8 +27,8 @@ export class LoginComponent {
         next: (response: { token: string }) => {
           const token = response.token;
           //Temporary saving in localStorage
-          localStorage.setItem('authToken', token);
-          console.log('Login successful, token received:', token);
+          sessionStorage.setItem('authToken', token);
+          console.log('Login successful, token received:');
           this.router.navigate(['/main']);
         },
         error: (error) => {
