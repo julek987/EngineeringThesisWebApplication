@@ -165,8 +165,6 @@ export class AlertsComponent implements OnInit {
         console.error('Error updating alert:', error);
       }
     });
-
-
   }
 
   getProductCodes(alert: Alert): string {
@@ -179,5 +177,18 @@ export class AlertsComponent implements OnInit {
       const clientInList = this.clientList.find(c => c.id === client.id); // Ensure correct comparison
       return clientInList ? clientInList.name : 'Unknown'; // Return name or 'Unknown'
     }).join(', ');
+  }
+
+  getFormattedLeadTime(alert: Alert): string {
+    return this.formatDuration(alert.leadTime);
+  }
+
+  getFormattedAnalysisPeriod(alert: Alert): string {
+    return this.formatDuration(alert.analysisPeriod);
+  }
+
+  private formatDuration(duration: string): string {
+    const parts = duration.split(':'); // Split the duration by ':'
+    return Math.floor(parseFloat(parts[0])).toString(); // Return the integer part only
   }
 }

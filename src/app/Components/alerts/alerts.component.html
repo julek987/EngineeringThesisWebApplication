@@ -36,11 +36,11 @@
     </div>
     <div class="alert_info">
       <p>Dni przed wyczerpaniem:</p>
-      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.leadTime" #leadTimeInDaysForUpdate>
+      <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedLeadTime(selectedAlertForUpdate)" #leadTimeInDaysForUpdate>
     </div>
     <div class="alert_info">
       <p>Dni do analizy:</p>
-      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.analysisPeriod" #analysisPeriodInDaysForUpdate>
+      <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedAnalysisPeriod(selectedAlertForUpdate)" #analysisPeriodInDaysForUpdate>
     </div>
     <div class="updateAlertButton">
       <button (click)="updateAlertClicked()">Modyfikuj alert</button>
