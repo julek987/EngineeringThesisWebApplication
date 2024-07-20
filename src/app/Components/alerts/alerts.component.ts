@@ -25,6 +25,7 @@ export class AlertsComponent implements OnInit {
   selectedClients: { id: number, name: string }[] = [];
   products: Product[] = [];
   selectedAlertForUpdate?: Alert;
+  clientList: Client[] = [];
 
   constructor(
     private alertsService: AlertsService,
@@ -72,6 +73,10 @@ export class AlertsComponent implements OnInit {
 
   onSelectedClientsChange(selectedClients: { id: number, name: string }[]): void {
     this.selectedClients = selectedClients;
+  }
+
+  onClientListChange(clients: Client[]): void {
+    this.clientList = clients;
   }
 
   deleteSelectedAlertsClicked(): void {
@@ -170,6 +175,9 @@ export class AlertsComponent implements OnInit {
   }
 
   getClientNames(alert: Alert): string {
-    return alert.clients.map(client => client.name).join(', ');
+    return alert.clients.map(client => {
+      const clientInList = this.clientList.find(c => c.id === client.id); // Ensure correct comparison
+      return clientInList ? clientInList.name : 'Unknown'; // Return name or 'Unknown'
+    }).join(', ');
   }
 }

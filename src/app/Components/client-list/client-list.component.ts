@@ -14,11 +14,13 @@ export class ClientListComponent implements OnInit {
   selectedClients: { id: number, name: string }[] = [];
 
   @Output() selectedClientsChange = new EventEmitter<{ id: number, name: string }[]>();
+  @Output() clientsListChange = new EventEmitter<Client[]>();
 
   constructor(private warehouseService: WarehouseService) {}
 
   ngOnInit(): void {
     this.loadClients();
+
   }
 
   loadClients() {
@@ -26,6 +28,7 @@ export class ClientListComponent implements OnInit {
       .subscribe((response: { value: Client[] }) => {
         this.clients = response.value;
         this.filteredClients = this.clients;
+        this.emitClientList()
       });
   }
 
@@ -48,5 +51,9 @@ export class ClientListComponent implements OnInit {
 
   isSelected(clientId: number): boolean {
     return this.selectedClients.some(client => client.id === clientId);
+  }
+
+  emitClientList() {
+    this.clientsListChange.emit(this.filteredClients);
   }
 }
