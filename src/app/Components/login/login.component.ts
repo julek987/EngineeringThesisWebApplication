@@ -22,13 +22,26 @@ export class LoginComponent {
       password: this.password
     };
 
+    // this.loginService.loginUser('http://localhost:5282/Auth/login', body)
+    //   .subscribe({
+    //     next: (response: { token: string }) => {
+    //       const token = response.token;
+    //       //Temporary saving in localStorage
+    //       sessionStorage.setItem('authToken', token);
+    //       console.log('Login successful, token received:');
+    //       this.router.navigate(['/main']);
+    //     },
+    //     error: (error) => {
+    //       console.error('Login failed:', error);
+    //     }
+    //   });
+
     this.loginService.loginUser('http://localhost:5282/Auth/login', body)
       .subscribe({
-        next: (response: { token: string }) => {
-          const token = response.token;
-          //Temporary saving in localStorage
-          sessionStorage.setItem('authToken', token);
-          console.log('Login successful, token received:');
+        next: (response: any) => {
+          // Assuming you get a JSON response with a message
+          console.log('Login successful, response:', response);
+          // Optionally navigate or perform other actions
           this.router.navigate(['/main']);
         },
         error: (error) => {
