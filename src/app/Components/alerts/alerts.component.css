@@ -55,3 +55,7 @@ button{
 #alert-container{
   border: 3px solid #35424a;
 }
+
+.hide{
+  display: none;
+}

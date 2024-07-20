@@ -74,7 +74,9 @@
   </div>
   <div class="lista_kontrahentów">
     <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
+    <div class="hide">
     <app-client-list (clientsListChange)="onClientListChange($event)"></app-client-list>
+  </div>
   </div>
 </div>
 </body>
