@@ -13,43 +13,71 @@ body, html {
 /* Center the login container */
 .login-container {
   background-color: #fff;
-  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 300px;
+  width: 400px; /* Increased width */
   max-width: 100%;
-}
-
-/* Style the form */
-.login-form {
+  border: solid black;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Ensure no content overflows the container */
+  align-items: center; /* Center all items in the container */
 }
 
-/* Style labels and inputs */
-.login-form label {
-  margin-bottom: 5px;
-  font-weight: bold;
+.little_header {
+  background-color: #D9D9D9;
+  border-bottom: 3px solid black;
+  display: flex; /* Enable flexbox layout */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  height: 70px; /* Increased height */
+  padding: 0 10px; /* Optional: padding for better appearance */
+  font-size: 24px; /* Increased font size */
+  width: 100%;
 }
 
-.login-form input {
-  margin-bottom: 15px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px; /* Increased padding inside the form */
+  width: 100%; /* Ensure the form takes the full width of the container */
+  align-items: center; /* Center form elements */
 }
 
-.login-form button {
+.login-input {
+  margin-bottom: 20px; /* Increased margin */
+  font-size: 18px; /* Increased font size */
+  width: 100%; /* Full width for inputs */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-input label {
+  font-size: 18px; /* Increased label font size */
+  display: block;
+  text-align: center; /* Center label text */
+  width: 100%; /* Ensure label takes the full width */
+}
+
+.login-input input {
+  font-size: 18px; /* Increased input font size */
+  padding: 10px; /* Increased padding */
+  width: 90%; /* Reduced width to ensure centering */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+button {
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 10px;
-  border-radius: 4px;
+  padding: 15px; /* Increased padding */
   cursor: pointer;
-  font-size: 16px;
+  font-size: 20px; /* Increased font size */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 180px;
 }
 
-.login-form button:hover {
+button:hover {
   background-color: #0056b3;
 }

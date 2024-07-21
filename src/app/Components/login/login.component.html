@@ -7,15 +7,15 @@
 </head>
 <body>
 <div class="login-container">
+  <div class="little_header">
+    <h2>WMB Trade</h2>
+  </div>
   <form (ngSubmit)="onLoginButtonClicked()" #loginForm="ngForm">
-    <h2>Login</h2>
     <div class="login-input">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" placeholder="Enter your username" [(ngModel)]="username" required>
+      <input type="text" id="username" name="username" placeholder="Wprowadź login" [(ngModel)]="username" required>
     </div>
     <div class="login-input">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" placeholder="Enter your password" [(ngModel)]="password" required>
+      <input type="password" id="password" name="password" placeholder="Wprowadź hasło" [(ngModel)]="password" required>
     </div>
     <div>
       <button type="submit">Login</button>
