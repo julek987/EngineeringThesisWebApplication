@@ -79,18 +79,6 @@ input[type="text"] {
   padding: 10px;
 }
 
-.add_delete_button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 15px;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  margin: 10px 0;
-}
-
 .add_button{
   background-color: #AFE8A1;
   border: none;
@@ -99,6 +87,12 @@ input[type="text"] {
   height: 50px;
   border-radius: 8px;
   font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.add_button:hover{
+  background-color: #93e87e;
 }
 
 .delete_button{
@@ -109,6 +103,12 @@ input[type="text"] {
   height: 50px;
   border-radius: 8px;
   font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.delete_button:hover{
+    background-color: #fb7474;
 }
 
 .scrollable {
