@@ -16,7 +16,7 @@ export class AdminPanelComponent implements OnInit {
 
   newEmployeeLogin: string = '';
   newEmployeePassword: string = '';
-  newEmployeeRole: string = 'employee';
+  newEmployeeRole: string = 'Pracownik';
 
   constructor(
     private employeesService: AdminService,
@@ -108,5 +108,13 @@ export class AdminPanelComponent implements OnInit {
           console.error('Error adding employee:', error);
         }
       });
+  }
+
+  translateRole(role: string): string {
+    const roleTranslation: { [key: string]: string } = {
+      'employee': 'Pracownik',
+      'admin': 'Admin'
+    };
+    return roleTranslation[role] || role;
   }
 }

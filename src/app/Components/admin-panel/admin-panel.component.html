@@ -2,30 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Admin Panel</title>
   <link rel="stylesheet" href="admin-panel.component.css">
 </head>
 <body>
 <div class="admin_panel">
-<div class="lista_pracowników">
-  <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterEmployees()">
-  <div id="alert-container" class="scrollable">
-    <div class="alert" *ngFor="let employee of filteredEmployees">
-      <input type="checkbox" id="employee-{{employee.username}}" name="employee" [(ngModel)]="employee.selected" (change)="employeeBoxChecked()">
-      <label for="employee-{{employee.username}}">{{employee.username}}</label>
+  <div class="lista_pracowników">
+    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterEmployees()">
+    <div id="alert-container" class="scrollable">
+      <div class="alert" *ngFor="let employee of filteredEmployees">
+        <input type="checkbox" id="employee-{{employee.username}}" name="employee" [(ngModel)]="employee.selected" (change)="employeeBoxChecked()">
+        <label for="employee-{{employee.username}}">
+          <span class="employee-username">{{employee.username}}</span> -
+          <span class="employee-role">{{translateRole(employee.role)}}</span>
+        </label>
+      </div>
     </div>
+    <button class="delete_button" (click)="deleteSelectedEmployeesClicked()">Usuń zaznaczone</button>
   </div>
-  <button class="delete_button" (click)="deleteSelectedEmployeesClicked()">Usuń zaznaczone</button>
-</div>
   <div class="dodawanie_pracowników">
     <input type="text" placeholder="Login" [(ngModel)]="newEmployeeLogin">
     <input type="password" placeholder="Hasło" [(ngModel)]="newEmployeePassword">
     <select id="roles" name="roles" [(ngModel)]="newEmployeeRole">
-      <option value="employee">Pracownik</option>
-      <option value="admin">Admin</option>
+      <option value="Pracownik">Pracownik</option>
+      <option value="Admin">Admin</option>
     </select>
     <button class="add_employee_button" (click)="onAddEmployeeClicked()">Zarejestruj</button>
   </div>
-
 </div>
 </body>
+</html>
