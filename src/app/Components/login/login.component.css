@@ -70,12 +70,13 @@ button {
   background-color: #007bff;
   color: #fff;
   border: none;
-  padding: 15px; /* Increased padding */
+  padding: 10px; /* Reduced padding to make button thinner */
   cursor: pointer;
   font-size: 20px; /* Increased font size */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   width: 180px;
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 button:hover {

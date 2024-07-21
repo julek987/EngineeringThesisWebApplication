@@ -7,29 +7,45 @@
 </head>
 <body>
 <div class="bestsellery">
-  <div class ="dodawanie_bestsellerów">
-    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
-    <div class="product-container" class="scrollable">
-      <div class="product" *ngFor="let product of filteredProducts">
-        <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code">
-        <label [for]="'product-' + product.code">{{ product.code }}</label>
+  <div class="container">
+    <div class="dodawanie_bestsellerów">
+      <div class="little_header">
+        <h2>Pozostałe produkty</h2>
+      </div>
+      <div class="dodawanie_bestsellerów_input">
+        <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
+      </div>
+      <div class="product-container scrollable">
+        <div class="product" *ngFor="let product of filteredProducts">
+          <input type="checkbox" [id]="'product-' + product.code" name="product" [value]="product.code">
+          <label [for]="'product-' + product.code">{{ product.code }}</label>
+        </div>
       </div>
     </div>
-    <button class="add_delete_button" (click)="addButtonClicked()">Dodaj zaznaczone</button>
+    <div class="button-container">
+      <button class="add_button" (click)="addButtonClicked()">Przenieś do bestsellerów</button>
+    </div>
   </div>
 
-
-  <div class="usuwanie_bestsellerów">
-    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextBestsellers" (input)="filterBestsellers()">
-    <div class="product-container" class="scrollable">
-      <div class="bestseller" *ngFor="let bestseller of filteredBestsellers">
-        <input type="checkbox" [id]="'bestseller-' + bestseller.code" name="bestseller" [value]="bestseller.code">
-        <label [for]="'bestseller-' + bestseller.code">{{ bestseller.code }}</label>
+  <div class="container">
+    <div class="usuwanie_bestsellerów">
+      <div class="little_header">
+        <h2>Bestsellery</h2>
       </div>
-</div>
-    <div>
-      <button class="add_delete_button" (click)="deleteButtonClicked()">Usuń zaznaczone</button>
+      <div class="dodawanie_bestsellerów_input">
+        <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextBestsellers" (input)="filterBestsellers()">
+      </div>
+      <div class="product-container scrollable">
+        <div class="bestseller" *ngFor="let bestseller of filteredBestsellers">
+          <input type="checkbox" [id]="'bestseller-' + bestseller.code" name="bestseller" [value]="bestseller.code">
+          <label [for]="'bestseller-' + bestseller.code">{{ bestseller.code }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="button-container">
+      <button class="delete_button" (click)="deleteButtonClicked()">Usuń z bestsellerów</button>
     </div>
   </div>
 </div>
 </body>
+</html>
