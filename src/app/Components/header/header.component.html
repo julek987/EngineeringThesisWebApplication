@@ -8,12 +8,14 @@
 <body>
 <div class="header">
   <div class="header_buttons">
-    <button (click)="switchComponent('analysis')">Analiza</button>
-    <button (click)="switchComponent('bestsellers')">Best-sellery</button>
-    <button (click)="switchComponent('alerts')">Alerty</button>
-    <button (click)="switchComponent('admin-panel')">Admin</button>
+    <button [ngClass]="{'active': activeComponent === 'analysis'}" (click)="switchComponent('analysis')">Analiza</button>
+    <button [ngClass]="{'active': activeComponent === 'bestsellers'}" (click)="switchComponent('bestsellers')">Best-sellery</button>
+    <button [ngClass]="{'active': activeComponent === 'alerts'}" (click)="switchComponent('alerts')">Alerty</button>
+    <button [ngClass]="{'active': activeComponent === 'admin-panel'}" (click)="switchComponent('admin-panel')">Admin</button>
   </div>
   <div class="header_buttons">
     <button (click)="logOutButtonClicked()">Wyloguj</button>
   </div>
 </div>
+</body>
+</html>

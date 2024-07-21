@@ -1,25 +1,23 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {setThrowInvalidWriteToSignalError} from "@angular/core/primitives/signals";
-import {Router} from "@angular/router";
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']  // Note the correct URL here
 })
 export class HeaderComponent {
   @Output() componentSelected = new EventEmitter<string>();
+  activeComponent: string = 'analysis';  // Default to 'analysis'
 
-  constructor(private router: Router) {
-
-  }
+  constructor(private router: Router) { }
 
   switchComponent(component: string) {
+    this.activeComponent = component;
     this.componentSelected.emit(component);
   }
 
-  logOutButtonClicked(){
+  logOutButtonClicked() {
     this.router.navigate(['']);
   }
-  protected readonly setThrowInvalidWriteToSignalError = setThrowInvalidWriteToSignalError;
 }
