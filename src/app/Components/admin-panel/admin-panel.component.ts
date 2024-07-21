@@ -14,6 +14,10 @@ export class AdminPanelComponent implements OnInit {
   filteredEmployees: Employee[] = [];
   selectedEmployee?: Employee;
 
+  newEmployeeLogin: string = '';
+  newEmployeePassword: string = '';
+  newEmployeeRole: string = 'employee';
+
   constructor(
     private employeesService: AdminService,
     private route: ActivatedRoute
@@ -80,5 +84,29 @@ export class AdminPanelComponent implements OnInit {
           }
         });
     });
+  }
+
+  onAddEmployeeClicked(): void {
+    const roleMapping: { [key: string]: string } = {
+      'Pracownik': 'employee',
+      'Admin': 'admin'
+    };
+
+    const newEmployee = {
+      username: this.newEmployeeLogin,
+      password: this.newEmployeePassword,
+      role: roleMapping[this.newEmployeeRole] || 'employee'
+    };
+
+    this.employeesService.addNewEmployee('http://localhost:5282/Auth/register', newEmployee)
+      .subscribe({
+        next: () => {
+          console.log('Employee added successfully');
+          this.loadEmployees(); // Refresh the list after adding a new employee
+        },
+        error: (error) => {
+          console.error('Error adding employee:', error);
+        }
+      });
   }
 }

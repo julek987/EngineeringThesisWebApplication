@@ -19,7 +19,6 @@ export class HeaderComponent {
   }
 
   logOutButtonClicked(){
-    sessionStorage.clear();
     this.router.navigate(['']);
   }
   protected readonly setThrowInvalidWriteToSignalError = setThrowInvalidWriteToSignalError;

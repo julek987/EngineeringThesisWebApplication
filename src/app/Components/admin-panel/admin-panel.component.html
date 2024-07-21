@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="admin-panel.component.css">
 </head>
 <body>
+<div class="admin_panel">
 <div class="lista_pracowników">
   <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterEmployees()">
   <div id="alert-container" class="scrollable">
@@ -15,5 +16,16 @@
     </div>
   </div>
   <button class="delete_button" (click)="deleteSelectedEmployeesClicked()">Usuń zaznaczone</button>
+</div>
+  <div class="dodawanie_pracowników">
+    <input type="text" placeholder="Login" [(ngModel)]="newEmployeeLogin">
+    <input type="password" placeholder="Hasło" [(ngModel)]="newEmployeePassword">
+    <select id="roles" name="roles" [(ngModel)]="newEmployeeRole">
+      <option value="employee">Pracownik</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button class="add_employee_button" (click)="onAddEmployeeClicked()">Zarejestruj</button>
+  </div>
+
 </div>
 </body>
