@@ -59,3 +59,16 @@ button{
 .hide{
   display: none;
 }
+
+input[type="radio"]{
+  transform: scale(1.5);
+  margin-right: 4px;
+  margin-bottom: 8px;
+}
+
+input[type="checkbox"]{
+  transform: scale(1.5);
+  margin-right: 4px;
+  margin-bottom: 8px;
+}
+

@@ -47,13 +47,19 @@
     </div>
   </div>
   <div class="alert_adding">
+    <div class="lista_produktów">
+      <p>Produkty:</p>
+      <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
+      <div id="product-container" class="scrollable">
+        <div *ngFor="let product of filteredProducts">
+          <input type="radio" [value]="product.code" [checked]="selectedProduct?.includes(product.code)" (change)="onProductSelect(product.code, $event)">
+          {{ product.code }}
+        </div>
+      </div>
+    </div>
     <div class="alert_input">
       <p>Nazwa alertu:</p>
       <input type="text" placeholder="CzapeczkiKubuś30DNI" #alertNameInput>
-    </div>
-    <div class="alert_input">
-      <p>Znak produktu:</p>
-      <input type="text" placeholder="ABN-3431/MOT" #productCodeInput>
     </div>
     <div class="alert_input">
       <p>Ilość graniczna:</p>

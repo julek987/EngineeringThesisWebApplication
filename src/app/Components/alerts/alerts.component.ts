@@ -27,6 +27,10 @@ export class AlertsComponent implements OnInit {
   selectedAlertForUpdate?: Alert;
   clientList: Client[] = [];
 
+  filteredProducts: Product[] = [];
+  searchTextProducts: string = '';
+  selectedProduct?: string;
+
   constructor(
     private alertsService: AlertsService,
     private warehouseService: WarehouseService,
@@ -44,6 +48,7 @@ export class AlertsComponent implements OnInit {
     this.warehouseService.getAllProducts('http://localhost:5001/products')
       .subscribe((response: { value: Product[] }) => {
         this.products = response.value;
+        this.filteredProducts = this.groupProductsByPrefix(this.products);
       });
   }
 
@@ -100,12 +105,12 @@ export class AlertsComponent implements OnInit {
 
   addNewAlertClicked(): void {
     const alertName = this.alertNameInput.nativeElement.value;
-    const productCode = this.productCodeInput.nativeElement.value;
+    const productCode = this.selectedProduct;
     const thresholdQuantity = this.criticalQuantity.nativeElement.value;
     const daysBeforeExhaustion = this.leadTimeInDays.nativeElement.value;
     const analysisTime = this.analysisPeriodInDays.nativeElement.value;
 
-    const matchingProducts = this.products.filter(p => p.code.startsWith(productCode))
+    const matchingProducts = this.products.filter(p => p.code.startsWith(<string>this.selectedProduct))
       .map(p => ({ code: p.code }));
 
     const clientsIdsBody = { clients: this.selectedClients.map(client => ({ id: client.id, name: client.name })) };
@@ -190,5 +195,37 @@ export class AlertsComponent implements OnInit {
   private formatDuration(duration: string): string {
     const parts = duration.split(':'); // Split the duration by ':'
     return Math.floor(parseFloat(parts[0])).toString(); // Return the integer part only
+  }
+
+  filterProducts(): void {
+    if (this.searchTextProducts.trim() === '') {
+      this.filteredProducts = this.groupProductsByPrefix(this.products);
+    } else {
+      this.filteredProducts = this.groupProductsByPrefix(this.products).filter(product =>
+        product.code.toLowerCase().includes(this.searchTextProducts.toLowerCase())
+      );
+    }
+  }
+
+  groupProductsByPrefix(products: Product[]): Product[] {
+    const groupedProducts: { [key: string]: Product } = {};
+    products.forEach(product => {
+      const parts = product.code.split('/');
+      const prefix = parts.slice(0, -1).join('/'); // Extract prefix without size
+      if (!groupedProducts[prefix]) {
+        // If prefix not found, add it
+        groupedProducts[prefix] = {
+          ...product,
+          code: prefix // Update code to remove size information
+        };
+      }
+    });
+    return Object.values(groupedProducts);
+  }
+
+  onProductSelect(product: string, event: any): void {
+    if (event.target.checked) {
+      this.selectedProduct = product;
+    }
   }
 }

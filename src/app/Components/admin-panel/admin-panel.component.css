@@ -146,3 +146,10 @@ select {
 .employee-role {
   color: #333;
 }
+
+
+input[type="checkbox"] {
+  transform: scale(1.35);
+  margin-right: 4px;
+  margin-bottom: 8px;
+}
