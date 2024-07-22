@@ -7,27 +7,71 @@
 </head>
 <body>
 <div class="admin_panel">
-  <div class="lista_pracowników">
-    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterEmployees()">
-    <div id="alert-container" class="scrollable">
-      <div class="alert" *ngFor="let employee of filteredEmployees">
-        <input type="checkbox" id="employee-{{employee.username}}" name="employee" [(ngModel)]="employee.selected" (change)="employeeBoxChecked()">
-        <label for="employee-{{employee.username}}">
-          <span class="employee-username">{{employee.username}}</span> -
-          <span class="employee-role">{{translateRole(employee.role)}}</span>
-        </label>
+  <div class="listy_admin_pracownik">
+    <div class="container">
+      <div class="lista_pracowników">
+        <div class="little_header">
+          <h2>Lista Pracowników</h2>
+        </div>
+        <div class="dodawanie_pracowników_input">
+          <input type="text" placeholder="Szukaj.." [(ngModel)]="employeeSearchText" (input)="filterEmployees()">
+        </div>
+        <div id="employee-container" class="scrollable">
+          <div class="alert" *ngFor="let employee of filteredRegulars">
+            <input type="checkbox" id="employee-{{employee.username}}" name="employee" [(ngModel)]="employee.selected" (change)="employeeBoxChecked()">
+            <label for="employee-{{employee.username}}">
+              <span class="employee-username">{{employee.username}}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="lista_pracowników">
+
+          <div class="little_header">
+            <h2>Lista Adminów</h2>
+          </div>
+
+          <div class="dodawanie_pracowników_input">
+            <input type="text" placeholder="Szukaj.." [(ngModel)]="adminSearchText" (input)="filterAdmins()">
+          </div>
+
+          <div id="admin-container" class="scrollable">
+            <div class="alert" *ngFor="let employee of filteredAdmins">
+              <input type="checkbox" id="employee-{{employee.username}}" name="employee" [(ngModel)]="employee.selected" (change)="employeeBoxChecked()">
+              <label for="employee-{{employee.username}}">
+                <span class="employee-username">{{employee.username}}</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="button-container">
+        <button class="delete_button" (click)="deleteSelectedEmployeesClicked()">Usuń zaznaczone</button>
       </div>
     </div>
-    <button class="delete_button" (click)="deleteSelectedEmployeesClicked()">Usuń zaznaczone</button>
   </div>
-  <div class="dodawanie_pracowników">
-    <input type="text" placeholder="Login" [(ngModel)]="newEmployeeLogin">
-    <input type="password" placeholder="Hasło" [(ngModel)]="newEmployeePassword">
-    <select id="roles" name="roles" [(ngModel)]="newEmployeeRole">
-      <option value="Pracownik">Pracownik</option>
-      <option value="Admin">Admin</option>
-    </select>
-    <button class="add_employee_button" (click)="onAddEmployeeClicked()">Zarejestruj</button>
+
+  <div class="container">
+    <div class="dodawanie_pracowników">
+      <div class="little_header">
+        <h2>Dodawanie Pracowników</h2>
+      </div>
+      <div class="dodawanie_pracowników_input">
+        <input type="text" id="login" placeholder="Login" [(ngModel)]="newEmployeeLogin">
+        <input type="password" placeholder="Hasło" [(ngModel)]="newEmployeePassword">
+        <select id="roles" name="roles" [(ngModel)]="newEmployeeRole">
+          <option value="Pracownik">Pracownik</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
+    </div>
+    <div class="button-container">
+      <button class="add_employee_button" (click)="onAddEmployeeClicked()">Zarejestruj</button>
+    </div>
   </div>
 </div>
 </body>

@@ -9,9 +9,12 @@ import { ActivatedRoute } from "@angular/router";
   styleUrls: ['./admin-panel.component.css']
 })
 export class AdminPanelComponent implements OnInit {
-  searchText: string = '';
+  adminSearchText: string = '';
+  employeeSearchText: string = '';
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
+  filteredAdmins: Employee[] = [];
+  filteredRegulars: Employee[] = [];
   selectedEmployee?: Employee;
 
   newEmployeeLogin: string = '';
@@ -37,7 +40,7 @@ export class AdminPanelComponent implements OnInit {
             ...employee,
             selected: false // Initialize the `selected` property if needed
           }));
-          this.filteredEmployees = [...this.employees]; // Initialize filteredEmployees
+          this.applyFilter(); // Initialize filtered lists
         } else {
           console.error('Invalid response structure:', response);
           this.employees = [];
@@ -50,13 +53,29 @@ export class AdminPanelComponent implements OnInit {
       });
   }
 
+  filterAdmins(): void {
+    this.applyFilter();
+  }
+
   filterEmployees(): void {
     this.applyFilter();
   }
 
   private applyFilter(): void {
+    const adminSearchTextLower = this.adminSearchText.toLowerCase();
+    const employeeSearchTextLower = this.employeeSearchText.toLowerCase();
+
     this.filteredEmployees = this.employees.filter(employee =>
-      employee.username.toLowerCase().includes(this.searchText.toLowerCase())
+      employee.username.toLowerCase().includes(adminSearchTextLower) ||
+      employee.username.toLowerCase().includes(employeeSearchTextLower)
+    );
+
+    this.filteredAdmins = this.employees.filter(employee =>
+      employee.role === 'admin' && employee.username.toLowerCase().includes(adminSearchTextLower)
+    );
+
+    this.filteredRegulars = this.employees.filter(employee =>
+      employee.role === 'employee' && employee.username.toLowerCase().includes(employeeSearchTextLower)
     );
   }
 
@@ -108,13 +127,5 @@ export class AdminPanelComponent implements OnInit {
           console.error('Error adding employee:', error);
         }
       });
-  }
-
-  translateRole(role: string): string {
-    const roleTranslation: { [key: string]: string } = {
-      'employee': 'Pracownik',
-      'admin': 'Admin'
-    };
-    return roleTranslation[role] || role;
   }
 }
