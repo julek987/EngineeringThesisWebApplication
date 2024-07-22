@@ -2,53 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Alerts Component</title>
   <link rel="stylesheet" href="alerts.component.css">
 </head>
 <body>
 <div class="alerty">
-  <div class="lista_alertów">
-    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterAlerts()">
-    <div id="alert-container" class="scrollable">
-      <div class="alert" *ngFor="let alert of filteredAlerts">
-        <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected" (change)="alertBoxChecked()">
-        <label for="alert-{{alert.name}}">{{alert.name}}</label>
+  <div class="lista_I_modyfikowanie">
+    <div class="lista_alertów">
+      <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterAlerts()">
+      <div id="alert-container" class="scrollable">
+        <div class="alert" *ngFor="let alert of filteredAlerts">
+          <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected" (change)="alertBoxChecked()">
+          <label for="alert-{{alert.name}}">{{alert.name}}</label>
+        </div>
       </div>
+      <button class="delete_button" (click)="deleteSelectedAlertsClicked()">Usuń zaznaczone</button>
     </div>
-    <button class="delete_button" (click)="deleteSelectedAlertsClicked()">Usuń zaznaczone</button>
-  </div>
-  <div class="alert_modification">
-    <div class="alert_info">
-      <p>Nazwa alertu:</p>
-      <span *ngIf="selectedAlertForUpdate">{{ selectedAlertForUpdate.name }}</span>
-    </div>
-    <div class="alert_info">
-      <p>Znak produktu:</p>
-      <span *ngIf="selectedAlertForUpdate">{{ getProductCodes(selectedAlertForUpdate) }}</span>
-    </div>
-    <div class="alert_info">
-      <p>Kontrahenci:</p>
-      <span *ngIf="selectedAlertForUpdate">{{ getClientNames(selectedAlertForUpdate) }}</span>
-    </div>
-    <div class="alert_info">
-      <p>Ilość graniczna:</p>
-      <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.criticalQuantity" #criticalQuantityForUpdate>
-    </div>
-    <div class="alert_info">
-      <p>Dni przed wyczerpaniem:</p>
-      <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedLeadTime(selectedAlertForUpdate)" #leadTimeInDaysForUpdate>
-    </div>
-    <div class="alert_info">
-      <p>Dni do analizy:</p>
-      <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedAnalysisPeriod(selectedAlertForUpdate)" #analysisPeriodInDaysForUpdate>
-    </div>
-    <div class="updateAlertButton">
-      <button (click)="updateAlertClicked()">Modyfikuj alert</button>
+    <div class="alert_modification">
+      <div class="alert_info">
+        <p>Nazwa alertu:</p>
+        <span *ngIf="selectedAlertForUpdate">{{ selectedAlertForUpdate.name }}</span>
+      </div>
+      <div class="alert_info">
+        <p>Znak produktu:</p>
+        <span *ngIf="selectedAlertForUpdate">{{ getProductCodes(selectedAlertForUpdate) }}</span>
+      </div>
+      <div class="alert_info">
+        <p>Kontrahenci:</p>
+        <span *ngIf="selectedAlertForUpdate">{{ getClientNames(selectedAlertForUpdate) }}</span>
+      </div>
+      <div class="alert_info">
+        <p>Ilość graniczna:</p>
+        <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.criticalQuantity" #criticalQuantityForUpdate>
+      </div>
+      <div class="alert_info">
+        <p>Dni przed wyczerpaniem:</p>
+        <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedLeadTime(selectedAlertForUpdate)" #leadTimeInDaysForUpdate>
+      </div>
+      <div class="alert_info">
+        <p>Dni do analizy:</p>
+        <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedAnalysisPeriod(selectedAlertForUpdate)" #analysisPeriodInDaysForUpdate>
+      </div>
+      <div class="updateAlertButton">
+        <button (click)="updateAlertClicked()">Modyfikuj alert</button>
+      </div>
     </div>
   </div>
   <div class="alert_adding">
+    <div class="little_header">
+      <h2>Dane alertu</h2>
+    </div>
+    <div class="dane_alertu">
     <div class="lista_produktów">
-      <p>Produkty:</p>
+      <div class="little_header">
+        <h2>Znak produktu</h2>
+      </div>
       <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
       <div id="product-container" class="scrollable">
         <div *ngFor="let product of filteredProducts">
@@ -57,31 +65,36 @@
         </div>
       </div>
     </div>
-    <div class="alert_input">
-      <p>Nazwa alertu:</p>
-      <input type="text" placeholder="CzapeczkiKubuś30DNI" #alertNameInput>
+    <div class="dodatkowe_dane">
+      <div class="lista_kontrahentów">
+        <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
+        <div class="hide">
+          <app-client-list (clientsListChange)="onClientListChange($event)"></app-client-list>
+        </div>
+      </div>
+      <div class="dane_alertu_text">
+      <div class="alert_input">
+        <p>Nazwa alertu:</p>
+        <input type="text" placeholder="CzapeczkiKubuś30DNI" #alertNameInput>
+      </div>
+      <div class="alert_input">
+        <p>Ilość graniczna:</p>
+        <input type="text" placeholder="100" #criticalQuantity>
+      </div>
+      <div class="alert_input">
+        <p>Dni przed wyczerpaniem:</p>
+        <input type="text" placeholder="45" #leadTimeInDays>
+      </div>
+      <div class="alert_input">
+        <p>Czas do analizy:</p>
+        <input type="text" placeholder="120" #analysisPeriodInDays>
+        <p>dni</p>
+      </div>
+      <div>
+        <button class="add_button" (click)="addNewAlertClicked()">Stwórz nowy alert</button>
+      </div>
+      </div>
     </div>
-    <div class="alert_input">
-      <p>Ilość graniczna:</p>
-      <input type="text" placeholder="100" #criticalQuantity>
-    </div>
-    <div class="alert_input">
-      <p>Dni przed wyczerpaniem:</p>
-      <input type="text" placeholder="45" #leadTimeInDays>
-    </div>
-    <div class="alert_input">
-      <p>Czas do analizy:</p>
-      <input type="text" placeholder="120" #analysisPeriodInDays>
-      <p>dni</p>
-    </div>
-    <div>
-      <button class="add_button" (click)="addNewAlertClicked()">Stwórz nowy alert</button>
-    </div>
-  </div>
-  <div class="lista_kontrahentów">
-    <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
-    <div class="hide">
-    <app-client-list (clientsListChange)="onClientListChange($event)"></app-client-list>
   </div>
   </div>
 </div>

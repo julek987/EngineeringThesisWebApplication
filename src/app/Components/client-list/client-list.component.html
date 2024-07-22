@@ -1,5 +1,7 @@
 <div class="lista_kontrahentów">
-  <p>Kontrahenci:</p>
+  <div class="little_header">
+    <h2>Kontrahenci</h2>
+  </div>
   <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextClients" (input)="filterClients()">
   <div id="client-container" class="scrollable">
     <div *ngFor="let client of filteredClients">

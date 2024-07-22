@@ -1,74 +1,158 @@
-body{
+body, html {
   margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: white;
 }
-button{
+
+button {
   background-color: #c9e3ff;
   border-color: #93bbe6;
+  border-radius: 5px; /* Ensure consistency with other buttons */
+  cursor: pointer;
 }
-.alerty{
+
+.alerty {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-items: center;
   margin: 10px;
 }
-.scrollable {
-  height: 200px; /* Adjust the maximum height as needed */
-  overflow-y: auto; /* Enable vertical scrolling */
-  padding: 10px;
-}
-.lista_alertów{
-  height: 300px;
+
+.lista_alertów, .alert_modification {
+  background-color: #93bbe6;
+  border: 3px solid #35424a;
   padding: 10px;
   margin-top: 25px;
-  border: 3px solid #35424a;
-  background-color: #93bbe6;
-  accent-color: #ff7979
+  box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
+
+.lista_alertów {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.alert_modification {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .add_button {
   background-color: #79ffac;
   border-color: #60fda1;
   border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.delete_button{
+
+.delete_button {
   background-color: #ff7979;
   border-color: #ff6565;
   border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.alert_modification{
-  border: 3px solid #35424a;
-  background-color: #93bbe6;
-  height: 300px;
-  padding: 10px;
-  margin-top: 25px;
-  display: grid;
-  justify-content: space-between;
-}
-.alert_input{
+.alert_input {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-}
-.alert_input input{
-  height: 18px;
+  margin-bottom: 10px;
 }
 
-#alert-container{
+.alert_input p {
+  margin: 0 10px 0 0;
+  flex-shrink: 0;
+}
+
+.alert_input input {
+  height: 36px;
+  padding: 5px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  flex-grow: 1;
+}
+
+#alert-container {
   border: 3px solid #35424a;
 }
 
-.hide{
+.hide {
   display: none;
 }
 
-input[type="radio"]{
+input[type="radio"],
+input[type="checkbox"] {
   transform: scale(1.5);
   margin-right: 4px;
   margin-bottom: 8px;
 }
 
-input[type="checkbox"]{
-  transform: scale(1.5);
-  margin-right: 4px;
-  margin-bottom: 8px;
+.lista_I_modyfikowanie {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Full width for flex container */
 }
 
+.dane_alertu {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Full width for flex container */
+}
+
+.alert_adding{
+  margin-right: 50px;
+  border: 3px solid black;
+}
+
+.lista_produktów {
+  border: 3px solid black;
+  height: 550px;
+  width: 200px;
+  background-color: white;
+  margin: 10px;
+}
+
+.dane_alertu_text{
+  margin:10px;
+}
+
+.lista_alertów{
+  display: flex;
+  justify-content: center;
+}
+
+.scrollable {
+  max-height: 460px; /* Adjust the maximum height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 10px;
+  margin-top: 2px;
+  box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.little_header {
+  background-color: #A7A7A7;
+  border-bottom: 3px solid black;
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.little_header h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+input[type="text"], select {
+  width: 80%;
+  max-width: 280px;
+  margin-top: 10px;
+  border-radius: 8px;
+  height: 30px;
+}
