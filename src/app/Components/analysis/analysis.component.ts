@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from "../../../types";
+import {Bestseller, Product} from "../../../types";
 import { WarehouseService } from "../../services/Warehouse/warehouse.service";
 import { ActivatedRoute } from '@angular/router';
 import { SalesService } from "../../services/Sales/sales.service";
 import { AnalyticalService } from "../../services/Analytics/analytical.service";
+import {BestsellersService} from "../../services/Bestsellers/bestsellers.service";
 
 @Component({
   selector: 'app-analysis',
@@ -21,16 +22,22 @@ export class AnalysisComponent implements OnInit {
   analysedModels: { code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: number }[] = [];
   selectedClients: { id: number, name: string }[] = [];
 
+  bestsellers: Bestseller[] = [];
+  searchTextBestsellers: string = '';
+  filteredBestsellers: Bestseller[] = [];
+
   constructor(
     private warehouseService: WarehouseService,
     private salesService: SalesService,
     private analyticalService: AnalyticalService,
+    private bestsellerService: BestsellersService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.loadProducts();
+      this.loadBestsellers();
     });
     this.setTodayDate();
   }
@@ -38,6 +45,15 @@ export class AnalysisComponent implements OnInit {
   setTodayDate() {
     const today = new Date();
     this.today = today.toISOString().split('T')[0];
+  }
+
+  loadBestsellers(): void {
+    this.bestsellerService.getAllBestsellers('http://localhost:5001/getbestsellers')
+      .subscribe((response: { value: Bestseller[] }) => {
+        this.bestsellers = response.value;
+        this.filteredBestsellers = this.bestsellers;
+        this.loadProducts();
+      });
   }
 
   loadProducts() {
@@ -201,5 +217,11 @@ export class AnalysisComponent implements OnInit {
 
     // Start processing the first prefix
     processProductsSequentially(0);
+  }
+
+  filterBestsellers(): void {
+    this.filteredBestsellers = this.bestsellers.filter(bestseller =>
+      bestseller.code.toLowerCase().includes(this.searchTextBestsellers.toLowerCase())
+    );
   }
 }

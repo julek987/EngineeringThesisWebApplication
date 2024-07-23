@@ -1,3 +1,4 @@
+<div [ngClass]="{'analysis-view': isInAnalysisView, 'alerts-view': isInAlertsView}">
 <div class="lista_kontrahentów">
   <div class="little_header">
     <h2>Kontrahenci</h2>
@@ -9,4 +10,5 @@
       {{ client.name }}
     </div>
   </div>
+</div>
 </div>

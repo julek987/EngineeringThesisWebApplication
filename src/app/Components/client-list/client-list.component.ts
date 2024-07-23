@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { Client } from '../../../types';
 import { WarehouseService } from '../../services/Warehouse/warehouse.service';
 
@@ -12,6 +12,9 @@ export class ClientListComponent implements OnInit {
   filteredClients: Client[] = [];
   searchTextClients: string = '';
   selectedClients: { id: number, name: string }[] = [];
+
+  @Input() isInAnalysisView: boolean = false;
+  @Input() isInAlertsView: boolean = false;
 
   @Output() selectedClientsChange = new EventEmitter<{ id: number, name: string }[]>();
   @Output() clientsListChange = new EventEmitter<Client[]>();

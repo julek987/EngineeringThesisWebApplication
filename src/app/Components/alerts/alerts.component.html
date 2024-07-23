@@ -101,9 +101,9 @@
       </div>
       <div class="dodatkowe_dane">
         <div class="lista_kontrahentów">
-          <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
+          <app-client-list [isInAlertsView]="true" (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
           <div class="hide">
-            <app-client-list (clientsListChange)="onClientListChange($event)"></app-client-list>
+            <app-client-list [isInAlertsView]="true" (clientsListChange)="onClientListChange($event)"></app-client-list>
           </div>
         </div>
         <div class="dane_alertu_text">

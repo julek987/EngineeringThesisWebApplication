@@ -7,8 +7,25 @@
 </head>
 <body>
 <div class="analiza">
+  <div class="bestsellery_pozostałe">
+  <div class="lista_bestsellerów">
+    <div class="little_header">
+      <h2>Bestsellery</h2>
+    </div>
+    <div class="dodawanie_bestsellerów_input">
+      <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextBestsellers" (input)="filterBestsellers()">
+    </div>
+    <div class="product-container scrollable">
+      <div class="bestseller" *ngFor="let bestseller of filteredBestsellers">
+        <input type="checkbox" [id]="'bestseller-' + bestseller.code" name="bestseller" [value]="bestseller.code">
+        <label [for]="'bestseller-' + bestseller.code">{{ bestseller.code }}</label>
+      </div>
+    </div>
+  </div>
   <div class="lista_produktów">
-    <p>Produkty:</p>
+    <div class="little_header">
+      <h2>Pozostałe</h2>
+    </div>
     <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
     <div id="product-container" class="scrollable">
       <div *ngFor="let product of filteredProducts">
@@ -17,18 +34,25 @@
       </div>
     </div>
   </div>
-  <div class="analiza_datownik">
+  </div>
+  <div class="clients_dates">
+  <app-client-list [isInAnalysisView]="true" (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
     <div class="datownik">
+      <div class="little_header">
+        <h2>Zakres dat</h2>
+      </div>
       <div class="data_początkowa">
-        <p style="border: 2px solid #891818">Data początkowa:</p>
+        <p>Od</p>
         <input type="date" [(ngModel)]="startDate">
       </div>
       <div class="data_końcowa">
-        <p style="border: 2px solid #891818">Data końcowa:</p>
+        <p>Do</p>
         <input type="date" id="endDate" [(ngModel)]="endDate" [max]="today">
       </div>
-      <button (click)="onSubmit()">Zatwierdź</button>
     </div>
+      <button class="zatwierdz" (click)="onSubmit()">Zatwierdź wszystko</button>
+  </div>
+  <div class="analiza_wynik">
     <div class="analiza_panel">
       <div id="analysis-container" class="scrollable">
         <div class="analysed-product" *ngFor="let analysedModel of analysedModels">
@@ -40,9 +64,6 @@
       </div>
     </div>
   </div>
-  <div class="lista_kontrahentów">
-    <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
   </div>
-</div>
 </body>
 </html>
