@@ -36,7 +36,7 @@
         <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.criticalQuantity" #criticalQuantityForUpdate>
       </div>
       <div class="alert_info">
-        <p>Dni przed wyczerpaniem:</p>
+        <p>Dni do wyczerpania nakładu:</p>
         <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedLeadTime(selectedAlertForUpdate)" #leadTimeInDaysForUpdate>
       </div>
       <div class="alert_info">
@@ -53,49 +53,55 @@
       <h2>Dane alertu</h2>
     </div>
     <div class="dane_alertu">
-    <div class="lista_produktów">
-      <div class="little_header">
-        <h2>Znak produktu</h2>
+      <div class="lista_produktów">
+        <div class="little_header">
+          <h2>Znak produktu</h2>
+        </div>
+        <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
+        <div id="product-container" class="scrollable">
+          <div *ngFor="let product of filteredProducts">
+            <input type="radio" [value]="product.code" [checked]="selectedProduct?.includes(product.code)" (change)="onProductSelect(product.code, $event)">
+            {{ product.code }}
+          </div>
+        </div>
       </div>
-      <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
-      <div id="product-container" class="scrollable">
-        <div *ngFor="let product of filteredProducts">
-          <input type="radio" [value]="product.code" [checked]="selectedProduct?.includes(product.code)" (change)="onProductSelect(product.code, $event)">
-          {{ product.code }}
+      <div class="dodatkowe_dane">
+        <div class="lista_kontrahentów">
+          <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
+          <div class="hide">
+            <app-client-list (clientsListChange)="onClientListChange($event)"></app-client-list>
+          </div>
+        </div>
+        <div class="dane_alertu_text">
+          <div class="alert_input">
+            <p>Nazwa alertu:</p>
+            <input type="text" placeholder="CzapeczkiKubuś30DNI" #alertNameInput>
+          </div>
+          <div class="alert_input">
+            <p>Ilość graniczna:</p>
+            <input type="text" placeholder="100 szt." #criticalQuantity>
+          </div>
+          <div class="alert_input">
+            <p>Dni przed wyczerpaniem:</p>
+            <input type="text" placeholder="45" #leadTimeInDays>
+          </div>
+          <div class="alert_input">
+            <p>Czas do analizy:</p>
+            <select #analysisPeriodInDays (change)="onAnalysisPeriodChange($event)">
+              <option value="1">1 miesiąc</option>
+              <option value="2">2 miesiące</option>
+              <option value="3">3 miesiące</option>
+              <option value="6">6 miesięcy</option>
+              <option value="12">12 miesięcy</option>
+            </select>
+          </div>
+
+          <div>
+            <button class="add_button" (click)="addNewAlertClicked()">Stwórz nowy alert</button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="dodatkowe_dane">
-      <div class="lista_kontrahentów">
-        <app-client-list (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
-        <div class="hide">
-          <app-client-list (clientsListChange)="onClientListChange($event)"></app-client-list>
-        </div>
-      </div>
-      <div class="dane_alertu_text">
-      <div class="alert_input">
-        <p>Nazwa alertu:</p>
-        <input type="text" placeholder="CzapeczkiKubuś30DNI" #alertNameInput>
-      </div>
-      <div class="alert_input">
-        <p>Ilość graniczna:</p>
-        <input type="text" placeholder="100" #criticalQuantity>
-      </div>
-      <div class="alert_input">
-        <p>Dni przed wyczerpaniem:</p>
-        <input type="text" placeholder="45" #leadTimeInDays>
-      </div>
-      <div class="alert_input">
-        <p>Czas do analizy:</p>
-        <input type="text" placeholder="120" #analysisPeriodInDays>
-        <p>dni</p>
-      </div>
-      <div>
-        <button class="add_button" (click)="addNewAlertClicked()">Stwórz nowy alert</button>
-      </div>
-      </div>
-    </div>
-  </div>
   </div>
 </div>
 </body>

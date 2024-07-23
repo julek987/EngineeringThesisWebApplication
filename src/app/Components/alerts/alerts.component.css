@@ -42,12 +42,18 @@ button {
 }
 
 .add_button {
-  background-color: #79ffac;
-  border-color: #60fda1;
-  border-radius: 5px;
+  background-color: #AFE8A1;
+  color: #246723;
+  border: none;
+  border-radius: 8px;
   padding: 10px 20px;
   font-size: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-top: 10px;
+}
+
+.add_button:hover {
+  background-color: #93e87e;
 }
 
 .delete_button {
@@ -62,7 +68,6 @@ button {
 .alert_input {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .alert_input p {
@@ -73,6 +78,7 @@ button {
 .alert_input input {
   height: 36px;
   padding: 5px;
+  margin-bottom: 10px;
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -149,10 +155,30 @@ input[type="checkbox"] {
   font-size: 16px;
 }
 
-input[type="text"], select {
-  width: 80%;
-  max-width: 280px;
+input[type="text"] {
+  max-width: 200px;
   margin-top: 10px;
+  margin-left: 10px;
+  box-sizing: border-box;
   border-radius: 8px;
   height: 30px;
+}
+
+select {
+  max-width: 200px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+/* Add some styling for the dropdown options if needed */
+select option {
+  padding: 8px 10px; /* Padding inside each option for better readability */
 }

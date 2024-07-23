@@ -30,6 +30,16 @@ export class AlertsComponent implements OnInit {
   filteredProducts: Product[] = [];
   searchTextProducts: string = '';
   selectedProduct?: string;
+  selectedAnalysisPeriod: number = 30; // Default to 1 month (30 days)
+
+  // Mapping of months to days
+  private monthsToDays: { [key: number]: number } = {
+    1: 30,
+    2: 60,
+    3: 90,
+    6: 180,
+    12: 365
+  };
 
   constructor(
     private alertsService: AlertsService,
@@ -108,7 +118,7 @@ export class AlertsComponent implements OnInit {
     const productCode = this.selectedProduct;
     const thresholdQuantity = this.criticalQuantity.nativeElement.value;
     const daysBeforeExhaustion = this.leadTimeInDays.nativeElement.value;
-    const analysisTime = this.analysisPeriodInDays.nativeElement.value;
+    const analysisTime = this.monthsToDays[this.selectedAnalysisPeriod] || 30; // Convert months to days
 
     const matchingProducts = this.products.filter(p => p.code.startsWith(<string>this.selectedProduct))
       .map(p => ({ code: p.code }));
@@ -137,11 +147,6 @@ export class AlertsComponent implements OnInit {
   alertBoxChecked(): void {
     const selectedAlerts = this.filteredAlerts.filter(alert => alert.selected);
 
-    // if (selectedAlerts.length === 0) {
-    //   console.warn('No alerts selected for update.');
-    //   return;
-    // }
-
     if (selectedAlerts.length > 1) {
       console.warn('Please select only one alert for update.');
       return;
@@ -158,7 +163,7 @@ export class AlertsComponent implements OnInit {
     };
     const thresholdQuantity = this.criticalQuantityForUpdate.nativeElement.value;
     const daysBeforeExhaustion = this.leadTimeInDaysForUpdate.nativeElement.value;
-    const analysisTime = this.analysisPeriodInDaysForUpdate.nativeElement.value;
+    const analysisTime = this.monthsToDays[this.selectedAnalysisPeriod] || 30; // Convert months to days
     this.alertsService.updateAlert("http://localhost:5001/updatealert?name=" + this.selectedAlertForUpdate?.name +
       "&analysisPeriodInDays=" + analysisTime + "&leadTimeInDays=" + daysBeforeExhaustion +
       "&criticalQuantity=" + thresholdQuantity, updatedAlertBody).subscribe({
@@ -227,5 +232,13 @@ export class AlertsComponent implements OnInit {
     if (event.target.checked) {
       this.selectedProduct = product;
     }
+  }
+
+  onAnalysisPeriodChange(event: any): void {
+    this.selectedAnalysisPeriod = parseInt(event.target.value, 10);
+  }
+
+  convertToDays(): void {
+    // This method is no longer needed if conversion is handled directly
   }
 }
