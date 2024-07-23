@@ -5,23 +5,11 @@ body, html {
   background-color: white;
 }
 
-button {
-  background-color: #c9e3ff;
-  border-color: #93bbe6;
-  border-radius: 5px; /* Ensure consistency with other buttons */
-  cursor: pointer;
-}
-
 .alerty {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 10px;
-}
-
-.alert_modification {
-  display: flex;
-  width: 450px;
 }
 
 .lista_alertów {
@@ -33,24 +21,33 @@ button {
 
 .alert_modification {
   display: flex;
-  flex-direction: column; /* Change this to column if you want a vertical layout for the entire section */
-  width: 100%;
+  flex-direction: column; /* Arrange child elements vertically */
+  width: 100%; /* Make it use full width of parent container */
+  height: 300px; /* Fixed height */
+  box-sizing: border-box; /* Include padding and border in width/height calculation */
 }
 
-.alert_modification .alert_info {
+.alert_infos {
   display: flex;
-  align-items: center; /* Center the label and value vertically */
-  margin-bottom: 10px; /* Add spacing between the rows */
+  flex-direction: column;
+  width: 100%; /* Ensure it uses full width of parent */
+  margin-left: 10px;
 }
 
-.alert_modification .alert_info p {
-  /* Space between label and value */
-  margin: 0 10px 0 0;
+.alert_info {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Ensure full width of parent container */
+  margin: 0 10px 0 0; /* Adjust spacing between label and value */
 }
 
-.alert_modification .alert_info span,
-.alert_modification .alert_info input {
-  flex: 1; /* Allow the input or span to take the remaining space */
+.alert_info input{
+  width: 50px;
+  margin-bottom: 6px;
+}
+
+.alert_info span{
+  margin-left: 6px;
 }
 
 .lista_produktów_with_searchbar {
@@ -86,12 +83,6 @@ button {
   flex-direction: column;
 }
 
-.alert_modification {
-  height: 300px;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .add_button {
   background-color: #AFE8A1;
   color: #246723;
@@ -101,6 +92,7 @@ button {
   font-size: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   margin-top: 10px;
+  cursor: pointer;
 }
 
 .add_button:hover {
@@ -108,33 +100,55 @@ button {
 }
 
 .delete_button {
-  background-color: #ff7979;
-  border-color: #ff6565;
-  border-radius: 5px;
+  background-color: #FF8D8D;
+  border: none;
   padding: 10px 20px;
   font-size: 16px;
   margin-bottom: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #8A1A1A;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.delete_button:hover{
+  background-color: #fb7474;
+}
+
+.updateAlertButtonDiv {
+  display: flex;
+  justify-content: center; /* Center the button horizontally */
+}
+
+.updateAlertButton {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.updateAlertButton:hover {
+  background-color: #0056b3;
 }
 
 .alert_input {
   display: flex;
   align-items: center;
+  font-size: 18px;
 }
 
-.alert_input p {
-  margin: 0 10px 0 0;
-  flex-shrink: 0;
-}
-
-.alert_input input {
-  height: 36px;
-  padding: 5px;
+.alert_input input{
   margin-bottom: 10px;
-  box-sizing: border-box;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  flex-grow: 1;
+  font-size: 18px;
+}
+
+.alert_input select{
+  font-size: 18px;
 }
 
 .hide {
@@ -176,6 +190,18 @@ input[type="checkbox"] {
 .dane_alertu_text {
   margin: 10px;
 }
+
+.dropdown-button{
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-left: 10px;
+}
+
 
 .scrollable {
   max-height: 460px; /* Adjust the maximum height as needed */
@@ -222,7 +248,6 @@ select {
   background-color: #fff;
 }
 
-/* Add some styling for the dropdown options if needed */
 select option {
   padding: 8px 10px; /* Padding inside each option for better readability */
 }
@@ -246,15 +271,6 @@ select option {
   border-bottom: 1px solid #ddd;
 }
 
-.toggle-button {
-  background-color: #c9e3ff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 5px 10px;
-  margin-left: 10px;
-}
-
 .overlay {
   position: fixed; /* Fix the overlay to the viewport */
   top: 0;
@@ -275,20 +291,6 @@ select option {
   width: 80%;
   max-width: 600px; /* Limit the maximum width */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.close-button {
-  background-color: #ff7979;
-  border: none;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  float: right;
-}
-
-.close-button:hover {
-  background-color: #ff6565;
 }
 
 .dropdown {
@@ -326,7 +328,7 @@ select option {
 }
 
 .dropdown:hover .dropdown-button {
-  background-color: #ddd;
+  background-color: #0056b3;
 }
 
 .button_container {

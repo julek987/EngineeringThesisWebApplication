@@ -36,43 +36,45 @@
           <h2>Modyfikuj alert</h2>
         </div>
         <div class="alert_modification">
-          <div class="alert_info">
-            <p>Nazwa alertu:</p>
-            <span *ngIf="selectedAlertForUpdate">{{ selectedAlertForUpdate.name }}</span>
-          </div>
-          <div class="alert_info">
-            <p>Znak produktu:</p>
-            <span *ngIf="selectedAlertForUpdate">{{ getProductCodes(selectedAlertForUpdate) }}</span>
-          </div>
-          <div class="alert_info">
-            <p>Kontrahenci:</p>
-            <div class="dropdown">
-              <button class="dropdown-button">
-                {{ isClientListVisible ? 'Ukryj kontrahentów' : 'Pokaż kontrahentów' }}
-              </button>
-              <div class="dropdown-content">
-                <table>
-                  <tr *ngFor="let client of selectedAlertForUpdate?.clients || []">
-                    <td>{{ getClientNameById(client.id) }}</td>
-                  </tr>
-                </table>
+          <div class="alert_infos">
+            <div class="alert_info">
+              <p>Nazwa alertu:</p>
+              <span *ngIf="selectedAlertForUpdate">{{ selectedAlertForUpdate.name }}</span>
+            </div>
+            <div class="alert_info">
+              <p>Znak produktu:</p>
+              <span *ngIf="selectedAlertForUpdate">{{ getProductCodes(selectedAlertForUpdate) }}</span>
+            </div>
+            <div class="alert_info">
+              <p>Kontrahenci:</p>
+              <div class="dropdown">
+                <button class="dropdown-button">
+                  {{ isClientListVisible ? 'Ukryj kontrahentów' : 'Pokaż kontrahentów' }}
+                </button>
+                <div class="dropdown-content">
+                  <table>
+                    <tr *ngFor="let client of selectedAlertForUpdate?.clients || []">
+                      <td>{{ getClientNameById(client.id) }}</td>
+                    </tr>
+                  </table>
+                </div>
               </div>
             </div>
+            <div class="alert_info">
+              <p>Ilość graniczna:</p>
+              <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.criticalQuantity" #criticalQuantityForUpdate>
+            </div>
+            <div class="alert_info">
+              <p>Dni przed wyczerpaniem:</p>
+              <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedLeadTime(selectedAlertForUpdate)" #leadTimeInDaysForUpdate>
+            </div>
+            <div class="alert_info">
+              <p>Czas do analizy:</p>
+              <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedAnalysisPeriod(selectedAlertForUpdate)" #analysisPeriodInDaysForUpdate>
+            </div>
           </div>
-          <div class="alert_info">
-            <p>Ilość graniczna:</p>
-            <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.criticalQuantity" #criticalQuantityForUpdate>
-          </div>
-          <div class="alert_info">
-            <p>Dni do wyczerpania nakładu:</p>
-            <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedLeadTime(selectedAlertForUpdate)" #leadTimeInDaysForUpdate>
-          </div>
-          <div class="alert_info">
-            <p>Dni do analizy:</p>
-            <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedAnalysisPeriod(selectedAlertForUpdate)" #analysisPeriodInDaysForUpdate>
-          </div>
-          <div class="updateAlertButton">
-            <button (click)="updateAlertClicked()">Modyfikuj alert</button>
+          <div class="updateAlertButtonDiv">
+            <button class="updateAlertButton" (click)="updateAlertClicked()">Modyfikuj alert</button>
           </div>
         </div>
       </div>
@@ -80,7 +82,7 @@
   </div>
   <div class="alert_adding">
     <div class="little_header">
-      <h2>Dane alertu</h2>
+      <h2>Stwórz alert</h2>
     </div>
     <div class="dane_alertu">
       <div class="lista_produktów">
