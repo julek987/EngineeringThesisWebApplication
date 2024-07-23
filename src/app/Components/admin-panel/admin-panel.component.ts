@@ -19,7 +19,9 @@ export class AdminPanelComponent implements OnInit {
 
   newEmployeeLogin: string = '';
   newEmployeePassword: string = '';
+  newEmployeePasswordConfirmation: string = '';
   newEmployeeRole: string = 'Pracownik';
+  passwordMismatch: boolean = false;
 
   constructor(
     private employeesService: AdminService,
@@ -110,6 +112,13 @@ export class AdminPanelComponent implements OnInit {
       'Pracownik': 'employee',
       'Admin': 'admin'
     };
+
+    if (this.newEmployeePassword !== this.newEmployeePasswordConfirmation) {
+      this.passwordMismatch = true;
+      return;
+    }
+
+    this.passwordMismatch = false;
 
     const newEmployee = {
       username: this.newEmployeeLogin,

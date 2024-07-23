@@ -39,18 +39,17 @@ body, html {
 
 .lista_pracowników {
   height: 250px;
-  accent-color: #AFE8A1;
-  margin-bottom: 10px;
-}
-
-.dodawanie_pracowników {
-  height: 250px; /* Shorter height */
   accent-color: #FF8D8D;
   margin-bottom: 10px;
 }
 
+.dodawanie_pracowników {
+  height: 330px; /* Shorter height */
+  margin-bottom: 10px;
+}
+
 .little_header {
-  background-color: #A7A7A7;
+  background-color: #D9D9D9;
   border-bottom: 3px solid black;
   text-align: center;
   width: 100%;
@@ -147,9 +146,16 @@ select {
   color: #333;
 }
 
-
 input[type="checkbox"] {
   transform: scale(1.35);
   margin-right: 4px;
   margin-bottom: 8px;
 }
+
+/* Error message styles */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
