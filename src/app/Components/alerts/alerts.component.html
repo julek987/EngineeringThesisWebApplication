@@ -4,46 +4,6 @@
   <meta charset="UTF-8">
   <title>Alerts Component</title>
   <link rel="stylesheet" href="alerts.component.css">
-  <style>
-    /* Dropdown styles */
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: #f9f9f9;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 1;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-
-    .dropdown-content table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .dropdown-content td {
-      padding: 8px;
-      border-bottom: 1px solid #ddd;
-    }
-
-    .dropdown-content tr:hover {
-      background-color: #f1f1f1;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-
-    .dropdown:hover .dropdown-button {
-      background-color: #ddd;
-    }
-  </style>
 </head>
 <body>
 <div class="alerty">
@@ -52,20 +12,24 @@
       <h2>Alerty</h2>
     </div>
     <div class="lista_I_modyfikowanie">
-      <div class="lista_alertów_with_header">
-        <div class="little_header">
-          <h2>Lista alertów</h2>
-        </div>
-        <div class="lista_alertów">
-          <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterAlerts()">
-          <div id="alert-container" class="scrollable">
-            <div class="alert" *ngFor="let alert of filteredAlerts">
-              <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected" (change)="alertBoxChecked()">
-              <label for="alert-{{alert.name}}">{{alert.name}}</label>
+      <div class="lista_alertów_with_header_and_button">
+        <div class="lista_alertów_with_header">
+          <div class="little_header">
+            <h2>Lista alertów</h2>
+          </div>
+          <div class="lista_alertów">
+            <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterAlerts()">
+            <div id="alert-container" class="scrollable">
+              <div class="alert" *ngFor="let alert of filteredAlerts">
+                <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected" (change)="alertBoxChecked()">
+                <label for="alert-{{alert.name}}">{{alert.name}}</label>
+              </div>
             </div>
           </div>
         </div>
-        <button class="delete_button" (click)="deleteSelectedAlertsClicked()">Usuń zaznaczone</button>
+        <div class="button_container">
+          <button class="delete_button" (click)="deleteSelectedAlertsClicked()">Usuń zaznaczone</button>
+        </div>
       </div>
       <div class="alert_modification_with_header">
         <div class="little_header">
@@ -163,7 +127,6 @@
               <option value="12">12 miesięcy</option>
             </select>
           </div>
-
           <div>
             <button class="add_button" (click)="addNewAlertClicked()">Stwórz nowy alert</button>
           </div>

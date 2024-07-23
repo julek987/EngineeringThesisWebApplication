@@ -19,9 +19,16 @@ button {
   margin: 10px;
 }
 
-.lista_alertów, .alert_modification {
+.alert_modification {
   display: flex;
   width: 450px;
+}
+
+.lista_alertów {
+  height: 450px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
 }
 
 .alert_modification {
@@ -46,25 +53,19 @@ button {
   flex: 1; /* Allow the input or span to take the remaining space */
 }
 
-.lista_alertów{
-  height: 450px;
-  width: 200px;
-  background-color: white;
-}
-
-.lista_produktów_with_searchbar{
+.lista_produktów_with_searchbar {
   display: flex;
   flex-direction: column;
 }
 
-.lista_alertów_with_header{
+.lista_alertów_with_header {
   margin: 10px;
   border: 3px solid black;
   display: flex;
   flex-direction: column;
 }
 
-.alert_list_and_modification_with_header{
+.alert_list_and_modification_with_header {
   margin: 10px;
   border: 3px solid black;
   display: flex;
@@ -73,12 +74,12 @@ button {
 
 .lista_alertów {
   height: 300px;
+  accent-color: #FF8D8D;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
-.alert_modification_with_header{
+.alert_modification_with_header {
   margin: 10px;
   border: 3px solid black;
   display: flex;
@@ -112,6 +113,7 @@ button {
   border-radius: 5px;
   padding: 10px 20px;
   font-size: 16px;
+  margin-bottom: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -146,10 +148,6 @@ input[type="checkbox"] {
   margin-bottom: 8px;
 }
 
-.alert_modification_with_header{
-
-}
-
 .lista_I_modyfikowanie {
   display: flex;
   justify-content: center;
@@ -162,7 +160,7 @@ input[type="checkbox"] {
   width: 100%; /* Full width for flex container */
 }
 
-.alert_adding{
+.alert_adding {
   height: 100%;
   border: 3px solid black;
 }
@@ -175,8 +173,8 @@ input[type="checkbox"] {
   margin: 10px;
 }
 
-.dane_alertu_text{
-  margin:10px;
+.dane_alertu_text {
+  margin: 10px;
 }
 
 .scrollable {
@@ -291,4 +289,48 @@ select option {
 
 .close-button:hover {
   background-color: #ff6565;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  z-index: 1;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dropdown-content td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.dropdown-content tr:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropdown-button {
+  background-color: #ddd;
+}
+
+.button_container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
