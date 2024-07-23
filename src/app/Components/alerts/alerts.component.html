@@ -4,47 +4,113 @@
   <meta charset="UTF-8">
   <title>Alerts Component</title>
   <link rel="stylesheet" href="alerts.component.css">
+  <style>
+    /* Dropdown styles */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .dropdown-content table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .dropdown-content td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .dropdown-content tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown:hover .dropdown-button {
+      background-color: #ddd;
+    }
+  </style>
 </head>
 <body>
 <div class="alerty">
-  <div class="lista_I_modyfikowanie">
-    <div class="lista_alertów">
-      <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterAlerts()">
-      <div id="alert-container" class="scrollable">
-        <div class="alert" *ngFor="let alert of filteredAlerts">
-          <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected" (change)="alertBoxChecked()">
-          <label for="alert-{{alert.name}}">{{alert.name}}</label>
-        </div>
-      </div>
-      <button class="delete_button" (click)="deleteSelectedAlertsClicked()">Usuń zaznaczone</button>
+  <div class="alert_list_and_modification_with_header">
+    <div class="little_header">
+      <h2>Alerty</h2>
     </div>
-    <div class="alert_modification">
-      <div class="alert_info">
-        <p>Nazwa alertu:</p>
-        <span *ngIf="selectedAlertForUpdate">{{ selectedAlertForUpdate.name }}</span>
+    <div class="lista_I_modyfikowanie">
+      <div class="lista_alertów_with_header">
+        <div class="little_header">
+          <h2>Lista alertów</h2>
+        </div>
+        <div class="lista_alertów">
+          <input type="text" placeholder="Szukaj.." [(ngModel)]="searchText" (input)="filterAlerts()">
+          <div id="alert-container" class="scrollable">
+            <div class="alert" *ngFor="let alert of filteredAlerts">
+              <input type="checkbox" id="alert-{{alert.name}}" name="alert" [(ngModel)]="alert.selected" (change)="alertBoxChecked()">
+              <label for="alert-{{alert.name}}">{{alert.name}}</label>
+            </div>
+          </div>
+        </div>
+        <button class="delete_button" (click)="deleteSelectedAlertsClicked()">Usuń zaznaczone</button>
       </div>
-      <div class="alert_info">
-        <p>Znak produktu:</p>
-        <span *ngIf="selectedAlertForUpdate">{{ getProductCodes(selectedAlertForUpdate) }}</span>
-      </div>
-      <div class="alert_info">
-        <p>Kontrahenci:</p>
-        <span *ngIf="selectedAlertForUpdate">{{ getClientNames(selectedAlertForUpdate) }}</span>
-      </div>
-      <div class="alert_info">
-        <p>Ilość graniczna:</p>
-        <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.criticalQuantity" #criticalQuantityForUpdate>
-      </div>
-      <div class="alert_info">
-        <p>Dni do wyczerpania nakładu:</p>
-        <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedLeadTime(selectedAlertForUpdate)" #leadTimeInDaysForUpdate>
-      </div>
-      <div class="alert_info">
-        <p>Dni do analizy:</p>
-        <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedAnalysisPeriod(selectedAlertForUpdate)" #analysisPeriodInDaysForUpdate>
-      </div>
-      <div class="updateAlertButton">
-        <button (click)="updateAlertClicked()">Modyfikuj alert</button>
+      <div class="alert_modification_with_header">
+        <div class="little_header">
+          <h2>Modyfikuj alert</h2>
+        </div>
+        <div class="alert_modification">
+          <div class="alert_info">
+            <p>Nazwa alertu:</p>
+            <span *ngIf="selectedAlertForUpdate">{{ selectedAlertForUpdate.name }}</span>
+          </div>
+          <div class="alert_info">
+            <p>Znak produktu:</p>
+            <span *ngIf="selectedAlertForUpdate">{{ getProductCodes(selectedAlertForUpdate) }}</span>
+          </div>
+          <div class="alert_info">
+            <p>Kontrahenci:</p>
+            <div class="dropdown">
+              <button class="dropdown-button">
+                {{ isClientListVisible ? 'Ukryj kontrahentów' : 'Pokaż kontrahentów' }}
+              </button>
+              <div class="dropdown-content">
+                <table>
+                  <tr *ngFor="let client of selectedAlertForUpdate?.clients || []">
+                    <td>{{ getClientNameById(client.id) }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="alert_info">
+            <p>Ilość graniczna:</p>
+            <input type="text" *ngIf="selectedAlertForUpdate" [value]="selectedAlertForUpdate.criticalQuantity" #criticalQuantityForUpdate>
+          </div>
+          <div class="alert_info">
+            <p>Dni do wyczerpania nakładu:</p>
+            <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedLeadTime(selectedAlertForUpdate)" #leadTimeInDaysForUpdate>
+          </div>
+          <div class="alert_info">
+            <p>Dni do analizy:</p>
+            <input type="text" *ngIf="selectedAlertForUpdate" [value]="getFormattedAnalysisPeriod(selectedAlertForUpdate)" #analysisPeriodInDaysForUpdate>
+          </div>
+          <div class="updateAlertButton">
+            <button (click)="updateAlertClicked()">Modyfikuj alert</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -57,11 +123,13 @@
         <div class="little_header">
           <h2>Znak produktu</h2>
         </div>
-        <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
-        <div id="product-container" class="scrollable">
-          <div *ngFor="let product of filteredProducts">
-            <input type="radio" [value]="product.code" [checked]="selectedProduct?.includes(product.code)" (change)="onProductSelect(product.code, $event)">
-            {{ product.code }}
+        <div class="lista_produktów_with_searchbar">
+          <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
+          <div id="product-container" class="scrollable">
+            <div *ngFor="let product of filteredProducts">
+              <input type="radio" [value]="product.code" [checked]="selectedProduct?.includes(product.code)" (change)="onProductSelect(product.code, $event)">
+              {{ product.code }}
+            </div>
           </div>
         </div>
       </div>

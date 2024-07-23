@@ -32,6 +32,8 @@ export class AlertsComponent implements OnInit {
   selectedProduct?: string;
   selectedAnalysisPeriod: number = 30; // Default to 1 month (30 days)
 
+  isClientListVisible = false;
+
   // Mapping of months to days
   private monthsToDays: { [key: number]: number } = {
     1: 30,
@@ -45,7 +47,8 @@ export class AlertsComponent implements OnInit {
     private alertsService: AlertsService,
     private warehouseService: WarehouseService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -121,9 +124,9 @@ export class AlertsComponent implements OnInit {
     const analysisTime = this.monthsToDays[this.selectedAnalysisPeriod] || 30; // Convert months to days
 
     const matchingProducts = this.products.filter(p => p.code.startsWith(<string>this.selectedProduct))
-      .map(p => ({ code: p.code }));
+      .map(p => ({code: p.code}));
 
-    const clientsIdsBody = { clients: this.selectedClients.map(client => ({ id: client.id, name: client.name })) };
+    const clientsIdsBody = {clients: this.selectedClients.map(client => ({id: client.id, name: client.name}))};
 
     const newAlertBody = {
       clients: clientsIdsBody.clients,
@@ -238,7 +241,8 @@ export class AlertsComponent implements OnInit {
     this.selectedAnalysisPeriod = parseInt(event.target.value, 10);
   }
 
-  convertToDays(): void {
-    // This method is no longer needed if conversion is handled directly
+  getClientNameById(clientId: number): string {
+    const client = this.clientList.find(c => c.id === clientId);
+    return client ? client.name : 'Unknown';
   }
 }

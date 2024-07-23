@@ -15,16 +15,60 @@ button {
 .alerty {
   display: flex;
   align-items: center;
-  justify-items: center;
+  justify-content: space-between;
   margin: 10px;
 }
 
 .lista_alertów, .alert_modification {
-  background-color: #93bbe6;
-  border: 3px solid #35424a;
-  padding: 10px;
-  margin-top: 25px;
-  box-sizing: border-box; /* Ensure padding and border are included in the width */
+  display: flex;
+  width: 450px;
+}
+
+.alert_modification {
+  display: flex;
+  flex-direction: column; /* Change this to column if you want a vertical layout for the entire section */
+  width: 100%;
+}
+
+.alert_modification .alert_info {
+  display: flex;
+  align-items: center; /* Center the label and value vertically */
+  margin-bottom: 10px; /* Add spacing between the rows */
+}
+
+.alert_modification .alert_info p {
+  /* Space between label and value */
+  margin: 0 10px 0 0;
+}
+
+.alert_modification .alert_info span,
+.alert_modification .alert_info input {
+  flex: 1; /* Allow the input or span to take the remaining space */
+}
+
+.lista_alertów{
+  height: 450px;
+  width: 200px;
+  background-color: white;
+}
+
+.lista_produktów_with_searchbar{
+  display: flex;
+  flex-direction: column;
+}
+
+.lista_alertów_with_header{
+  margin: 10px;
+  border: 3px solid black;
+  display: flex;
+  flex-direction: column;
+}
+
+.alert_list_and_modification_with_header{
+  margin: 10px;
+  border: 3px solid black;
+  display: flex;
+  flex-direction: column;
 }
 
 .lista_alertów {
@@ -34,11 +78,17 @@ button {
   justify-content: space-between;
 }
 
-.alert_modification {
-  height: 300px;
+.alert_modification_with_header{
+  margin: 10px;
+  border: 3px solid black;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+}
+
+.alert_modification {
+  height: 300px;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .add_button {
@@ -85,10 +135,6 @@ button {
   flex-grow: 1;
 }
 
-#alert-container {
-  border: 3px solid #35424a;
-}
-
 .hide {
   display: none;
 }
@@ -98,6 +144,10 @@ input[type="checkbox"] {
   transform: scale(1.5);
   margin-right: 4px;
   margin-bottom: 8px;
+}
+
+.alert_modification_with_header{
+
 }
 
 .lista_I_modyfikowanie {
@@ -113,7 +163,7 @@ input[type="checkbox"] {
 }
 
 .alert_adding{
-  margin-right: 50px;
+  height: 100%;
   border: 3px solid black;
 }
 
@@ -129,16 +179,11 @@ input[type="checkbox"] {
   margin:10px;
 }
 
-.lista_alertów{
-  display: flex;
-  justify-content: center;
-}
-
 .scrollable {
   max-height: 460px; /* Adjust the maximum height as needed */
   overflow-y: auto; /* Enable vertical scrolling */
-  padding: 10px;
   margin-top: 2px;
+  padding: 10px;
   box-sizing: border-box; /* Ensure padding is included in the width */
 }
 
@@ -157,11 +202,12 @@ input[type="checkbox"] {
 
 input[type="text"] {
   max-width: 200px;
-  margin-top: 10px;
-  margin-left: 10px;
   box-sizing: border-box;
   border-radius: 8px;
   height: 30px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 select {
@@ -181,4 +227,68 @@ select {
 /* Add some styling for the dropdown options if needed */
 select option {
   padding: 8px 10px; /* Padding inside each option for better readability */
+}
+
+.client_list {
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.client_list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.client_list td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.toggle-button {
+  background-color: #c9e3ff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-left: 10px;
+}
+
+.overlay {
+  position: fixed; /* Fix the overlay to the viewport */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it is on top of other content */
+}
+
+.overlay-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px; /* Limit the maximum width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+  background-color: #ff7979;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  float: right;
+}
+
+.close-button:hover {
+  background-color: #ff6565;
 }
