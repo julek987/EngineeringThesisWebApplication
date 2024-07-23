@@ -22,6 +22,7 @@ export class AdminPanelComponent implements OnInit {
   newEmployeePasswordConfirmation: string = '';
   newEmployeeRole: string = 'Pracownik';
   passwordMismatch: boolean = false;
+  loginConflict: boolean = false;
 
   constructor(
     private employeesService: AdminService,
@@ -119,6 +120,15 @@ export class AdminPanelComponent implements OnInit {
     }
 
     this.passwordMismatch = false;
+
+    // Check if the login already exists
+    const loginExists = this.employees.some(employee => employee.username === this.newEmployeeLogin);
+    if (loginExists) {
+      this.loginConflict = true;
+      return;
+    }
+
+    this.loginConflict = false;
 
     const newEmployee = {
       username: this.newEmployeeLogin,

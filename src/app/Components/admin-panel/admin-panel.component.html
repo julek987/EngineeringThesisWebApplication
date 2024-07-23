@@ -62,9 +62,10 @@
       </div>
       <div class="dodawanie_pracowników_input">
         <input type="text" id="login" placeholder="Login" [(ngModel)]="newEmployeeLogin">
+        <div *ngIf="loginConflict" class="error-message">Login zajęty!</div>
         <input type="password" placeholder="Hasło" [(ngModel)]="newEmployeePassword">
         <input type="password" placeholder="Potwierdź hasło" [(ngModel)]="newEmployeePasswordConfirmation">
-        <div *ngIf="passwordMismatch" class="error-message">Hasła nie są takie same</div>
+        <div *ngIf="passwordMismatch" class="error-message">Hasła nie są takie same!</div>
         <select id="roles" name="roles" [(ngModel)]="newEmployeeRole">
           <option value="Pracownik">Pracownik</option>
           <option value="Admin">Admin</option>

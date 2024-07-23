@@ -28,24 +28,25 @@ body, html {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: solid black;
   display: flex;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 20px;
+  margin-right: 10px;
   flex-direction: column;
   width: 90%;
   box-sizing: border-box;
   margin-bottom: 0; /* Remove margin bottom */
-  padding-bottom: 10px; /* Add padding bottom */
 }
 
 .lista_pracowników {
   height: 250px;
   accent-color: #FF8D8D;
   margin-bottom: 10px;
+  width: 260px;
 }
 
 .dodawanie_pracowników {
-  height: 330px; /* Shorter height */
+  height: 340px; /* Shorter height */
   margin-bottom: 10px;
+  width: 260px;
 }
 
 .little_header {
