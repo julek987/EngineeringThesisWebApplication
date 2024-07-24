@@ -29,6 +29,20 @@ export class DetailComponent implements OnInit {
 
   today: string;
 
+  // Chart data
+  public combinedChartData: any[] = [];
+  public view: [number, number] = [700, 400];  // Ensure view has exactly 2 elements
+  public legend: boolean = true;
+  public showLabels: boolean = true;
+  public animations: boolean = true;
+  public xAxis: boolean = true;
+  public yAxis: boolean = true;
+  public showYAxisLabel: boolean = true;
+  public showXAxisLabel: boolean = true;
+  public xAxisLabel: string = 'Date';
+  public yAxisLabel: string = 'Quantity';
+  public timeline: boolean = true;
+
   constructor(
     private route: ActivatedRoute,
     private warehouseService: WarehouseService,
@@ -90,6 +104,17 @@ export class DetailComponent implements OnInit {
 
     forkJoin(requests).subscribe(results => {
       this.filteredProducts = results;
+      this.updateChart();
     });
+  }
+
+  updateChart() {
+    this.combinedChartData = this.filteredProducts.map(item => ({
+      name: item.product.code,
+      series: item.warehouseQuantityHistory.map(history => ({
+        name: history.date,
+        value: history.quantity
+      }))
+    }));
   }
 }

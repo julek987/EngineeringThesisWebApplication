@@ -15,6 +15,8 @@ import { AuthInterceptor } from './services/auth-interceptor.interceptor'
 import {LoginService} from "./services/Login/login.service";
 import { AdminPanelComponent } from './Components/admin-panel/admin-panel.component';
 import { DetailComponent } from './Components/detail/detail.component';
+import {BaseChartDirective} from "ng2-charts";
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { DetailComponent } from './Components/detail/detail.component';
         BrowserModule,
         AppRoutingModule,
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        BaseChartDirective,
+        NgxChartsModule
     ],
   providers: [provideHttpClient(),
     LoginService,
