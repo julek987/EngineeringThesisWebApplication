@@ -59,9 +59,14 @@ export class AnalysisComponent implements OnInit {
   loadProducts() {
     this.warehouseService.getAllProducts('http://localhost:5001/products')
       .subscribe((response: { value: Product[] }) => {
-        this.products = response.value;
-        this.filteredProducts = this.groupProductsByPrefix(this.products);
+        const allProducts = response.value;
+        this.products = this.groupProductsByPrefix(allProducts).filter(product => !this.isBestseller(product.code));
+        this.filteredProducts = this.products;
       });
+  }
+
+  isBestseller(productCode: string): boolean {
+    return this.bestsellers.some(bestseller => bestseller.code === productCode);
   }
 
   filterProducts(): void {
