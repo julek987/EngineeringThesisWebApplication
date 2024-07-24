@@ -242,4 +242,14 @@ export class AnalysisComponent implements OnInit {
       bestseller.code.toLowerCase().includes(this.searchTextBestsellers.toLowerCase())
     );
   }
+
+  showDetails(analysedModel: {
+    alert: boolean;
+    code: string;
+    warehouseQuantity: number;
+    soldUnits: number;
+    analysisFactor: number
+  }) {
+    
+  }
 }

@@ -43,7 +43,7 @@
       </div>
       <div class="data_początkowa">
         <p>Od</p>
-        <input type="date" [(ngModel)]="startDate"  [max]="today">
+        <input type="date" [(ngModel)]="startDate" [max]="today">
       </div>
       <div class="data_końcowa">
         <p>Do</p>
@@ -66,6 +66,7 @@
             <th>Sprzedanych</th>
             <th>Współczynnik sprzedaży</th>
             <th>Alert</th>
+            <th>Szczegóły</th>
           </tr>
           </thead>
           <tbody>
@@ -77,6 +78,9 @@
             <td>
               <span *ngIf="analysedModel.alert">🔴</span>
               <span *ngIf="!analysedModel.alert">🟢</span>
+            </td>
+            <td>
+              <button (click)="showDetails(analysedModel)">Szczegóły</button>
             </td>
           </tr>
           </tbody>

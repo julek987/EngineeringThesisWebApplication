@@ -180,3 +180,16 @@ table th {
   top: 0;
   z-index: 2; /* Ustawienie z-index wyżej, aby nagłówki były na wierzchu */
 }
+
+table td button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+table td button:hover {
+  background-color: #0056b3;
+}
