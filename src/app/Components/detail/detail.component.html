@@ -1,0 +1,11 @@
+<h1>Details for {{ code }}</h1>
+<p>Start Date: {{ startDate }}</p>
+<p>End Date: {{ endDate }}</p>
+<p>Clients:</p>
+<ul>
+  <li *ngFor="let client of clients">{{ client }}</li>
+</ul>
+
+<ul>
+  <li *ngFor="let client of clientsIds">{{ client }}</li>
+</ul>

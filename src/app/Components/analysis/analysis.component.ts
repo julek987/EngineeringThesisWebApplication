@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Bestseller, Product} from "../../../types";
 import { WarehouseService } from "../../services/Warehouse/warehouse.service";
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { SalesService } from "../../services/Sales/sales.service";
 import { AnalyticalService } from "../../services/Analytics/analytical.service";
 import {BestsellersService} from "../../services/Bestsellers/bestsellers.service";
@@ -34,7 +34,8 @@ export class AnalysisComponent implements OnInit {
     private salesService: SalesService,
     private analyticalService: AnalyticalService,
     private bestsellerService: BestsellersService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -248,8 +249,19 @@ export class AnalysisComponent implements OnInit {
     code: string;
     warehouseQuantity: number;
     soldUnits: number;
-    analysisFactor: number
+    analysisFactor: number;
   }) {
-    
+    const selectedClientsNames = this.selectedClients.map(client => client.name);
+    const selectedClientsIds = this.selectedClients.map(client => client.id);
+    this.router.navigate(['/details'], {
+      queryParams: {
+        code: analysedModel.code,
+        clientsNames: JSON.stringify(selectedClientsNames),
+        clientsIds: JSON.stringify(selectedClientsIds),
+        startDate: this.startDate,
+        endDate: this.endDate
+      }
+    });
   }
+
 }

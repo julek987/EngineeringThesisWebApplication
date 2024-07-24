@@ -14,6 +14,7 @@ import { MainPageComponent } from './Components/main-page/main-page.component';
 import { AuthInterceptor } from './services/auth-interceptor.interceptor'
 import {LoginService} from "./services/Login/login.service";
 import { AdminPanelComponent } from './Components/admin-panel/admin-panel.component';
+import { DetailComponent } from './Components/detail/detail.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AdminPanelComponent } from './Components/admin-panel/admin-panel.compon
     ClientListComponent,
     LoginComponent,
     MainPageComponent,
-    AdminPanelComponent
+    AdminPanelComponent,
+    DetailComponent
   ],
     imports: [
         BrowserModule,
