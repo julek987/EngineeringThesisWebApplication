@@ -17,7 +17,7 @@
     </div>
     <div class="product-container scrollable">
       <div class="bestseller" *ngFor="let bestseller of filteredBestsellers">
-        <input type="checkbox" [id]="'bestseller-' + bestseller.code" name="bestseller" [value]="bestseller.code">
+        <input type="checkbox" [id]="'bestseller-' + bestseller.code" name="bestseller" [value]="bestseller.code" (change)="onBestsellerSelect(bestseller.code, $event)">
         <label [for]="'bestseller-' + bestseller.code">{{ bestseller.code }}</label>
       </div>
     </div>

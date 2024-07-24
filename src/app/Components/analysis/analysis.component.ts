@@ -13,6 +13,7 @@ import {BestsellersService} from "../../services/Bestsellers/bestsellers.service
 })
 export class AnalysisComponent implements OnInit {
   products: Product[] = [];
+  allProducts: Product[] = [];
   filteredProducts: Product[] = [];
   searchTextProducts: string = '';
   startDate: string = '';
@@ -36,7 +37,6 @@ export class AnalysisComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.loadProducts();
       this.loadBestsellers();
     });
     this.setTodayDate();
@@ -59,16 +59,23 @@ export class AnalysisComponent implements OnInit {
   loadProducts() {
     this.warehouseService.getAllProducts('http://localhost:5001/products')
       .subscribe((response: { value: Product[] }) => {
-        this.products = response.value;
-        this.filteredProducts = this.groupProductsByPrefix(this.products);
+        // this.products = response.value;
+        // this.filteredProducts = this.groupProductsByPrefix(this.products).filter(product => !this.isBestseller(product.code));
+        this.allProducts = response.value;
+        this.products = this.groupProductsByPrefix(this.allProducts).filter(product => !this.isBestseller(product.code));
+        this.filteredProducts = this.products;
       });
+  }
+
+  isBestseller(productCode: string): boolean {
+    return this.bestsellers.some(bestseller => bestseller.code === productCode);
   }
 
   filterProducts(): void {
     if (this.searchTextProducts.trim() === '') {
-      this.filteredProducts = this.groupProductsByPrefix(this.products);
+      this.filteredProducts = this.products
     } else {
-      this.filteredProducts = this.groupProductsByPrefix(this.products).filter(product =>
+      this.filteredProducts = this.products.filter(product =>
         product.code.toLowerCase().includes(this.searchTextProducts.toLowerCase())
       );
     }
@@ -98,6 +105,14 @@ export class AnalysisComponent implements OnInit {
     }
   }
 
+  onBestsellerSelect(product: string, event: any): void {
+    if (event.target.checked) {
+      this.selectedProducts.push(product);
+    } else {
+      this.selectedProducts = this.selectedProducts.filter(p => p !== product);
+    }
+  }
+
   onSelectedClientsChange(selectedClientIds: { id: number; name: string }[]): void {
     this.selectedClients = selectedClientIds;
   }
@@ -117,7 +132,7 @@ export class AnalysisComponent implements OnInit {
       const prefix = this.selectedProducts[index];
 
       // Filter products that start with the current prefix
-      const matchingProducts = this.products.filter(p => p.code.startsWith(prefix));
+      const matchingProducts = this.allProducts.filter(p => p.code.startsWith(prefix));
 
       // Initialize variables to accumulate warehouseQuantity, soldUnits, and analysisFactor
       let totalWarehouseQuantity = 0;
