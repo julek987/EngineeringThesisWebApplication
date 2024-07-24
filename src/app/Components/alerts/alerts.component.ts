@@ -166,7 +166,7 @@ export class AlertsComponent implements OnInit {
     };
     const thresholdQuantity = this.criticalQuantityForUpdate.nativeElement.value;
     const daysBeforeExhaustion = this.leadTimeInDaysForUpdate.nativeElement.value;
-    const analysisTime = this.monthsToDays[this.selectedAnalysisPeriod] || 30; // Convert months to days
+    const analysisTime = this.analysisPeriodInDaysForUpdate.nativeElement.value;
     this.alertsService.updateAlert("http://localhost:5001/updatealert?name=" + this.selectedAlertForUpdate?.name +
       "&analysisPeriodInDays=" + analysisTime + "&leadTimeInDays=" + daysBeforeExhaustion +
       "&criticalQuantity=" + thresholdQuantity, updatedAlertBody).subscribe({

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {Bestseller, Product} from "../../../types";
+import { Bestseller, Product, CheckAlertsResponse, FlaggedProduct } from "../../../types";
 import { WarehouseService } from "../../services/Warehouse/warehouse.service";
-import {ActivatedRoute, Router} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SalesService } from "../../services/Sales/sales.service";
 import { AnalyticalService } from "../../services/Analytics/analytical.service";
-import {BestsellersService} from "../../services/Bestsellers/bestsellers.service";
+import { BestsellersService } from "../../services/Bestsellers/bestsellers.service";
+import { AlertsService } from "../../services/Alerts/alerts.service";
 
 @Component({
   selector: 'app-analysis',
@@ -22,21 +23,27 @@ export class AnalysisComponent implements OnInit {
   today: string = '';
   analysedModels: {
     alert: boolean;
-    code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: number }[] = [];
+    code: string,
+    warehouseQuantity: number,
+    soldUnits: number,
+    analysisFactor: number
+  }[] = [];
   selectedClients: { id: number, name: string }[] = [];
 
   bestsellers: Bestseller[] = [];
   searchTextBestsellers: string = '';
   filteredBestsellers: Bestseller[] = [];
+  flaggedProducts: FlaggedProduct[] = []; // Store the flagged products
 
   constructor(
     private warehouseService: WarehouseService,
     private salesService: SalesService,
     private analyticalService: AnalyticalService,
     private bestsellerService: BestsellersService,
+    private alertService: AlertsService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -65,6 +72,7 @@ export class AnalysisComponent implements OnInit {
         this.allProducts = response.value;
         this.products = this.groupProductsByPrefix(this.allProducts).filter(product => !this.isBestseller(product.code));
         this.filteredProducts = this.products;
+        this.checkAlerts();
       });
   }
 
@@ -148,13 +156,16 @@ export class AnalysisComponent implements OnInit {
           const averageAnalysisFactorString = averageAnalysisFactor.toFixed(2);
           averageAnalysisFactor = Number(averageAnalysisFactorString);
 
+          // Check if the prefix is flagged and set alert accordingly
+          const isFlagged = this.flaggedProducts.some(fp => fp.code.startsWith(prefix));
+
           // Push the final model for the current prefix to analysedModels
           this.analysedModels.push({
             code: prefix,
             warehouseQuantity: totalWarehouseQuantity,
             soldUnits: totalSoldUnits,
             analysisFactor: averageAnalysisFactor,
-            alert: false
+            alert: isFlagged
           });
 
           // Process the next prefix recursively
@@ -237,6 +248,13 @@ export class AnalysisComponent implements OnInit {
     processProductsSequentially(0);
   }
 
+  checkAlerts() {
+    this.alertService.checkAlerts('http://localhost:5001/checkalerts')
+      .subscribe((response: CheckAlertsResponse) => {
+        this.flaggedProducts = response.value.flaggedProducts;
+      });
+  }
+
   filterBestsellers(): void {
     this.filteredBestsellers = this.bestsellers.filter(bestseller =>
       bestseller.code.toLowerCase().includes(this.searchTextBestsellers.toLowerCase())
@@ -263,5 +281,4 @@ export class AnalysisComponent implements OnInit {
       }
     });
   }
-
 }

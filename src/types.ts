@@ -101,3 +101,18 @@ export interface WarehouseQuantityHistoryResponse {
     [date: string]: number;
   };
 }
+
+export interface CheckAlertsResponse {
+  value: {
+    flaggedProducts: FlaggedProduct[];
+  };
+  formatters: any[];
+  contentTypes: any[];
+  declaredType: any;
+  statusCode: number;
+}
+
+export interface FlaggedProduct {
+  code: string;
+  description: string | null;
+}

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {ApiService} from "../api.service";
 import {HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {AllAlertsResponse, AllProductsResponse, SalesHistoryResponse} from "../../../types";
+import {AllAlertsResponse, CheckAlertsResponse} from "../../../types";
 import {AnyCatcher} from "rxjs/internal/AnyCatcher";
 
 @Injectable({
@@ -27,5 +27,9 @@ export class AlertsService {
 
   updateAlert = (url: string, body: any, headers?: HttpHeaders): Observable<AnyCatcher> => {
     return this.apiService.put(url, body, headers);
+  }
+
+  checkAlerts = (url: string): Observable<CheckAlertsResponse> => {
+    return this.apiService.get(url);
   }
 }
