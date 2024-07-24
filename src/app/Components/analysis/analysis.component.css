@@ -1,12 +1,6 @@
-/* Existing styles */
 .analiza {
   display: flex;
   justify-content: space-between;
-}
-
-.analiza_wynik {
-  background-color: #b47575;
-  width: 70%;
 }
 
 .clients_dates {
@@ -140,4 +134,49 @@ input[type="checkbox"] {
 
 .zatwierdz:hover {
   background-color: #93e87e;
+}
+
+.analiza_wynik {
+  border: 3px solid black;
+  width: 70%;
+  height: 90%;
+  margin: 10px;
+}
+
+.analiza_panel {
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.analiza_panel .scrollable {
+  max-height: 550px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.table-container {
+  overflow-y: auto;
+  height: calc(100% - 40px); /* Zmniejsz wysokość kontenera, aby zapewnić wystarczającą przestrzeń dla nagłówków */
+  position: relative; /* Ustawienie kontenera jako względnego dla z-index */
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+  background-color: #fff;
+}
+
+table th {
+  background-color: #D9D9D9;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 2; /* Ustawienie z-index wyżej, aby nagłówki były na wierzchu */
 }

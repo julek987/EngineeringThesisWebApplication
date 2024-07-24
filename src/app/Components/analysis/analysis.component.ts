@@ -20,7 +20,9 @@ export class AnalysisComponent implements OnInit {
   endDate: string = '';
   selectedProducts: string[] = [];
   today: string = '';
-  analysedModels: { code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: number }[] = [];
+  analysedModels: {
+    alert: boolean;
+    code: string, warehouseQuantity: number, soldUnits: number, analysisFactor: number }[] = [];
   selectedClients: { id: number, name: string }[] = [];
 
   bestsellers: Bestseller[] = [];
@@ -151,7 +153,8 @@ export class AnalysisComponent implements OnInit {
             code: prefix,
             warehouseQuantity: totalWarehouseQuantity,
             soldUnits: totalSoldUnits,
-            analysisFactor: averageAnalysisFactor
+            analysisFactor: averageAnalysisFactor,
+            alert: false
           });
 
           // Process the next prefix recursively

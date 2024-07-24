@@ -8,35 +8,35 @@
 <body>
 <div class="analiza">
   <div class="bestsellery_pozostałe">
-  <div class="lista_bestsellerów">
-    <div class="little_header">
-      <h2>Bestsellery</h2>
-    </div>
-    <div class="dodawanie_bestsellerów_input">
-      <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextBestsellers" (input)="filterBestsellers()">
-    </div>
-    <div class="product-container scrollable">
-      <div class="bestseller" *ngFor="let bestseller of filteredBestsellers">
-        <input type="checkbox" [id]="'bestseller-' + bestseller.code" name="bestseller" [value]="bestseller.code" (change)="onBestsellerSelect(bestseller.code, $event)">
-        <label [for]="'bestseller-' + bestseller.code">{{ bestseller.code }}</label>
+    <div class="lista_bestsellerów">
+      <div class="little_header">
+        <h2>Bestsellery</h2>
+      </div>
+      <div class="dodawanie_bestsellerów_input">
+        <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextBestsellers" (input)="filterBestsellers()">
+      </div>
+      <div class="product-container scrollable">
+        <div class="bestseller" *ngFor="let bestseller of filteredBestsellers">
+          <input type="checkbox" [id]="'bestseller-' + bestseller.code" name="bestseller" [value]="bestseller.code" (change)="onBestsellerSelect(bestseller.code, $event)">
+          <label [for]="'bestseller-' + bestseller.code">{{ bestseller.code }}</label>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="lista_produktów">
-    <div class="little_header">
-      <h2>Pozostałe</h2>
-    </div>
-    <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
-    <div id="product-container" class="scrollable">
-      <div *ngFor="let product of filteredProducts">
-        <input type="checkbox" [value]="product.code" [checked]="selectedProducts.includes(product.code)" (change)="onProductSelect(product.code, $event)">
-        {{ product.code }}
+    <div class="lista_produktów">
+      <div class="little_header">
+        <h2>Pozostałe</h2>
+      </div>
+      <input type="text" placeholder="Szukaj.." [(ngModel)]="searchTextProducts" (input)="filterProducts()">
+      <div id="product-container" class="scrollable">
+        <div *ngFor="let product of filteredProducts">
+          <input type="checkbox" [value]="product.code" [checked]="selectedProducts.includes(product.code)" (change)="onProductSelect(product.code, $event)">
+          {{ product.code }}
+        </div>
       </div>
     </div>
-  </div>
   </div>
   <div class="clients_dates">
-  <app-client-list [isInAnalysisView]="true" (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
+    <app-client-list [isInAnalysisView]="true" (selectedClientsChange)="onSelectedClientsChange($event)"></app-client-list>
     <div class="datownik">
       <div class="little_header">
         <h2>Zakres dat</h2>
@@ -50,20 +50,40 @@
         <input type="date" id="endDate" [(ngModel)]="endDate" [max]="today">
       </div>
     </div>
-      <button class="zatwierdz" (click)="onSubmit()">Zatwierdź wszystko</button>
+    <button class="zatwierdz" (click)="onSubmit()">Zatwierdź wszystko</button>
   </div>
   <div class="analiza_wynik">
+    <div class="little_header">
+      <h2>Analiza</h2>
+    </div>
     <div class="analiza_panel">
-      <div id="analysis-container" class="scrollable">
-        <div class="analysed-product" *ngFor="let analysedModel of analysedModels">
-          <p>Kod: {{ analysedModel.code }}</p>
-          <p>Stan magazynowy: {{ analysedModel.warehouseQuantity }}</p>
-          <p>Sprzedanych: {{ analysedModel.soldUnits }}</p>
-          <p>Ocena analizy: {{ analysedModel.analysisFactor }}</p>
-        </div>
+      <div class="table-container scrollable">
+        <table>
+          <thead>
+          <tr>
+            <th>Znak produktu</th>
+            <th>Na stanie</th>
+            <th>Sprzedanych</th>
+            <th>Współczynnik sprzedaży</th>
+            <th>Alert</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let analysedModel of analysedModels">
+            <td>{{ analysedModel.code }}</td>
+            <td>{{ analysedModel.warehouseQuantity }}</td>
+            <td>{{ analysedModel.soldUnits }}</td>
+            <td>{{ analysedModel.analysisFactor }}</td>
+            <td>
+              <span *ngIf="analysedModel.alert">🔴</span>
+              <span *ngIf="!analysedModel.alert">🟢</span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-  </div>
+</div>
 </body>
 </html>
