@@ -43,7 +43,7 @@
       </div>
       <div class="data_początkowa">
         <p>Od</p>
-        <input type="date" [(ngModel)]="startDate">
+        <input type="date" [(ngModel)]="startDate"  [max]="today">
       </div>
       <div class="data_końcowa">
         <p>Do</p>
