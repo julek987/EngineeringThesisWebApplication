@@ -1,23 +1,63 @@
-<h1>Details for {{ code }}</h1>
-<p>Start Date: {{ startDate }}</p>
-<p>End Date: {{ endDate }}</p>
-<p>Analysis Factor: {{ analysisFactor }}</p>
-<p>Clients:</p>
-<ul>
-  <li *ngFor="let client of clients">{{ client }}</li>
-</ul>
-
-<ul>
-  <li *ngFor="let client of clientsIds">{{ client }}</li>
-</ul>
-
-<h2>Matching Products with Warehouse Quantity and Sales History:</h2>
-<div *ngFor="let item of filteredProducts">
-  <h3>{{ item.product.code }}</h3>
-  <p>Current Quantity: {{ item.warehouseQuantity }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alerts Component</title>
+  <link rel="stylesheet" href="detail.component.css">
+</head>
+<body>
+<div class="info-table">
+  <table>
+    <thead>
+    <tr>
+      <th colspan="2">{{ code }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <th>Data początkowa</th>
+      <td>{{ startDate }}</td>
+    </tr>
+    <tr>
+      <th>Data końcowa</th>
+      <td>{{ endDate }}</td>
+    </tr>
+    <tr>
+      <th>Współczynnik sprzedaży</th>
+      <td>{{ analysisFactor }}</td>
+    </tr>
+    <tr>
+      <th>Wybrani kontrahenci</th>
+      <td>
+        <ul>
+          <li *ngFor="let client of clients">{{ client }}</li>
+        </ul>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="product-table">
+  <table>
+    <thead>
+    <tr>
+      <th>Rozmiar</th>
+      <th>Ilość na stanie</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of filteredProducts">
+      <td>{{ item.product.code }}</td>
+      <td>{{ item.warehouseQuantity }}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 
-<h2>Combined Warehouse Quantity History:</h2>
+<div class="quantity_table">
+  <div class="little_header">
+<h2>Historia stanów magazynowych:</h2>
+    </div>
 <div class="chart-container">
   <ngx-charts-line-chart
     [view]="view"
@@ -34,8 +74,12 @@
     [yAxisLabel]="yAxisLabel">
   </ngx-charts-line-chart>
 </div>
+</div>
 
-<h2>Combined Sales History:</h2>
+<div class="sales_table">
+  <div class="little_header">
+<h2>Historia sprzedaży:</h2>
+  </div>
 <div class="chart-container">
   <ngx-charts-line-chart
     [view]="view"
@@ -52,8 +96,12 @@
     [yAxisLabel]="yAxisLabel">
   </ngx-charts-line-chart>
 </div>
+</div>
 
-<h2>Depletion Prediction:</h2>
+<div class="prediction_table">
+  <div class="little_header">
+<h2>Predykcja wyczerpania towaru:</h2>
+  </div>
 <div class="chart-container">
   <ngx-charts-line-chart
     [view]="view"
@@ -70,3 +118,5 @@
     [yAxisLabel]="yAxisLabel">
   </ngx-charts-line-chart>
 </div>
+</div>
+</body>

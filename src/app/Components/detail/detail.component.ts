@@ -35,16 +35,14 @@ export class DetailComponent implements OnInit {
   public combinedSalesChartData: any[] = [];
   public depletionPredictionChartData: any[] = [];
   public view: [number, number] = [700, 400];  // Ensure view has exactly 2 elements
-  public legend: boolean = true;
+  public legend: boolean = false;
   public legendPosition: LegendPosition = LegendPosition.Right; // Use enum
-  public showLabels: boolean = true;
-  public animations: boolean = true;
   public xAxis: boolean = true;
   public yAxis: boolean = true;
   public showYAxisLabel: boolean = true;
   public showXAxisLabel: boolean = true;
-  public xAxisLabel: string = 'Date';
-  public yAxisLabel: string = 'Quantity';
+  public xAxisLabel: string = 'Data';
+  public yAxisLabel: string = 'Ilość';
   public timeline: boolean = true;
 
   constructor(
@@ -63,7 +61,8 @@ export class DetailComponent implements OnInit {
       this.clientsIds = JSON.parse(params['clientsIds']);
       this.startDate = params['startDate'];
       this.endDate = params['endDate'];
-      this.analysisFactor = parseFloat(params['analysisFactor']);  // Ensure it's a number
+      const stringAnalysisFactor = parseFloat(params['analysisFactor']).toFixed(2)
+      this.analysisFactor = Number(stringAnalysisFactor);  // Ensure it's a number
       this.loadProducts();
     });
   }
@@ -147,7 +146,7 @@ export class DetailComponent implements OnInit {
     ];
 
     this.depletionPredictionChartData = [{
-      name: 'Depletion Prediction',
+      name: 'Predykcja wyczerpnia towaru',
       series: predictionSeries
     }];
   }
