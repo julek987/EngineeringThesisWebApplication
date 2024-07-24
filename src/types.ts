@@ -95,3 +95,9 @@ export interface Employee{
 export interface EmployeesResponse{
   Employees: Employee[];
 }
+
+export interface WarehouseQuantityHistoryResponse {
+  value: {
+    [date: string]: number;
+  };
+}
