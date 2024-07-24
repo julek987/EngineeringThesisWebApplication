@@ -5,6 +5,7 @@ import { SalesService } from "../../services/Sales/sales.service";
 import { Product } from "../../../types";
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LegendPosition } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-detail',
@@ -30,9 +31,11 @@ export class DetailComponent implements OnInit {
   today: string;
 
   // Chart data
-  public combinedChartData: any[] = [];
+  public combinedWarehouseChartData: any[] = [];
+  public combinedSalesChartData: any[] = [];
   public view: [number, number] = [700, 400];  // Ensure view has exactly 2 elements
   public legend: boolean = true;
+  public legendPosition: LegendPosition = LegendPosition.Right; // Use enum
   public showLabels: boolean = true;
   public animations: boolean = true;
   public xAxis: boolean = true;
@@ -104,14 +107,22 @@ export class DetailComponent implements OnInit {
 
     forkJoin(requests).subscribe(results => {
       this.filteredProducts = results;
-      this.updateChart();
+      this.updateCharts();
     });
   }
 
-  updateChart() {
-    this.combinedChartData = this.filteredProducts.map(item => ({
+  updateCharts() {
+    this.combinedWarehouseChartData = this.filteredProducts.map(item => ({
       name: item.product.code,
       series: item.warehouseQuantityHistory.map(history => ({
+        name: history.date,
+        value: history.quantity
+      }))
+    }));
+
+    this.combinedSalesChartData = this.filteredProducts.map(item => ({
+      name: item.product.code,
+      series: item.salesHistory.map(history => ({
         name: history.date,
         value: history.quantity
       }))

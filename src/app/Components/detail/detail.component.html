@@ -11,13 +11,20 @@
   <li *ngFor="let client of clientsIds">{{ client }}</li>
 </ul>
 
+<h2>Matching Products with Warehouse Quantity and Sales History:</h2>
+<div *ngFor="let item of filteredProducts">
+  <h3>{{ item.product.code }}</h3>
+  <p>Current Quantity: {{ item.warehouseQuantity }}</p>
+</div>
+
 <h2>Combined Warehouse Quantity History:</h2>
 <div class="chart-container">
   <ngx-charts-line-chart
     [view]="view"
     [scheme]="'vivid'"
-    [results]="combinedChartData"
+    [results]="combinedWarehouseChartData"
     [legend]="legend"
+    [legendPosition]="legendPosition"
     [showXAxisLabel]="showXAxisLabel"
     [showYAxisLabel]="showYAxisLabel"
     [xAxis]="xAxis"
@@ -28,14 +35,22 @@
   </ngx-charts-line-chart>
 </div>
 
-<h2>Matching Products with Warehouse Quantity and Sales History:</h2>
-<div *ngFor="let item of filteredProducts">
-  <h3>{{ item.product.code }}</h3>
-  <p>Current Quantity: {{ item.warehouseQuantity }}</p>
-  <h4>Sales History:</h4>
-  <ul>
-    <li *ngFor="let sales of item.salesHistory">
-      Date: {{ sales.date }}, Quantity: {{ sales.quantity }}
-    </li>
-  </ul>
+<h2>Combined Sales History:</h2>
+<div class="chart-container">
+  <ngx-charts-line-chart
+    [view]="view"
+    [scheme]="'cool'"
+    [results]="combinedSalesChartData"
+    [legend]="legend"
+    [legendPosition]="legendPosition"
+    [showXAxisLabel]="showXAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [xAxis]="xAxis"
+    [yAxis]="yAxis"
+    [timeline]="timeline"
+    [xAxisLabel]="xAxisLabel"
+    [yAxisLabel]="yAxisLabel">
+  </ngx-charts-line-chart>
 </div>
+
+
