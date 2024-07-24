@@ -12,7 +12,6 @@ export class SalesService {
   constructor(private apiService: ApiService) {
   }
 
-
   getSalesHistory = (url: string, body: any, headers?: HttpHeaders): Observable<SalesHistoryResponse> => {
     return this.apiService.post(url, body, headers);
   }

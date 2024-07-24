@@ -10,7 +10,7 @@
   <li *ngFor="let client of clientsIds">{{ client }}</li>
 </ul>
 
-<h2>Matching Products with Warehouse Quantity and History:</h2>
+<h2>Matching Products with Warehouse Quantity, History and Sales History:</h2>
 <div *ngFor="let item of filteredProducts">
   <h3>{{ item.product.code }}</h3>
   <p>Current Quantity: {{ item.warehouseQuantity }}</p>
@@ -18,6 +18,12 @@
   <ul>
     <li *ngFor="let history of item.warehouseQuantityHistory">
       Date: {{ history.date }}, Quantity: {{ history.quantity }}
+    </li>
+  </ul>
+  <h4>Sales History:</h4>
+  <ul>
+    <li *ngFor="let sales of item.salesHistory">
+      Date: {{ sales.date }}, Quantity: {{ sales.quantity }}
     </li>
   </ul>
 </div>

@@ -62,8 +62,6 @@ export class AnalysisComponent implements OnInit {
   loadProducts() {
     this.warehouseService.getAllProducts('http://localhost:5001/products')
       .subscribe((response: { value: Product[] }) => {
-        // this.products = response.value;
-        // this.filteredProducts = this.groupProductsByPrefix(this.products).filter(product => !this.isBestseller(product.code));
         this.allProducts = response.value;
         this.products = this.groupProductsByPrefix(this.allProducts).filter(product => !this.isBestseller(product.code));
         this.filteredProducts = this.products;
@@ -76,7 +74,7 @@ export class AnalysisComponent implements OnInit {
 
   filterProducts(): void {
     if (this.searchTextProducts.trim() === '') {
-      this.filteredProducts = this.products
+      this.filteredProducts = this.products;
     } else {
       this.filteredProducts = this.products.filter(product =>
         product.code.toLowerCase().includes(this.searchTextProducts.toLowerCase())
@@ -90,7 +88,6 @@ export class AnalysisComponent implements OnInit {
       const parts = product.code.split('/');
       const prefix = parts.slice(0, -1).join('/'); // Extract prefix without size
       if (!groupedProducts[prefix]) {
-        // If prefix not found, add it
         groupedProducts[prefix] = {
           ...product,
           code: prefix // Update code to remove size information
@@ -164,7 +161,7 @@ export class AnalysisComponent implements OnInit {
         }
 
         const product = matchingProducts[productIndex];
-        const clientsIdsBody = { clients: this.selectedClients.map(id => ({ id })) };
+        const clientsIdsBody = { clients: this.selectedClients.map(client => ({ id: client.id })) };
 
         // Perform API requests sequentially
         this.warehouseService.getWarehouseQuantity(`http://localhost:5001/warehouse?product=${product.code}&date=${this.today}`).subscribe({

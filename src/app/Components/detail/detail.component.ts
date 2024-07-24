@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { WarehouseService } from "../../services/Warehouse/warehouse.service";
+import { SalesService } from "../../services/Sales/sales.service";
 import { Product } from "../../../types";
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -21,7 +22,8 @@ export class DetailComponent implements OnInit {
   filteredProducts: {
     product: Product,
     warehouseQuantity: number,
-    warehouseQuantityHistory: { date: string, quantity: number }[]
+    warehouseQuantityHistory: { date: string, quantity: number }[],
+    salesHistory: { date: string, quantity: number }[]
   }[] = [];
 
   today: string;
@@ -29,6 +31,7 @@ export class DetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private warehouseService: WarehouseService,
+    private salesService: SalesService
   ) {
     const today = new Date();
     this.today = today.toISOString().split('T')[0];
@@ -57,11 +60,11 @@ export class DetailComponent implements OnInit {
     if (this.code) {
       const prefix = this.code.split('/').slice(0, -1).join('/');
       const matchingProducts = this.allProducts.filter(product => product.code.startsWith(prefix));
-      this.loadWarehouseData(matchingProducts);
+      this.loadData(matchingProducts);
     }
   }
 
-  loadWarehouseData(products: Product[]) {
+  loadData(products: Product[]) {
     const requests = products.map(product => {
       const quantityRequest = this.warehouseService.getWarehouseQuantity(`http://localhost:5001/warehouse?product=${product.code}&date=${this.today}`)
         .pipe(map(response => response.value.quantity));
@@ -69,11 +72,16 @@ export class DetailComponent implements OnInit {
       const historyRequest = this.warehouseService.getWarehouseQuantityHistory(`http://localhost:5001/warehouse/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`)
         .pipe(map(response => Object.keys(response.value).map(date => ({ date, quantity: response.value[date] }))));
 
-      return forkJoin([quantityRequest, historyRequest]).pipe(
-        map(([quantity, history]) => ({
+      const salesHistoryRequest = this.salesService.getSalesHistory(`http://localhost:5001/sales/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`, {
+        clients: this.clientsIds.map(id => ({ id }))
+      }).pipe(map(response => Object.keys(response.value).map(date => ({ date, quantity: response.value[date] }))));
+
+      return forkJoin([quantityRequest, historyRequest, salesHistoryRequest]).pipe(
+        map(([quantity, history, salesHistory]) => ({
           product,
           warehouseQuantity: quantity,
-          warehouseQuantityHistory: history
+          warehouseQuantityHistory: history,
+          salesHistory
         }))
       );
     });
