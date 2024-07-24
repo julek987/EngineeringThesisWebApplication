@@ -17,6 +17,7 @@ export class DetailComponent implements OnInit {
   clientsIds: string[] = [];
   startDate?: string;
   endDate?: string;
+  analysisFactor?: number;
 
   allProducts: Product[] = [];
   filteredProducts: {
@@ -44,6 +45,7 @@ export class DetailComponent implements OnInit {
       this.clientsIds = JSON.parse(params['clientsIds']);
       this.startDate = params['startDate'];
       this.endDate = params['endDate'];
+      this.analysisFactor = params['analysisFactor'];
       this.loadProducts();
     });
   }

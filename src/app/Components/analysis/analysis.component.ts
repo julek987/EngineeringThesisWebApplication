@@ -256,7 +256,8 @@ export class AnalysisComponent implements OnInit {
         clientsNames: JSON.stringify(selectedClientsNames),
         clientsIds: JSON.stringify(selectedClientsIds),
         startDate: this.startDate,
-        endDate: this.endDate
+        endDate: this.endDate,
+        analysisFactor: analysedModel.analysisFactor
       }
     });
   }
