@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WarehouseService } from "../../services/Warehouse/warehouse.service";
 import { SalesService } from "../../services/Sales/sales.service";
 import { Product } from "../../../types";
@@ -35,7 +35,7 @@ export class DetailComponent implements OnInit {
   public combinedSalesChartData: any[] = [];
   public depletionPredictionChartData: any[] = [];
   public view: [number, number] = [700, 400];  // Ensure view has exactly 2 elements
-  public legend: boolean = false;
+  public legend: boolean = true;
   public legendPosition: LegendPosition = LegendPosition.Right; // Use enum
   public xAxis: boolean = true;
   public yAxis: boolean = true;
@@ -48,7 +48,8 @@ export class DetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private warehouseService: WarehouseService,
-    private salesService: SalesService
+    private salesService: SalesService,
+    private router: Router // Add router to constructor
   ) {
     const today = new Date();
     this.today = today.toISOString().split('T')[0];
@@ -61,7 +62,7 @@ export class DetailComponent implements OnInit {
       this.clientsIds = JSON.parse(params['clientsIds']);
       this.startDate = params['startDate'];
       this.endDate = params['endDate'];
-      const stringAnalysisFactor = parseFloat(params['analysisFactor']).toFixed(2)
+      const stringAnalysisFactor = parseFloat(params['analysisFactor']).toFixed(2);
       this.analysisFactor = Number(stringAnalysisFactor);  // Ensure it's a number
       this.loadProducts();
     });
@@ -149,5 +150,10 @@ export class DetailComponent implements OnInit {
       name: 'Predykcja wyczerpnia towaru',
       series: predictionSeries
     }];
+  }
+
+  // Add this method to close the page
+  closePage() {
+    this.router.navigate(['/main']); // Redirect to home or any other desired route
   }
 }

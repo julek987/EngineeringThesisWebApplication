@@ -9,7 +9,7 @@ body {
 .product-table {
   border: 3px solid black;
   width: 30%;
-  margin: 30px auto 20px;
+  margin: 20px auto 20px;
   text-align: center;
 }
 
@@ -100,4 +100,27 @@ body {
 .little_header h2 {
   margin: 0;
   font-size: 16px;
+}
+
+/* Style for close button */
+.close-button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #FF8D8D;
+  color: #8A1A1A;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+  z-index: 1000; /* Ensure it is on top */
+}
+
+.close-button:hover{
+  background-color: #fb7474;
 }

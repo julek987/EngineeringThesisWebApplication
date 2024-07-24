@@ -144,7 +144,9 @@ export class AnalysisComponent implements OnInit {
       const processProduct = (productIndex: number) => {
         if (productIndex >= matchingProducts.length) {
           // After processing all products for the current prefix, calculate average analysisFactor
-          const averageAnalysisFactor = totalAnalysisFactor / count;
+          let averageAnalysisFactor = totalAnalysisFactor / count;
+          const averageAnalysisFactorString = averageAnalysisFactor.toFixed(2);
+          averageAnalysisFactor = Number(averageAnalysisFactorString);
 
           // Push the final model for the current prefix to analysedModels
           this.analysedModels.push({
