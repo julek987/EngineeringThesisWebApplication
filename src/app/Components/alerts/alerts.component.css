@@ -329,6 +329,7 @@ select option {
 
 .dropdown:hover .dropdown-button {
   background-color: #0056b3;
+  cursor: pointer;
 }
 
 .button_container {
