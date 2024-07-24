@@ -33,6 +33,7 @@ export class DetailComponent implements OnInit {
   // Chart data
   public combinedWarehouseChartData: any[] = [];
   public combinedSalesChartData: any[] = [];
+  public depletionPredictionChartData: any[] = [];
   public view: [number, number] = [700, 400];  // Ensure view has exactly 2 elements
   public legend: boolean = true;
   public legendPosition: LegendPosition = LegendPosition.Right; // Use enum
@@ -62,7 +63,7 @@ export class DetailComponent implements OnInit {
       this.clientsIds = JSON.parse(params['clientsIds']);
       this.startDate = params['startDate'];
       this.endDate = params['endDate'];
-      this.analysisFactor = params['analysisFactor'];
+      this.analysisFactor = parseFloat(params['analysisFactor']);  // Ensure it's a number
       this.loadProducts();
     });
   }
@@ -127,5 +128,27 @@ export class DetailComponent implements OnInit {
         value: history.quantity
       }))
     }));
+
+    this.updateDepletionPredictionChart();
+  }
+
+  updateDepletionPredictionChart() {
+    const totalQuantity = this.filteredProducts.reduce((acc, item) => acc + item.warehouseQuantity, 0);
+    const averageSalesFactor = this.analysisFactor || 0;
+
+    const daysUntilDepletion = totalQuantity / averageSalesFactor;
+
+    const depletionDate = new Date();
+    depletionDate.setDate(depletionDate.getDate() + daysUntilDepletion);
+
+    const predictionSeries = [
+      { name: this.today, value: totalQuantity },
+      { name: depletionDate.toISOString().split('T')[0], value: 0 }
+    ];
+
+    this.depletionPredictionChartData = [{
+      name: 'Depletion Prediction',
+      series: predictionSeries
+    }];
   }
 }

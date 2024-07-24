@@ -13,3 +13,19 @@
 .chart-container ngx-charts-line-chart .chart .legend {
   width: 250px; /* Adjust this value to make the legend wider */
 }
+
+.chart-container {
+  display: flex;
+}
+
+.chart-container ngx-charts-line-chart {
+  flex: 1;
+}
+
+.chart-container .legend-container {
+  flex-basis: 250px; /* Adjust this value to make the legend wider */
+}
+
+.chart-container ngx-charts-line-chart .chart .legend {
+  width: 250px; /* Adjust this value to make the legend wider */
+}
