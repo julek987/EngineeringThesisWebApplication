@@ -1,21 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <link rel="stylesheet" href="header.component.css">
-</head>
-<body>
 <div class="header">
   <div class="header_buttons">
     <button [ngClass]="{'active': activeComponent === 'analysis'}" (click)="switchComponent('analysis')">Analiza</button>
     <button [ngClass]="{'active': activeComponent === 'bestsellers'}" (click)="switchComponent('bestsellers')">Bestsellery</button>
     <button [ngClass]="{'active': activeComponent === 'alerts'}" (click)="switchComponent('alerts')">Alerty</button>
-    <button [ngClass]="{'active': activeComponent === 'admin-panel'}" (click)="switchComponent('admin-panel')">Admin</button>
+    <button *ngIf="isAdmin()" [ngClass]="{'active': activeComponent === 'admin-panel'}" (click)="switchComponent('admin-panel')">Admin</button>
   </div>
   <div class="header_buttons">
     <button (click)="logOutButtonClicked()">Wyloguj</button>
   </div>
 </div>
-</body>
-</html>

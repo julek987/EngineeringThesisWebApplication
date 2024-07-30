@@ -1,17 +1,15 @@
 import { Component } from '@angular/core';
-import {LoginService} from "../../services/Login/login.service";
+import { LoginService } from '../../services/Login/login.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']  // Note the correct URL here
 })
 export class LoginComponent {
 
-  constructor(private loginService: LoginService, private router: Router) {
-
-  }
+  constructor(private loginService: LoginService, private router: Router) { }
 
   username: string = '';
   password: string = '';
@@ -22,26 +20,10 @@ export class LoginComponent {
       password: this.password
     };
 
-    // this.loginService.loginUser('http://localhost:5282/Auth/login', body)
-    //   .subscribe({
-    //     next: (response: { token: string }) => {
-    //       const token = response.token;
-    //       //Temporary saving in localStorage
-    //       sessionStorage.setItem('authToken', token);
-    //       console.log('Login successful, token received:');
-    //       this.router.navigate(['/main']);
-    //     },
-    //     error: (error) => {
-    //       console.error('Login failed:', error);
-    //     }
-    //   });
-
     this.loginService.loginUser('http://localhost:5282/Auth/login', body)
       .subscribe({
         next: (response: any) => {
-          // Assuming you get a JSON response with a message
           console.log('Login successful, response:', response);
-          // Optionally navigate or perform other actions
           this.router.navigate(['/main']);
         },
         error: (error) => {
