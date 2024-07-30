@@ -19,11 +19,15 @@ export class HeaderComponent {
   }
 
   logOutButtonClicked() {
-    this.authService.setRole('user');  // Reset role to default
+    this.authService.logout();
     this.router.navigate(['']);
   }
 
   isAdmin(): boolean {
     return this.authService.isAdmin();
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
   }
 }

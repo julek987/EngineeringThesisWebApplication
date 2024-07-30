@@ -5,12 +5,14 @@ import {LoginComponent} from "./Components/login/login.component";
 import {DetailComponent} from "./Components/detail/detail.component";
 import {AdminGuard} from "./admin-guard";
 import {AdminPanelComponent} from "./Components/admin-panel/admin-panel.component";
+import {AuthGuard} from "./auth-guard";
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: 'main', component: MainPageComponent },
-  { path: 'details', component: DetailComponent },
-  { path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard] },
+  { path: 'main', component: MainPageComponent, canActivate: [AuthGuard]  },
+  { path: 'details', component: DetailComponent, canActivate: [AuthGuard] },
+  { path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard, AuthGuard] },
+  { path: '**', redirectTo: 'logged-out' }
 ];
 
 @NgModule({
