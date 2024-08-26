@@ -6,6 +6,8 @@ import { SalesService } from "../../services/Sales/sales.service";
 import { AnalyticalService } from "../../services/Analytics/analytical.service";
 import { BestsellersService } from "../../services/Bestsellers/bestsellers.service";
 import { AlertsService } from "../../services/Alerts/alerts.service";
+import { Observable, forkJoin } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-analysis',
@@ -46,33 +48,39 @@ export class AnalysisComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe(() => {
       this.loadBestsellers();
     });
     this.setTodayDate();
   }
 
-  setTodayDate() {
+  setTodayDate(): void {
     const today = new Date();
     this.today = today.toISOString().split('T')[0];
   }
 
   loadBestsellers(): void {
     this.bestsellerService.getAllBestsellers('http://localhost:5001/getbestsellers')
-      .subscribe((response: { value: Bestseller[] }) => {
-        this.bestsellers = response.value;
-        this.filteredBestsellers = this.bestsellers;
-        this.loadProducts();
+      .subscribe({
+        next: (response: { value: Bestseller[] }) => {
+          this.bestsellers = response.value;
+          this.filteredBestsellers = this.bestsellers;
+          this.loadProducts();
+        },
+        error: (error) => this.handleError('loadBestsellers', error)
       });
   }
 
-  loadProducts() {
+  loadProducts(): void {
     this.warehouseService.getAllProducts('http://localhost:5001/products')
-      .subscribe((response: { value: Product[] }) => {
-        this.allProducts = response.value;
-        this.products = this.groupProductsByPrefix(this.allProducts).filter(product => !this.isBestseller(product.code));
-        this.filteredProducts = this.products;
-        this.checkAlerts();
+      .subscribe({
+        next: (response: { value: Product[] }) => {
+          this.allProducts = response.value;
+          this.products = this.groupProductsByPrefix(this.allProducts).filter(product => !this.isBestseller(product.code));
+          this.filteredProducts = this.products;
+          this.checkAlerts();
+        },
+        error: (error) => this.handleError('loadProducts', error)
       });
   }
 
@@ -81,43 +89,46 @@ export class AnalysisComponent implements OnInit {
   }
 
   filterProducts(): void {
-    if (this.searchTextProducts.trim() === '') {
-      this.filteredProducts = this.products;
-    } else {
-      this.filteredProducts = this.products.filter(product =>
-        product.code.toLowerCase().includes(this.searchTextProducts.toLowerCase())
-      );
-    }
+    this.filteredProducts = this.searchTextProducts.trim() === ''
+      ? this.products
+      : this.products.filter(product => product.code.toLowerCase().includes(this.searchTextProducts.toLowerCase()));
   }
 
   groupProductsByPrefix(products: Product[]): Product[] {
     const groupedProducts: { [key: string]: Product } = {};
     products.forEach(product => {
-      const parts = product.code.split('/');
-      const prefix = parts.slice(0, -1).join('/'); // Extract prefix without size
+      const prefix = this.getPrefix(product.code);
       if (!groupedProducts[prefix]) {
         groupedProducts[prefix] = {
           ...product,
-          code: prefix // Update code to remove size information
+          code: prefix,
+          description: product.description || '' // Handle missing descriptions
         };
       }
     });
     return Object.values(groupedProducts);
   }
 
+  getPrefix(code: string): string {
+    return code.split('/').slice(0, -1).join('/');
+  }
+
   onProductSelect(product: string, event: any): void {
-    if (event.target.checked) {
-      this.selectedProducts.push(product);
-    } else {
-      this.selectedProducts = this.selectedProducts.filter(p => p !== product);
-    }
+    this.toggleSelection(product, event.target.checked, this.selectedProducts);
   }
 
   onBestsellerSelect(product: string, event: any): void {
-    if (event.target.checked) {
-      this.selectedProducts.push(product);
+    this.toggleSelection(product, event.target.checked, this.selectedProducts);
+  }
+
+  toggleSelection(item: string, isSelected: boolean, list: string[]): void {
+    if (isSelected) {
+      list.push(item);
     } else {
-      this.selectedProducts = this.selectedProducts.filter(p => p !== product);
+      const index = list.indexOf(item);
+      if (index >= 0) {
+        list.splice(index, 1);
+      }
     }
   }
 
@@ -127,131 +138,41 @@ export class AnalysisComponent implements OnInit {
 
   onSubmit(): void {
     console.log('Submit button clicked');
-
     this.analysedModels = [];
-
-    // Use a sequential processing function
-    const processProductsSequentially = (index: number) => {
-      if (index >= this.selectedProducts.length) {
-        // If all products are processed, return
-        return;
-      }
-
-      const prefix = this.selectedProducts[index];
-
-      // Filter products that start with the current prefix
-      const matchingProducts = this.allProducts.filter(p => p.code.startsWith(prefix));
-
-      // Initialize variables to accumulate warehouseQuantity, soldUnits, and analysisFactor
-      let totalWarehouseQuantity = 0;
-      let totalSoldUnits = 0;
-      let totalAnalysisFactor = 0;
-      let count = 0;
-
-      // Process each matching product sequentially
-      const processProduct = (productIndex: number) => {
-        if (productIndex >= matchingProducts.length) {
-          // After processing all products for the current prefix, calculate average analysisFactor
-          let averageAnalysisFactor = totalAnalysisFactor / count;
-          const averageAnalysisFactorString = averageAnalysisFactor.toFixed(2);
-          averageAnalysisFactor = Number(averageAnalysisFactorString);
-
-          // Check if the prefix is flagged and set alert accordingly
-          const isFlagged = this.flaggedProducts.some(fp => fp.code.startsWith(prefix));
-
-          // Push the final model for the current prefix to analysedModels
-          this.analysedModels.push({
-            code: prefix,
-            warehouseQuantity: totalWarehouseQuantity,
-            soldUnits: totalSoldUnits,
-            analysisFactor: averageAnalysisFactor,
-            alert: isFlagged
-          });
-
-          // Process the next prefix recursively
-          processProductsSequentially(index + 1);
-          return;
-        }
-
-        const product = matchingProducts[productIndex];
-        const clientsIdsBody = { clients: this.selectedClients.map(client => ({ id: client.id })) };
-
-        // Perform API requests sequentially
-        this.warehouseService.getWarehouseQuantity(`http://localhost:5001/warehouse?product=${product.code}&date=${this.today}`).subscribe({
-          next: (warehouseResponse) => {
-            const warehouseQuantity = warehouseResponse.value.quantity;
-            totalWarehouseQuantity += warehouseQuantity;
-
-            this.salesService.getSalesHistory(`http://localhost:5001/sales/history?product=${product.code}&from=${this.startDate}&to=${this.endDate}`, clientsIdsBody).subscribe({
-              next: (salesResponse) => {
-                const soldUnits = salesResponse.value;
-                const soldUnitsSum = Object.values(soldUnits).reduce((sum, value) => sum + value, 0);
-                totalSoldUnits += soldUnitsSum;
-
-                // Create body with current product code
-                const productBody = { products: [{ code: product.code }] };
-
-                // Combine clients and product body
-                const SalesDynamicBody = Object.assign({}, clientsIdsBody, productBody);
-
-                this.analyticalService.getAnalyticSalesDynamic(`http://localhost:5001/analytic?analytic=SalesDynamic&from=${this.startDate}&to=${this.endDate}`, SalesDynamicBody).subscribe({
-                  next: (analysisResponse) => {
-                    const analysisFactor = analysisResponse.value.value;
-                    totalAnalysisFactor += analysisFactor;
-                    count++;
-
-                    // Process the next product for the current prefix recursively
-                    processProduct(productIndex + 1);
-                  },
-                  error: (analysisErr) => {
-                    console.error('Error in analytical service response', analysisErr);
-                    // Handle error in analytical service response by pushing with analysisFactor 0
-                    totalAnalysisFactor += 0; // Add 0 to keep count consistent
-                    count++;
-
-                    // Process the next product for the current prefix recursively
-                    processProduct(productIndex + 1);
-                  }
-                });
-              },
-              error: (salesErr) => {
-                console.error('Error in sales history response', salesErr);
-                // Handle error in sales history response by pushing with soldUnits 0 and analysisFactor 0
-                totalSoldUnits += 0; // Add 0 to keep count consistent
-                totalAnalysisFactor += 0; // Add 0 to keep count consistent
-                count++;
-
-                // Process the next product for the current prefix recursively
-                processProduct(productIndex + 1);
-              }
-            });
-          },
-          error: (warehouseErr) => {
-            console.error('Error in warehouse quantity response', warehouseErr);
-            // Handle error in warehouse quantity response by pushing with warehouseQuantity 0, soldUnits 0, and analysisFactor 0
-            totalWarehouseQuantity += 0; // Add 0 to keep count consistent
-            totalSoldUnits += 0; // Add 0 to keep count consistent
-            totalAnalysisFactor += 0; // Add 0 to keep count consistent
-            count++;
-
-            // Process the next product for the current prefix recursively
-            processProduct(productIndex + 1);
-          }
-        });
-      };
-
-      // Start processing the first product for the current prefix
-      processProduct(0);
-    };
-
-    // Start processing the first prefix
-    processProductsSequentially(0);
+    this.processSelectedProducts();
   }
 
-  checkAlerts() {
+  processSelectedProducts(): void {
+    this.selectedProducts.forEach(prefix => {
+      this.processProductPrefix(prefix).subscribe({
+        next: (model) => this.analysedModels.push(model),
+        error: (error) => this.handleError('processSelectedProducts', error)
+      });
+    });
+  }
+
+  processProductPrefix(prefix: string): Observable<any> {
+    const matchingProducts = this.allProducts.filter(p => p.code.startsWith(prefix));
+
+    const warehouseRequests = matchingProducts.map(product =>
+      this.warehouseService.getWarehouseQuantity(`http://localhost:5001/warehouse?product=${product.code}&date=${this.today}`)
+    );
+
+    return forkJoin(warehouseRequests).pipe(
+      catchError(error => {
+        console.error('Error processing product prefix:', error);
+        return [];
+      })
+    );
+  }
+
+  checkAlerts(): void {
     this.alertService.checkAlerts('http://localhost:5001/checkalerts')
-      .subscribe((response: CheckAlertsResponse) => {
-        this.flaggedProducts = response.value.flaggedProducts;
+      .subscribe({
+        next: (response: CheckAlertsResponse) => {
+          this.flaggedProducts = response.value.flaggedProducts;
+        },
+        error: (error) => this.handleError('checkAlerts', error)
       });
   }
 
@@ -267,7 +188,7 @@ export class AnalysisComponent implements OnInit {
     warehouseQuantity: number;
     soldUnits: number;
     analysisFactor: number;
-  }) {
+  }): void {
     const selectedClientsNames = this.selectedClients.map(client => client.name);
     const selectedClientsIds = this.selectedClients.map(client => client.id);
     this.router.navigate(['/details'], {
@@ -280,5 +201,9 @@ export class AnalysisComponent implements OnInit {
         analysisFactor: analysedModel.analysisFactor
       }
     });
+  }
+
+  private handleError(operation: string, error: any): void {
+    console.error(`${operation} failed: ${error.message}`);
   }
 }

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { MainPageComponent } from './main-page.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('MainPageComponent', () => {
   let component: MainPageComponent;
@@ -8,10 +8,11 @@ describe('MainPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MainPageComponent]
+      declarations: [ MainPageComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA] // Dodaj CUSTOM_ELEMENTS_SCHEMA
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(MainPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -19,5 +20,17 @@ describe('MainPageComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have default selectedComponent as "analysis"', () => {
+    expect(component.selectedComponent).toBe('analysis');
+  });
+
+  it('should switch component', () => {
+    component.switchComponent('bestsellers');
+    expect(component.selectedComponent).toBe('bestsellers');
+
+    component.switchComponent('clients');
+    expect(component.selectedComponent).toBe('clients');
   });
 });

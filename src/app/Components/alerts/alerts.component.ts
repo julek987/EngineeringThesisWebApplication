@@ -83,7 +83,7 @@ export class AlertsComponent implements OnInit {
     this.applyFilter();
   }
 
-  private applyFilter(): void {
+  applyFilter(): void {
     this.filteredAlerts = this.alerts.filter(alert =>
       alert.name.toLowerCase().includes(this.searchText.toLowerCase())
     );
@@ -173,9 +173,6 @@ export class AlertsComponent implements OnInit {
       next: (response: any) => {
         console.log('Alert updated successfully:', response);
         this.loadAlerts();
-      },
-      error: (error) => {
-        console.error('Error updating alert:', error);
       }
     });
   }
